@@ -1,7 +1,7 @@
 <?php
 /** 
  * ddGetDocumentField.php
- * @version 2.4 (2013-03-21)
+ * @version 2.4.1 (2013-11-05)
  * 
  * Snippet gets the necessary document fields (and TV) by its id.
  * 
@@ -22,7 +22,7 @@
  * @param mode {''; 'ajax'} - Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
  * @param securityFields {separated string} - The fields for security verification. Format: field:value|field:value|etc. Default: ''. 
  * 
- * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.4
+ * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.4.1
  * 
  * @copyright 2013, DivanDesign
  * http://www.DivanDesign.biz
@@ -33,15 +33,15 @@ require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.cl
 
 //Если поля передали
 if (isset($field)){
-	$numericNames = ($numericNames == '1') ? true : false;
-	$screening = ($screening == '1') ? true : false;
-	$urlencode = ($urlencode == '1') ? true : false;
-	$typographing = ($typographing == '1') ? true : false;
+	$numericNames = (isset($numericNames) && $numericNames == '1') ? true : false;
+	$screening = (isset($screening) && $screening == '1') ? true : false;
+	$urlencode = (isset($urlencode) && $urlencode == '1') ? true : false;
+	$typographing = (isset($typographing) && $typographing == '1') ? true : false;
 	$glue = isset($glue) ? $glue : '';
 	$format = isset($format) ? $format : '';
 
 	//Если данные нужно получать аяксом
-	if ($mode == 'ajax'){
+	if (isset($mode) && $mode == 'ajax'){
 		$id = $_REQUEST['id'];
 		
 		//Если заданы поля для проверки безопасности
