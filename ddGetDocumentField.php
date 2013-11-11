@@ -165,13 +165,7 @@ if (isset($field)){
 		}else if (isset($tpl)){
 			//Если есть дополнительные данные
 			if (isset($placeholders)){
-				//Разбиваем по парам
-				$placeholders = explode('||', $placeholders);
-				foreach ($placeholders as $val){
-					//Разбиваем на ключ-значение
-					$val = explode('::', $val);
-					$result[$val[0]] = $val[1];
-				}
+				$result = array_merge($result, ddTools::explodeAssoc($placeholders));
 			}
 			
 			$resultStr = $modx->parseChunk($tpl, $result,'[+','+]');
