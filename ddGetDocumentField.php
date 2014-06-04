@@ -5,14 +5,14 @@
  * 
  * Snippet gets the necessary document fields (and TV) by its id.
  * 
- * @uses Library modx.ddTools 0.6.1.
+ * @uses Library modx.ddTools 0.12.
  * @uses Snippet ddTypograph 1.4.1 (if need to typography).
  * 
  * @param id {integer} - Document identifier. Default: current document.
  * @param field {comma separated string; separated string} - Documents fields to get separated by commas. Fields and their aliases must be separated by «::» if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). See the examples below. @required
  * @param alternateField {comma separated string} - Alternate fields to get if the main is empty. Default: ''.
  * @param numericNames {0; 1} - Field names (placeholder names) to numeric names (like 'field0', 'field1', etc) into chunk “tpl”. Default: 0.
- * @param typographing {0; 1} - Need to typography result? Default: 0.
+ * @param typography {0; 1} - Need to typography result? Default: 0.
  * @param screening {0; 1} - Need to escape special characters from result? Default: 0.
  * @param urlencode {0; 1} - Need to URL-encode result string? Default: 0.
  * @param tpl {string: chunkName} - Chunk to parse result. Default: ''.
@@ -31,12 +31,17 @@
 //Подключаем modx.ddTools
 require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.class.php';
 
+//Для обратной совместимости
+extract(ddTools::verifyRenamedParams($params, array(
+	'typography' => 'typographing'
+)));
+
 //Если поля передали
 if (isset($field)){
 	$numericNames = (isset($numericNames) && $numericNames == '1') ? true : false;
 	$screening = (isset($screening) && $screening == '1') ? true : false;
 	$urlencode = (isset($urlencode) && $urlencode == '1') ? true : false;
-	$typographing = (isset($typographing) && $typographing == '1') ? true : false;
+	$typography = (isset($typography) && $typography == '1') ? true : false;
 	$glue = isset($glue) ? $glue : '';
 	$format = isset($format) ? $format : '';
 
@@ -175,7 +180,7 @@ if (isset($field)){
 		}
 			
 		//Если нужно типографировать
-		if ($typographing) $resultStr = $modx->runSnippet('ddTypograph', array('text' => $resultStr));
+		if ($typography) $resultStr = $modx->runSnippet('ddTypograph', array('text' => $resultStr));
 		
 		//Если надо экранировать спец. символы
 		if ($screening)	$resultStr = ddTools::screening($resultStr);
