@@ -11,7 +11,6 @@
  * @param id {integer} - Document identifier. Default: current document.
  * @param field {comma separated string; separated string} - Documents fields to get separated by commas. Fields and their aliases must be separated by «::» if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). See the examples below. @required
  * @param alternateField {comma separated string} - Alternate fields to get if the main is empty. Default: ''.
- * @param numericNames {0; 1} - Field names (placeholder names) to numeric names (like 'field0', 'field1', etc) into chunk “tpl”. Default: 0.
  * @param typography {0; 1} - Need to typography result? Default: 0.
  * @param screening {0; 1} - Need to escape special characters from result? Default: 0.
  * @param urlencode {0; 1} - Need to URL-encode result string? Default: 0.
@@ -38,7 +37,6 @@ extract(ddTools::verifyRenamedParams($params, array(
 
 //Если поля передали
 if (isset($field)){
-	$numericNames = (isset($numericNames) && $numericNames == '1') ? true : false;
 	$screening = (isset($screening) && $screening == '1') ? true : false;
 	$urlencode = (isset($urlencode) && $urlencode == '1') ? true : false;
 	$typography = (isset($typography) && $typography == '1') ? true : false;
@@ -90,6 +88,18 @@ if (isset($field)){
 	}else{
 		//Просто разбиваем по запятой
 		$field = explode(',', $field);
+		
+		//Если задан устаревший параметр «$numericNames»
+		if (isset($numericNames) && $numericNames == '1'){
+			//Ругаемся
+			$modx->logEvent(1, 2, '<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “field” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>', $modx->currentSnippet);
+			
+			$fieldAliases = array();
+			
+			foreach ($field as $key => $val){
+				$fieldAliases[$val] = 'field'.$key;
+			}
+		}
 	}
 	
 	//Если вдруг передали, что надо получить id
@@ -111,7 +121,7 @@ if (isset($field)){
 		$alter = ddTools::getTemplateVarOutput($alternateField, $id);
 	}
 	
-	$resultStr = ''; $emptyResult = true; $i = 0;
+	$resultStr = ''; $emptyResult = true;
 
 	//Перебираем полученные результаты
 	foreach ($result as $key => $value){
@@ -119,16 +129,6 @@ if (isset($field)){
 		if (($result[$key] != '') || isset($alternateField) && (($result[$key] = $alter[$alternateField[array_search($key, $field)]]) != '')){
 			$emptyResult = false;
 		}
-		
-		//Если имена полей надо преобразовывать в цифровые
-		if ($numericNames){
-			//Запоминаем имя по номеру
-			$result['field'.$i] = $result[$key];
-			//Убиваем старое (ибо зачем нам дубликаты?)
-			unset($result[$key]);
-		}
-		
-		$i++;
 	}
 	
 	//Если результаты непустые
@@ -143,8 +143,8 @@ if (isset($field)){
 			$result['id'] = $id;
 		}
 		
-		//Если заданы псевдонимы полей и имена полей не являются порядковыми номерами (вообще, это можно было сделать в цикле выше, но не стоит, т.к. псевдонимы одних полей могут пересекаться с нормальными именами других полей, так что лучше здесь)
-		if ($fieldAliases && !$numericNames){
+		//Если заданы псевдонимы полей
+		if ($fieldAliases){
 			//Запоминаем полученный результат
 			$oldResult = $result;
 			
