@@ -1,29 +1,29 @@
 <?php
 /** 
  * ddGetDocumentField.php
- * @version 2.4.1 (2013-11-05)
+ * @version 2.5 (2014-06-05)
  * 
- * Snippet gets the necessary document fields (and TV) by its id.
+ * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
  * @uses Library modx.ddTools 0.12.
- * @uses Snippet ddTypograph 1.4.1 (if need to typography).
+ * @uses Snippet ddTypograph 2.2 (if need to typography).
  * 
- * @param id {integer} - Document identifier. Default: current document.
- * @param field {comma separated string; separated string} - Documents fields to get separated by commas. Fields and their aliases must be separated by «::» if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). See the examples below. @required
- * @param alternateField {comma separated string} - Alternate fields to get if the main is empty. Default: ''.
- * @param typography {0; 1} - Need to typography result? Default: 0.
- * @param screening {0; 1} - Need to escape special characters from result? Default: 0.
- * @param urlencode {0; 1} - Need to URL-encode result string? Default: 0.
- * @param tpl {string: chunkName} - Chunk to parse result. Default: ''.
- * @param glue {string} - String for join the fields. Default: ''.
- * @param outputFormat {''; 'json'} - Output format. Default: ''.
- * @param placeholders {separated string} - Additional data to be transfered. Format: string, separated by '::' between a pair of key-value, and '||' between the pairs. Default: ''.
- * @param mode {''; 'ajax'} - Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
- * @param securityFields {separated string} - The fields for security verification. Format: field:value|field:value|etc. Default: ''. 
+ * @param $id {integer} - Document identifier. Default: current document.
+ * @param $field {comma separated string; separated string} - Documents fields to get separated by commas. Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). See the examples below. @required
+ * @param $alternateField {comma separated string} - Alternate fields to get if the main is empty. Default: ''.
+ * @param $typography {0; 1} - Need to typography result? Default: 0.
+ * @param $tpl {string: chunkName} - Chunk to parse result. Default: ''.
+ * @param $glue {string} - String for join the fields. Default: ''.
+ * @param $outputFormat {''; 'json'} - Output format. Default: ''.
+ * @param $placeholders {separated string} - Additional data to be transfered. Format: string, separated by '::' between a pair of key-value, and '||' between the pairs. Default: ''.
+ * @param $mode {''; 'ajax'} - Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
+ * @param $securityFields {separated string} - The fields for security verification. Format: field:value|field:value|etc. Default: ''. 
+ * @param $screening {0; 1} - Need to escape special characters from result? Default: 0.
+ * @param $urlencode {0; 1} - Need to URL-encode result string? Default: 0.
  * 
- * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.4.1
+ * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.5
  * 
- * @copyright 2013, DivanDesign
+ * @copyright 2014, DivanDesign
  * http://www.DivanDesign.biz
  */
 
@@ -32,7 +32,8 @@ require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.cl
 
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, array(
-	'typography' => 'typographing'
+	'typography' => 'typographing',
+	'outputFormat' => 'format'
 )));
 
 //Если поля передали
@@ -42,7 +43,7 @@ if (isset($field)){
 	$typography = (isset($typography) && $typography == '1') ? true : false;
 	$glue = isset($glue) ? $glue : '';
 	$outputFormat = isset($outputFormat) ? strtolower($outputFormat) : '';
-
+	
 	//Если данные нужно получать аяксом
 	if (isset($mode) && strtolower($mode) == 'ajax'){
 		$id = $_REQUEST['id'];
@@ -52,7 +53,7 @@ if (isset($field)){
 			//Получаем имена полей безопасности и значения
 			$securityFields = explode('|', $securityFields);
 			$securityVals = array();
-	
+			
 			foreach ($securityFields as $key => $val){
 				$temp = explode(':', $val);
 				$securityFields[$key] = $temp[0];
@@ -64,11 +65,11 @@ if (isset($field)){
 			$docSecurityFields = ddTools::getTemplateVarOutput($securityFields, $id);
 			
 			//Если по каким-то причинам ничего не получили, нахуй с пляжу
-			if (!$docSecurityFields || count($docSecurityFields) == 0) return;
+			if (!$docSecurityFields || count($docSecurityFields) == 0){return;}
 			
 			//Перебираем полученные значения, если хоть одно не совпадает с условием, выкидываем
 			foreach ($docSecurityFields as $key => $val){
-				if ($val != $securityVals[$key]) return;
+				if ($val != $securityVals[$key]){return;}
 			}
 		}
 	}else{
@@ -122,7 +123,7 @@ if (isset($field)){
 	}
 	
 	$resultStr = ''; $emptyResult = true;
-
+	
 	//Перебираем полученные результаты
 	foreach ($result as $key => $value){
 		//Если значение поля пустое, пытаемся получить альтернативное поле (и сразу присваиваем) и если оно НЕ пустое, запомним 
@@ -178,15 +179,15 @@ if (isset($field)){
 			//TODO: При необходимости надо будет обработать удаление пустых значений
 			$resultStr = implode($glue, $result);
 		}
-			
+		
 		//Если нужно типографировать
-		if ($typography) $resultStr = $modx->runSnippet('ddTypograph', array('text' => $resultStr));
+		if ($typography){$resultStr = $modx->runSnippet('ddTypograph', array('text' => $resultStr));}
 		
 		//Если надо экранировать спец. символы
-		if ($screening)	$resultStr = ddTools::screening($resultStr);
+		if ($screening){$resultStr = ddTools::screening($resultStr);}
 		
 		//Если нужно URL-кодировать строку
-		if ($urlencode) $resultStr = rawurlencode($resultStr);
+		if ($urlencode){$resultStr = rawurlencode($resultStr);}
 	}
 	
 	return $resultStr;
