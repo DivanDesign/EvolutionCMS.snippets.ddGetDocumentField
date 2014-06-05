@@ -16,7 +16,7 @@
  * @param urlencode {0; 1} - Need to URL-encode result string? Default: 0.
  * @param tpl {string: chunkName} - Chunk to parse result. Default: ''.
  * @param glue {string} - String for join the fields. Default: ''.
- * @param format {''; 'json'} - Output format. Default: ''.
+ * @param outputFormat {''; 'json'} - Output format. Default: ''.
  * @param placeholders {separated string} - Additional data to be transfered. Format: string, separated by '::' between a pair of key-value, and '||' between the pairs. Default: ''.
  * @param mode {''; 'ajax'} - Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
  * @param securityFields {separated string} - The fields for security verification. Format: field:value|field:value|etc. Default: ''. 
@@ -41,7 +41,7 @@ if (isset($field)){
 	$urlencode = (isset($urlencode) && $urlencode == '1') ? true : false;
 	$typography = (isset($typography) && $typography == '1') ? true : false;
 	$glue = isset($glue) ? $glue : '';
-	$format = isset($format) ? strtolower($format) : '';
+	$outputFormat = isset($outputFormat) ? strtolower($outputFormat) : '';
 
 	//Если данные нужно получать аяксом
 	if (isset($mode) && strtolower($mode) == 'ajax'){
@@ -164,7 +164,7 @@ if (isset($field)){
 		}
 		
 		//Если вывод в формате JSON
-		if ($format == 'json'){
+		if ($outputFormat == 'json'){
 			$resultStr = json_encode($result);
 		//Если задан шаблон
 		}else if (isset($tpl)){
