@@ -18,7 +18,7 @@
  * @param $placeholders {separated string} - Additional data to be transfered. Format: string, separated by '::' between a pair of key-value, and '||' between the pairs. Default: ''.
  * @param $mode {''; 'ajax'} - Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
  * @param $securityFields {separated string} - The fields for security verification. Format: field:value|field:value|etc. Default: ''. 
- * @param $screening {0; 1} - Need to escape special characters from result? Default: 0.
+ * @param $escaping {0; 1} - Need to escape special characters from result? Default: 0.
  * @param $urlencode {0; 1} - Need to URL-encode result string? Default: 0.
  * 
  * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.5
@@ -32,12 +32,13 @@ require_once $modx->getConfig('base_path').'assets/snippets/ddTools/modx.ddtools
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, array(
 	'typography' => 'typographing',
-	'outputFormat' => 'format'
+	'outputFormat' => 'format',
+	'escaping' => 'screening'
 )));
 
 //Если поля передали
 if (isset($field)){
-	$screening = (isset($screening) && $screening == '1') ? true : false;
+	$escaping = (isset($escaping) && $escaping == '1') ? true : false;
 	$urlencode = (isset($urlencode) && $urlencode == '1') ? true : false;
 	$typography = (isset($typography) && $typography == '1') ? true : false;
 	$glue = isset($glue) ? $glue : '';
@@ -190,7 +191,7 @@ if (isset($field)){
 		if ($typography){$resultStr = $modx->runSnippet('ddTypograph', array('text' => $resultStr));}
 		
 		//Если надо экранировать спец. символы
-		if ($screening){$resultStr = ddTools::screening($resultStr);}
+		if ($escaping){$resultStr = ddTools::screening($resultStr);}
 		
 		//Если нужно URL-кодировать строку
 		if ($urlencode){$resultStr = rawurlencode($resultStr);}
