@@ -5,8 +5,8 @@
  * 
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
- * @uses Library modx.ddTools 0.12.
- * @uses Snippet ddTypograph 2.2 (if need to typography).
+ * @uses The library modx.ddTools 0.12.
+ * @uses The snippet ddTypograph 2.2 (if typographing is required).
  * 
  * @param $id {integer} - Document identifier. Default: current document.
  * @param $field {comma separated string; separated string} - Documents fields to get separated by commas. Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). See the examples below. @required
@@ -23,12 +23,11 @@
  * 
  * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.5
  * 
- * @copyright 2014, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2008–2014 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Подключаем modx.ddTools
-require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.class.php';
+require_once $modx->getConfig('base_path').'assets/snippets/ddTools/modx.ddtools.class.php';
 
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, array(
@@ -64,10 +63,10 @@ if (isset($field)){
 			//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
 			$docSecurityFields = ddTools::getTemplateVarOutput($securityFields, $id);
 			
-			//Если по каким-то причинам ничего не получили, нахуй с пляжу
+			//Если по каким-то причинам ничего не получили — прерываем
 			if (!$docSecurityFields || count($docSecurityFields) == 0){return;}
 			
-			//Перебираем полученные значения, если хоть одно не совпадает с условием, выкидываем
+			//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
 			foreach ($docSecurityFields as $key => $val){
 				if ($val != $securityVals[$key]){return;}
 			}
@@ -112,8 +111,8 @@ if (isset($field)){
 	//Получаем все необходимые поля
 	$result = ddTools::getTemplateVarOutput($field, $id);
 	
-	//Если по каким-то причинам ничего не получилось, с пляжу
-	if (!$result) return;
+	//Если по каким-то причинам ничего не получилось — прерываем
+	if (!$result){return;}
 	
 	//Если заданы альтернативные поля
 	//TODO: Можно переделать на получение альтернативных полей сразу с основными, а потом обрабатывать, но как-то не судьба пока
@@ -122,12 +121,16 @@ if (isset($field)){
 		$alter = ddTools::getTemplateVarOutput($alternateField, $id);
 	}
 	
-	$resultStr = ''; $emptyResult = true;
+	$resultStr = '';
+	$emptyResult = true;
 	
 	//Перебираем полученные результаты
 	foreach ($result as $key => $value){
 		//Если значение поля пустое, пытаемся получить альтернативное поле (и сразу присваиваем) и если оно НЕ пустое, запомним 
-		if (($result[$key] != '') || isset($alternateField) && (($result[$key] = $alter[$alternateField[array_search($key, $field)]]) != '')){
+		if (
+			($result[$key] != '') ||
+			isset($alternateField) && (($result[$key] = $alter[$alternateField[array_search($key, $field)]]) != '')
+		){
 			$emptyResult = false;
 		}
 	}
@@ -135,7 +138,10 @@ if (isset($field)){
 	//Если результаты непустые
 	if (!$emptyResult){
 		//Если надо было вернуть ещё и url документа и Если такого поля нет или оно пусто (а то мало ли, как TV назвали)
-		if (array_search('url', $field) !== false && (!isset($result['url']) || trim($result['url']) == '')){
+		if (
+			array_search('url', $field) !== false &&
+			(!isset($result['url']) || trim($result['url']) == '')
+		){
 			$result['url'] = $modx->makeUrl($id);
 		}
 		
@@ -153,7 +159,7 @@ if (isset($field)){
 			$result = array();
 			
 			//Перебираем псевдонимы
-			foreach($fieldAliases as $fld => $alias){
+			foreach ($fieldAliases as $fld => $alias){
 				//Если псевдоним не задан, пусть будет поле
 				if (trim($alias) == ''){
 					$alias = $fld;
