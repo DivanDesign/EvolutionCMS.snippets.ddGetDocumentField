@@ -6,7 +6,7 @@
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
  * @uses PHP >= 5.4.
- * @uses MODXEvo.library.ddTools >= 0.12.
+ * @uses MODXEvo.library.ddTools >= 0.16.2.
  * @uses MODXEvo.snippet.ddTypograph >= 2.2 (if typographing is required).
  * 
  * @param $id {integer} — Document identifier. Default: current document.
@@ -14,14 +14,14 @@
  * @param $field[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
  * @param $alternateField {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
  * @param $tpl {string_chunkName} — Chunk to parse result. Default: ''.
+ * @param $tpl_placeholders {string_separated} — Additional data to be transfered. Format: string, separated by '::' between a pair of key-value, and '||' between the pairs. Default: ''.
  * @param $glue {string} — String for join the fields. Default: ''.
- * @param $typography {0|1} — Need to typography result? Default: 0.
  * @param $outputFormat {''|'json'} — Output format. Default: ''.
- * @param $placeholders {string_separated} — Additional data to be transfered. Format: string, separated by '::' between a pair of key-value, and '||' between the pairs. Default: ''.
  * @param $mode {''|'ajax'} — Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
  * @param $securityFields {string_separated} — The fields for security verification. Format: field:value|field:value|etc. Default: ''. 
- * @param $escaping {0|1} — Need to escape special characters from result? Default: 0.
- * @param $urlencode {0|1} — Need to URL-encode result string? Default: 0.
+ * @param $typographyResult {0|1} — Need to typography result? Default: 0.
+ * @param $escapeResultForJS {0|1} — Need to escape special characters from result? Default: 0.
+ * @param $urlencodeResult {0|1} — Need to URL-encode result string? Default: 0.
  * 
  * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.5
  * 
@@ -29,20 +29,22 @@
  */
 
 //Подключаем modx.ddTools
-require_once $modx->getConfig('base_path').'assets/snippets/ddTools/modx.ddtools.class.php';
+require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, [
-	'typography' => 'typographing',
+	'tpl_placeholders' => 'placeholders',
+	'typographyResult' => ['typography', 'typographing'],
 	'outputFormat' => 'format',
-	'escaping' => 'screening'
+	'escapeResultForJS' => ['escaping', 'screening'],
+	'urlencodeResult' => 'urlencode'
 ]));
 
 //Если поля передали
 if (isset($field)){
-	$escaping = (isset($escaping) && $escaping == '1') ? true : false;
-	$urlencode = (isset($urlencode) && $urlencode == '1') ? true : false;
-	$typography = (isset($typography) && $typography == '1') ? true : false;
+	$escapeResultForJS = (isset($escapeResultForJS) && $escapeResultForJS == '1') ? true : false;
+	$urlencodeResult = (isset($urlencodeResult) && $urlencodeResult == '1') ? true : false;
+	$typographyResult = (isset($typographyResult) && $typographyResult == '1') ? true : false;
 	$glue = isset($glue) ? $glue : '';
 	$outputFormat = isset($outputFormat) ? strtolower($outputFormat) : '';
 	
@@ -194,8 +196,8 @@ if (isset($field)){
 		//Если задан шаблон
 		}else if (isset($tpl)){
 			//Если есть дополнительные данные
-			if (isset($placeholders)){
-				$result = array_merge($result, ddTools::explodeAssoc($placeholders));
+			if (isset($tpl_placeholders)){
+				$result = array_merge($result, ddTools::explodeAssoc($tpl_placeholders));
 			}
 			
 			$resultStr = $modx->parseChunk($tpl, $result,'[+','+]');
@@ -205,13 +207,13 @@ if (isset($field)){
 		}
 		
 		//Если нужно типографировать
-		if ($typography){$resultStr = $modx->runSnippet('ddTypograph', ['text' => $resultStr]);}
+		if ($typographyResult){$resultStr = $modx->runSnippet('ddTypograph', ['text' => $resultStr]);}
 		
 		//Если надо экранировать спец. символы
-		if ($escaping){$resultStr = ddTools::screening($resultStr);}
+		if ($escapeResultForJS){$resultStr = ddTools::escapeForJS($resultStr);}
 		
 		//Если нужно URL-кодировать строку
-		if ($urlencode){$resultStr = rawurlencode($resultStr);}
+		if ($urlencodeResult){$resultStr = rawurlencode($resultStr);}
 	}
 	
 	return $resultStr;
