@@ -18,7 +18,7 @@
  * @param $glue {string} — String for join the fields. Default: ''.
  * @param $outputFormat {''|'json'} — Output format. Default: ''.
  * @param $mode {''|'ajax'} — Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
- * @param $securityFields {string_separated} — The fields for security verification. Format: field:value|field:value|etc. Default: ''. 
+ * @param $securityFields {string_queryFormated} — The fields for security verification as query string (https://en.wikipedia.org/wiki/Query_string). E. g.: “template=15&published=1”. Default: ''. 
  * @param $typographyResult {0|1} — Need to typography result? Default: 0.
  * @param $escapeResultForJS {0|1} — Need to escape special characters from result? Default: 0.
  * @param $urlencodeResult {0|1} — Need to URL-encode result string? Default: 0.
@@ -57,19 +57,20 @@ if (isset($field)){
 		
 		//Если заданы поля для проверки безопасности
 		if (isset($securityFields)){
-			//Получаем имена полей безопасности и значения
-			$securityFields = explode('|', $securityFields);
-			$securityVals = [];
-			
-			foreach ($securityFields as $key => $val){
-				$temp = explode(':', $val);
-				$securityFields[$key] = $temp[0];
-				$securityVals[$temp[0]] = $temp[1];
+			//Backward compatibility
+			//If “=” exists
+			if (strpos($securityFields, '=') !== false){
+				//Parse a query string
+				parse_str($securityFields, $securityFields);
+			}else{
+				//The old format
+				$securityFields = ddTools::explodeAssoc($securityFields, '|', ':');
+				$modx->logEvent(1, 2, '<p>String separated by “:” && “|” in the “securityFields” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>', $modx->currentSnippet);
 			}
 			
 			//Получаем значения полей безопасности у конкретного документа
 			//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
-			$docSecurityFields = ddTools::getTemplateVarOutput($securityFields, $id);
+			$docSecurityFields = ddTools::getTemplateVarOutput(array_keys($securityFields), $id);
 			
 			//Если по каким-то причинам ничего не получили — прерываем
 			if (
@@ -81,7 +82,7 @@ if (isset($field)){
 			
 			//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
 			foreach ($docSecurityFields as $key => $val){
-				if ($val != $securityVals[$key]){return;}
+				if ($val != $securityFields[$key]){return;}
 			}
 		}
 	}else{
