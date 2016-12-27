@@ -6,6 +6,7 @@
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
  * @uses PHP >= 5.4.
+ * @uses MODXEvo >= 1.1.
  * @uses MODXEvo.library.ddTools >= 0.16.2.
  * @uses MODXEvo.snippet.ddTypograph >= 2.2 (if typographing is required).
  * 
@@ -13,7 +14,7 @@
  * @param $field {string_commaSeparated} — Documents fields to get separated by commas. @required
  * @param $field[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
  * @param $alternateField {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
- * @param $tpl {string_chunkName} — Chunk to parse result. Default: ''.
+ * @param $tpl {string_chunkName|string} — Chunk to parse result (chunk name or code via “@CODE:” prefix). Default: ''.
  * @param $tpl_placeholders {string_queryFormated} — Additional data as query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Default: ''.
  * @param $glue {string} — String for join the fields. Default: ''.
  * @param $outputFormat {''|'json'} — Output format. Default: ''.
@@ -215,7 +216,10 @@ if (isset($field)){
 				$result = array_merge($result, $tpl_placeholders);
 			}
 			
-			$resultStr = $modx->parseChunk($tpl, $result,'[+','+]');
+			$resultStr = ddTools::parseText([
+				'text' => $modx->getTpl($tpl),
+				'data' => $result
+			]);
 		}else{
 			//TODO: При необходимости надо будет обработать удаление пустых значений
 			$resultStr = implode($glue, $result);
