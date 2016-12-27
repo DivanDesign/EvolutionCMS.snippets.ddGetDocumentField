@@ -5,6 +5,7 @@
  * 
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
+ * @uses PHP >= 5.4.
  * @uses MODXEvo.library.ddTools >= 0.12.
  * @uses MODXEvo.snippet.ddTypograph >= 2.2 (if typographing is required).
  * 
@@ -31,11 +32,11 @@
 require_once $modx->getConfig('base_path').'assets/snippets/ddTools/modx.ddtools.class.php';
 
 //Для обратной совместимости
-extract(ddTools::verifyRenamedParams($params, array(
+extract(ddTools::verifyRenamedParams($params, [
 	'typography' => 'typographing',
 	'outputFormat' => 'format',
 	'escaping' => 'screening'
-)));
+]));
 
 //Если поля передали
 if (isset($field)){
@@ -56,7 +57,7 @@ if (isset($field)){
 		if (isset($securityFields)){
 			//Получаем имена полей безопасности и значения
 			$securityFields = explode('|', $securityFields);
-			$securityVals = array();
+			$securityVals = [];
 			
 			foreach ($securityFields as $key => $val){
 				$temp = explode(':', $val);
@@ -108,7 +109,7 @@ if (isset($field)){
 			//Ругаемся
 			$modx->logEvent(1, 2, '<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “field” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>', $modx->currentSnippet);
 			
-			$fieldAliases = array();
+			$fieldAliases = [];
 			
 			foreach ($field as $key => $val){
 				$fieldAliases[$val] = 'field'.$key;
@@ -173,7 +174,7 @@ if (isset($field)){
 			$oldResult = $result;
 			
 			//Затираем
-			$result = array();
+			$result = [];
 			
 			//Перебираем псевдонимы
 			foreach ($fieldAliases as $fld => $alias){
@@ -204,7 +205,7 @@ if (isset($field)){
 		}
 		
 		//Если нужно типографировать
-		if ($typography){$resultStr = $modx->runSnippet('ddTypograph', array('text' => $resultStr));}
+		if ($typography){$resultStr = $modx->runSnippet('ddTypograph', ['text' => $resultStr]);}
 		
 		//Если надо экранировать спец. символы
 		if ($escaping){$resultStr = ddTools::screening($resultStr);}
