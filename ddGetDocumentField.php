@@ -1,14 +1,14 @@
 <?php
 /** 
  * ddGetDocumentField
- * @version 2.5 (2014-06-05)
+ * @version 2.6 (2016-12-28)
  * 
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
  * @uses MODXEvo.library.ddTools >= 0.16.2.
- * @uses MODXEvo.snippet.ddTypograph >= 2.2 (if typographing is required).
+ * @uses MODXEvo.snippet.ddTypograph >= 2.3 (if typography is required).
  * 
  * @param $id {integer} — Document identifier. Default: current document.
  * @param $field {string_commaSeparated} — Documents fields to get separated by commas. @required
@@ -24,9 +24,9 @@
  * @param $escapeResultForJS {0|1} — Need to escape special characters from result? Default: 0.
  * @param $urlencodeResult {0|1} — Need to URL-encode result string? Default: 0.
  * 
- * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.5
+ * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.6
  * 
- * @copyright 2008–2014 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2008–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Подключаем modx.ddTools
