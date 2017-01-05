@@ -54,7 +54,7 @@ if (isset($field)){
 		isset($mode) &&
 		strtolower($mode) == 'ajax'
 	){
-		$id = $_REQUEST['id'];
+		$id = intval($_REQUEST['id']);
 		
 		//Если заданы поля для проверки безопасности
 		if (isset($securityFields)){
