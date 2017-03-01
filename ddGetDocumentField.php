@@ -1,7 +1,7 @@
 <?php
 /** 
  * ddGetDocumentField
- * @version 2.6 (2016-12-28)
+ * @version 2.7 (2017-03-01)
  * 
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
@@ -24,9 +24,9 @@
  * @param $escapeResultForJS {0|1} — Need to escape special characters from result? Default: 0.
  * @param $urlencodeResult {0|1} — Need to URL-encode result string? Default: 0.
  * 
- * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.6
+ * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.7
  * 
- * @copyright 2008–2016 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2008–2017 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Подключаем modx.ddTools
