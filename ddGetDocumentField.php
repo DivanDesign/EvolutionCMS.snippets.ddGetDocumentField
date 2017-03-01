@@ -7,7 +7,7 @@
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.library.ddTools >= 0.16.2.
+ * @uses MODXEvo.library.ddTools >= 0.18.
  * @uses MODXEvo.snippet.ddTypograph >= 2.3 (if typography is required).
  * 
  * @param $id {integer} — Document identifier. Default: current document.
@@ -15,7 +15,7 @@
  * @param $field[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
  * @param $alternateField {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
  * @param $tpl {string_chunkName|string} — Chunk to parse result (chunk name or code via “@CODE:” prefix). Default: ''.
- * @param $tpl_placeholders {string_queryFormated} — Additional data as query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Default: ''.
+ * @param $tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}” or “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Default: ''.
  * @param $glue {string} — String for join the fields. Default: ''.
  * @param $outputFormat {''|'json'} — Output format. Default: ''.
  * @param $mode {''|'ajax'} — Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
@@ -202,18 +202,10 @@ if (isset($field)){
 				isset($tpl_placeholders) &&
 				trim($tpl_placeholders) != ''
 			){
-				//Backward compatibility
-				//If “=” exists
-				if (strpos($tpl_placeholders, '=') !== false){
-					//Parse a query string
-					parse_str($tpl_placeholders, $tpl_placeholders);
-				}else{
-					//The old format
-					$tpl_placeholders = ddTools::explodeAssoc($tpl_placeholders);
-					$modx->logEvent(1, 2, '<p>String separated by “::” && “||” in the “tpl_placeholders” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>', $modx->currentSnippet);
-				}
-				
-				$result = array_merge($result, $tpl_placeholders);
+				$result = array_merge(
+					$result,
+					ddTools::encodedStringToArray($tpl_placeholders)
+				);
 			}
 			
 			$resultStr = ddTools::parseText([
