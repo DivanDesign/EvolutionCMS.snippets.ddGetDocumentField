@@ -7,8 +7,8 @@
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.library.ddTools >= 0.18.
- * @uses MODXEvo.snippet.ddTypograph >= 2.3 (if typography is required).
+ * @uses MODXEvo.libraries.ddTools >= 0.18.
+ * @uses MODXEvo.snippets.ddTypograph >= 2.3 (if typography is required).
  * 
  * @param $id {integer} — Document identifier. Default: current document.
  * @param $field {string_commaSeparated} — Documents fields to get separated by commas. @required
@@ -35,9 +35,15 @@ require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.cla
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, [
 	'tpl_placeholders' => 'placeholders',
-	'typographyResult' => ['typography', 'typographing'],
+	'typographyResult' => [
+		'typography',
+		'typographing'
+	],
 	'outputFormat' => 'format',
-	'escapeResultForJS' => ['escaping', 'screening'],
+	'escapeResultForJS' => [
+		'escaping',
+		'screening'
+	],
 	'urlencodeResult' => 'urlencode'
 ]));
 
@@ -60,18 +66,36 @@ if (isset($field)){
 		if (isset($securityFields)){
 			//Backward compatibility
 			//If “=” exists
-			if (strpos($securityFields, '=') !== false){
+			if (strpos(
+				$securityFields,
+				'='
+			) !== false){
 				//Parse a query string
-				parse_str($securityFields, $securityFields);
+				parse_str(
+					$securityFields,
+					$securityFields
+				);
 			}else{
 				//The old format
-				$securityFields = ddTools::explodeAssoc($securityFields, '|', ':');
-				$modx->logEvent(1, 2, '<p>String separated by “:” && “|” in the “securityFields” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>', $modx->currentSnippet);
+				$securityFields = ddTools::explodeAssoc(
+					$securityFields,
+					'|',
+					':'
+				);
+				$modx->logEvent(
+					1,
+					2,
+					'<p>String separated by “:” && “|” in the “securityFields” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
+					$modx->currentSnippet
+				);
 			}
 			
 			//Получаем значения полей безопасности у конкретного документа
 			//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
-			$docSecurityFields = ddTools::getTemplateVarOutput(array_keys($securityFields), $id);
+			$docSecurityFields = ddTools::getTemplateVarOutput(
+				array_keys($securityFields),
+				$id
+			);
 			
 			//Если по каким-то причинам ничего не получили — прерываем
 			if (
@@ -82,7 +106,10 @@ if (isset($field)){
 			}
 			
 			//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
-			foreach ($docSecurityFields as $key => $val){
+			foreach (
+				$docSecurityFields as
+				$key => $val
+			){
 				if ($val != $securityFields[$key]){return;}
 			}
 		}
@@ -94,15 +121,24 @@ if (isset($field)){
 	$fieldAliases = false;
 	
 	//Если заданы псевдонимы полей (хотя бы для одного)
-	if (strpos($field, '::') !== false){
+	if (strpos(
+		$field,
+		'::'
+	) !== false){
 		//Разобьём поля на поля и псевдонимы
-		$fieldAliases = ddTools::explodeAssoc($field, ',');
+		$fieldAliases = ddTools::explodeAssoc(
+			$field,
+			','
+		);
 		
 		//Полями являются ключи
 		$field = array_keys($fieldAliases);
 	}else{
 		//Просто разбиваем по запятой
-		$field = explode(',', $field);
+		$field = explode(
+			',',
+			$field
+		);
 		
 		//For backward compatibility
 		//Если задан устаревший параметр «$numericNames»
@@ -111,24 +147,38 @@ if (isset($field)){
 			$numericNames == '1'
 		){
 			//Ругаемся
-			$modx->logEvent(1, 2, '<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “field” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>', $modx->currentSnippet);
+			$modx->logEvent(
+				1,
+				2,
+				'<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “field” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
+				$modx->currentSnippet
+			);
 			
 			$fieldAliases = [];
 			
-			foreach ($field as $key => $val){
+			foreach (
+				$field as
+				$key => $val
+			){
 				$fieldAliases[$val] = 'field'.$key;
 			}
 		}
 	}
 	
 	//Если вдруг передали, что надо получить id
-	if (($field_idInd = array_search('id', $field)) !== false){
+	if (($field_idInd = array_search(
+		'id',
+		$field
+	)) !== false){
 		//Удалим его, чтобы наличие результата от него не зависило (id ж ведь всегда есть)
 		unset($field[$field_idInd]);
 	}
 	
 	//Получаем все необходимые поля
-	$result = ddTools::getTemplateVarOutput($field, $id);
+	$result = ddTools::getTemplateVarOutput(
+		$field,
+		$id
+	);
 	
 	//Если по каким-то причинам ничего не получилось — прерываем
 	if (!$result){return;}
@@ -136,19 +186,34 @@ if (isset($field)){
 	//Если заданы альтернативные поля
 	//TODO: Можно переделать на получение альтернативных полей сразу с основными, а потом обрабатывать, но как-то не судьба пока
 	if (isset($alternateField)){
-		$alternateField = explode(',', $alternateField);
-		$alter = ddTools::getTemplateVarOutput($alternateField, $id);
+		$alternateField = explode(
+			',',
+			$alternateField
+		);
+		$alter = ddTools::getTemplateVarOutput(
+			$alternateField,
+			$id
+		);
 	}
 	
 	$resultStr = '';
 	$emptyResult = true;
 	
 	//Перебираем полученные результаты
-	foreach ($result as $key => $value){
+	foreach (
+		$result as
+		$key => $value
+	){
 		//Если значение поля пустое, пытаемся получить альтернативное поле (и сразу присваиваем) и если оно НЕ пустое, запомним 
 		if (
-			($result[$key] != '') ||
-			isset($alternateField) && (($result[$key] = $alter[$alternateField[array_search($key, $field)]]) != '')
+			$result[$key] != '' ||
+			(
+				isset($alternateField) &&
+				($result[$key] = $alter[$alternateField[array_search(
+					$key,
+					$field
+				)]]) != ''
+			)
 		){
 			$emptyResult = false;
 		}
@@ -158,7 +223,10 @@ if (isset($field)){
 	if (!$emptyResult){
 		//Если надо было вернуть ещё и url документа и Если такого поля нет или оно пусто (а то мало ли, как TV назвали)
 		if (
-			array_search('url', $field) !== false &&
+			array_search(
+				'url',
+				$field
+			) !== false &&
 			(
 				!isset($result['url']) ||
 				trim($result['url']) == ''
@@ -181,7 +249,10 @@ if (isset($field)){
 			$result = [];
 			
 			//Перебираем псевдонимы
-			foreach ($fieldAliases as $fld => $alias){
+			foreach (
+				$fieldAliases as
+				$fld => $alias
+			){
 				//Если псевдоним не задан, пусть будет поле
 				if (trim($alias) == ''){
 					$alias = $fld;
@@ -214,11 +285,19 @@ if (isset($field)){
 			]);
 		}else{
 			//TODO: При необходимости надо будет обработать удаление пустых значений
-			$resultStr = implode($glue, $result);
+			$resultStr = implode(
+				$glue,
+				$result
+			);
 		}
 		
 		//Если нужно типографировать
-		if ($typographyResult){$resultStr = $modx->runSnippet('ddTypograph', ['text' => $resultStr]);}
+		if ($typographyResult){
+			$resultStr = $modx->runSnippet(
+				'ddTypograph',
+				['text' => $resultStr]
+			);
+		}
 		
 		//Если надо экранировать спец. символы
 		if ($escapeResultForJS){$resultStr = ddTools::escapeForJS($resultStr);}
