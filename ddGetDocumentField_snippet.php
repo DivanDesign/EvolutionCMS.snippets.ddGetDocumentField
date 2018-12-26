@@ -1,7 +1,7 @@
 <?php
 /** 
  * ddGetDocumentField
- * @version 2.7 (2017-03-01)
+ * @version 2.8 (2018-12-26)
  * 
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
@@ -24,9 +24,9 @@
  * @param $mode {''|'ajax'} — Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
  * @param $securityFields {string_queryFormated} — The fields for security verification as query string (https://en.wikipedia.org/wiki/Query_string). E. g.: “template=15&published=1”. Default: ''. 
  * 
- * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.7
+ * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.8
  * 
- * @copyright 2008–2017 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2008–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
