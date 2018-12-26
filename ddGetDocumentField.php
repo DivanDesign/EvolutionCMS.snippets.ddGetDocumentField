@@ -66,6 +66,8 @@ extract(ddTools::verifyRenamedParams(
 	]
 ));
 
+$snippetResult = '';
+
 //Если поля передали
 if (isset($docField)){
 	$result_escapeForJS = (
@@ -227,8 +229,7 @@ if (isset($docField)){
 		);
 	}
 	
-	$resultStr = '';
-	$emptyResult = true;
+	$isEmptySnippetResult = true;
 	
 	//Перебираем полученные результаты
 	foreach (
@@ -246,12 +247,12 @@ if (isset($docField)){
 				)]]) != ''
 			)
 		){
-			$emptyResult = false;
+			$isEmptySnippetResult = false;
 		}
 	}
 	
 	//Если результаты непустые
-	if (!$emptyResult){
+	if (!$isEmptySnippetResult){
 		//Если надо было вернуть ещё и url документа и Если такого поля нет или оно пусто (а то мало ли, как TV назвали)
 		if (
 			array_search(
@@ -296,7 +297,7 @@ if (isset($docField)){
 		
 		//Если вывод в формате JSON
 		if ($result_outputFormat == 'json'){
-			$resultStr = json_encode($result);
+			$snippetResult = json_encode($result);
 		//Если задан шаблон
 		}else if (isset($result_tpl)){
 			//Если есть дополнительные данные
@@ -310,13 +311,13 @@ if (isset($docField)){
 				);
 			}
 			
-			$resultStr = ddTools::parseText([
+			$snippetResult = ddTools::parseText([
 				'text' => $modx->getTpl($result_tpl),
 				'data' => $result
 			]);
 		}else{
 			//TODO: При необходимости надо будет обработать удаление пустых значений
-			$resultStr = implode(
+			$snippetResult = implode(
 				$result_docFieldsGlue,
 				$result
 			);
@@ -324,19 +325,19 @@ if (isset($docField)){
 		
 		//Если нужно типографировать
 		if ($result_typography){
-			$resultStr = $modx->runSnippet(
+			$snippetResult = $modx->runSnippet(
 				'ddTypograph',
-				['text' => $resultStr]
+				['text' => $snippetResult]
 			);
 		}
 		
 		//Если надо экранировать спец. символы
-		if ($result_escapeForJS){$resultStr = ddTools::escapeForJS($resultStr);}
+		if ($result_escapeForJS){$snippetResult = ddTools::escapeForJS($snippetResult);}
 		
 		//Если нужно URL-кодировать строку
-		if ($result_URLEncode){$resultStr = rawurlencode($resultStr);}
+		if ($result_URLEncode){$snippetResult = rawurlencode($snippetResult);}
 	}
-	
-	return $resultStr;
 }
+
+return $snippetResult;
 ?>
