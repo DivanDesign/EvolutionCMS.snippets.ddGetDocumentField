@@ -7,11 +7,11 @@
  * 
  * @uses PHP >= 5.4.
  * @uses (MODX)EvolutionCMS >= 1.1 {@link https://github.com/evolution-cms/evolution }.
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.18 {@link http://code.divandesign.biz/modx/ddtools }.
+ * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.20 {@link http://code.divandesign.biz/modx/ddtools }.
  * @uses (MODX)EvolutionCMS.snippets.ddTypograph >= 2.3 (if typography is required) {@link http://code.divandesign.biz/modx/ddtypograph }.
  * 
  * @param $docId {integer} — Document identifier. Default: current document.
- * @param $docField {string_commaSeparated} — Document field(s) to get separated by commas. @required
+ * @param $docField {string_commaSeparated} — Document field(s) to get separated by commas. If the parameter is empty, the snippet will try to search fields in “$result_tpl” (something like “[+docField+]”). Default: —.
  * @param $docField[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
  * @param $docFieldAlternative {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
  * @param $result_tpl {string_chunkName|string} — Chunk to parse result (chunk name or code via “@CODE:” prefix). Default: ''.
@@ -67,6 +67,25 @@ extract(ddTools::verifyRenamedParams(
 ));
 
 $snippetResult = '';
+
+$result_tpl = isset($result_tpl) ? $modx->getTpl($result_tpl) : '';
+
+//If document fields is not set try to get they from template
+if (
+	!isset($docField) &&
+	!empty($result_tpl)
+){
+	$docFieldsFromTpl = ddTools::getPlaceholdersFromText([
+		'text' => $result_tpl
+	]);
+	
+	if (!empty($docFieldsFromTpl)){
+		$docField = implode(
+			',',
+			$docFieldsFromTpl
+		);
+	}
+}
 
 //Если поля передали
 if (isset($docField)){
@@ -299,7 +318,7 @@ if (isset($docField)){
 		if ($result_outputFormat == 'json'){
 			$snippetResult = json_encode($result);
 		//Если задан шаблон
-		}else if (isset($result_tpl)){
+		}else if (!empty($result_tpl)){
 			//Если есть дополнительные данные
 			if (
 				isset($result_tpl_placeholders) &&
@@ -312,7 +331,7 @@ if (isset($docField)){
 			}
 			
 			$snippetResult = ddTools::parseText([
-				'text' => $modx->getTpl($result_tpl),
+				'text' => $result_tpl,
 				'data' => $result
 			]);
 		}else{
