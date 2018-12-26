@@ -6,9 +6,9 @@
  * @desc Snippet gets the necessary document fields (and TV) by its id.
  * 
  * @uses PHP >= 5.4.
- * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.libraries.ddTools >= 0.18.
- * @uses MODXEvo.snippets.ddTypograph >= 2.3 (if typography is required).
+ * @uses (MODX)EvolutionCMS >= 1.1 {@link https://github.com/evolution-cms/evolution }.
+ * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.18 {@link http://code.divandesign.biz/modx/ddtools }.
+ * @uses (MODX)EvolutionCMS.snippets.ddTypograph >= 2.3 (if typography is required) {@link http://code.divandesign.biz/modx/ddtypograph }.
  * 
  * @param $id {integer} — Document identifier. Default: current document.
  * @param $field {string_commaSeparated} — Documents fields to get separated by commas. @required
@@ -29,29 +29,41 @@
  * @copyright 2008–2017 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
-//Подключаем modx.ddTools
-require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once($modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php');
 
 //Для обратной совместимости
-extract(ddTools::verifyRenamedParams($params, [
-	'tpl_placeholders' => 'placeholders',
-	'typographyResult' => [
-		'typography',
-		'typographing'
-	],
-	'outputFormat' => 'format',
-	'escapeResultForJS' => [
-		'escaping',
-		'screening'
-	],
-	'urlencodeResult' => 'urlencode'
-]));
+extract(ddTools::verifyRenamedParams(
+	$params,
+	[
+		'tpl_placeholders' => 'placeholders',
+		'typographyResult' => [
+			'typography',
+			'typographing'
+		],
+		'outputFormat' => 'format',
+		'escapeResultForJS' => [
+			'escaping',
+			'screening'
+		],
+		'urlencodeResult' => 'urlencode'
+	]
+));
 
 //Если поля передали
 if (isset($field)){
-	$escapeResultForJS = (isset($escapeResultForJS) && $escapeResultForJS == '1') ? true : false;
-	$urlencodeResult = (isset($urlencodeResult) && $urlencodeResult == '1') ? true : false;
-	$typographyResult = (isset($typographyResult) && $typographyResult == '1') ? true : false;
+	$escapeResultForJS = (
+		isset($escapeResultForJS) &&
+		$escapeResultForJS == '1'
+	) ? true : false;
+	$urlencodeResult = (
+		isset($urlencodeResult) &&
+		$urlencodeResult == '1'
+	) ? true : false;
+	$typographyResult = (
+		isset($typographyResult) &&
+		$typographyResult == '1'
+	) ? true : false;
 	$glue = isset($glue) ? $glue : '';
 	$outputFormat = isset($outputFormat) ? strtolower($outputFormat) : '';
 	
@@ -114,7 +126,10 @@ if (isset($field)){
 			}
 		}
 	}else{
-		$id = (isset($id) && is_numeric($id)) ? $id : $modx->documentIdentifier;
+		$id = (
+			isset($id) &&
+			is_numeric($id)
+		) ? $id : $modx->documentIdentifier;
 	}
 	
 	//Никаких псевдонимов полей по умолчанию
