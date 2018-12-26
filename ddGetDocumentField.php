@@ -10,19 +10,19 @@
  * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.18 {@link http://code.divandesign.biz/modx/ddtools }.
  * @uses (MODX)EvolutionCMS.snippets.ddTypograph >= 2.3 (if typography is required) {@link http://code.divandesign.biz/modx/ddtypograph }.
  * 
- * @param $id {integer} — Document identifier. Default: current document.
- * @param $field {string_commaSeparated} — Documents fields to get separated by commas. @required
- * @param $field[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
- * @param $alternateField {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
- * @param $tpl {string_chunkName|string} — Chunk to parse result (chunk name or code via “@CODE:” prefix). Default: ''.
- * @param $tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}” or “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Default: ''.
- * @param $glue {string} — String for join the fields. Default: ''.
- * @param $outputFormat {''|'json'} — Output format. Default: ''.
+ * @param $docId {integer} — Document identifier. Default: current document.
+ * @param $docField {string_commaSeparated} — Document field(s) to get separated by commas. @required
+ * @param $docField[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
+ * @param $docFieldAlternative {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
+ * @param $result_tpl {string_chunkName|string} — Chunk to parse result (chunk name or code via “@CODE:” prefix). Default: ''.
+ * @param $result_tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “result_tpl”. E. g. “{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}” or “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Default: ''.
+ * @param $result_docFieldsGlue {string} — String for join the fields (if “result_outputFormat” == “” and “result_tpl” is not used). Default: ''.
+ * @param $result_typography {0|1} — Need to typography result? Default: 0.
+ * @param $result_escapeForJS {0|1} — Need to escape special characters from result? Default: 0.
+ * @param $result_URLEncode {0|1} — Need to URL-encode result string? Default: 0.
+ * @param $result_outputFormat {''|'json'} — Output format. Default: ''.
  * @param $mode {''|'ajax'} — Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
  * @param $securityFields {string_queryFormated} — The fields for security verification as query string (https://en.wikipedia.org/wiki/Query_string). E. g.: “template=15&published=1”. Default: ''. 
- * @param $typographyResult {0|1} — Need to typography result? Default: 0.
- * @param $escapeResultForJS {0|1} — Need to escape special characters from result? Default: 0.
- * @param $urlencodeResult {0|1} — Need to URL-encode result string? Default: 0.
  * 
  * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.7
  * 
@@ -36,43 +36,59 @@ require_once($modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.cla
 extract(ddTools::verifyRenamedParams(
 	$params,
 	[
-		'tpl_placeholders' => 'placeholders',
-		'typographyResult' => [
+		'docId' => 'id',
+		'docField' => 'field',
+		'docFieldAlternative' => 'alternateField',
+		'result_outputFormat' => [
+			'outputFormat',
+			'format'
+		],
+		'result_tpl' => 'tpl',
+		'result_tpl_placeholders' => [
+			'tpl_placeholders',
+			'placeholders'
+		],
+		'result_docFieldsGlue' => 'glue',
+		'result_typography' => [
+			'typographyResult',
 			'typography',
 			'typographing'
 		],
-		'outputFormat' => 'format',
-		'escapeResultForJS' => [
+		'result_escapeForJS' => [
+			'escapeResultForJS',
 			'escaping',
 			'screening'
 		],
-		'urlencodeResult' => 'urlencode'
+		'result_URLEncode' => [
+			'urlencodeResult',
+			'urlencode'
+		]
 	]
 ));
 
 //Если поля передали
-if (isset($field)){
-	$escapeResultForJS = (
-		isset($escapeResultForJS) &&
-		$escapeResultForJS == '1'
+if (isset($docField)){
+	$result_escapeForJS = (
+		isset($result_escapeForJS) &&
+		$result_escapeForJS == '1'
 	) ? true : false;
-	$urlencodeResult = (
-		isset($urlencodeResult) &&
-		$urlencodeResult == '1'
+	$result_URLEncode = (
+		isset($result_URLEncode) &&
+		$result_URLEncode == '1'
 	) ? true : false;
-	$typographyResult = (
-		isset($typographyResult) &&
-		$typographyResult == '1'
+	$result_typography = (
+		isset($result_typography) &&
+		$result_typography == '1'
 	) ? true : false;
-	$glue = isset($glue) ? $glue : '';
-	$outputFormat = isset($outputFormat) ? strtolower($outputFormat) : '';
+	$result_docFieldsGlue = isset($result_docFieldsGlue) ? $result_docFieldsGlue : '';
+	$result_outputFormat = isset($result_outputFormat) ? strtolower($result_outputFormat) : '';
 	
 	//Если данные нужно получать аяксом
 	if (
 		isset($mode) &&
 		strtolower($mode) == 'ajax'
 	){
-		$id = intval($_REQUEST['id']);
+		$docId = intval($_REQUEST['id']);
 		
 		//Если заданы поля для проверки безопасности
 		if (isset($securityFields)){
@@ -106,7 +122,7 @@ if (isset($field)){
 			//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
 			$docSecurityFields = ddTools::getTemplateVarOutput(
 				array_keys($securityFields),
-				$id
+				$docId
 			);
 			
 			//Если по каким-то причинам ничего не получили — прерываем
@@ -126,33 +142,33 @@ if (isset($field)){
 			}
 		}
 	}else{
-		$id = (
-			isset($id) &&
-			is_numeric($id)
-		) ? $id : $modx->documentIdentifier;
+		$docId = (
+			isset($docId) &&
+			is_numeric($docId)
+		) ? $docId : $modx->documentIdentifier;
 	}
 	
 	//Никаких псевдонимов полей по умолчанию
-	$fieldAliases = false;
+	$docFieldAliases = false;
 	
 	//Если заданы псевдонимы полей (хотя бы для одного)
 	if (strpos(
-		$field,
+		$docField,
 		'::'
 	) !== false){
 		//Разобьём поля на поля и псевдонимы
-		$fieldAliases = ddTools::explodeAssoc(
-			$field,
+		$docFieldAliases = ddTools::explodeAssoc(
+			$docField,
 			','
 		);
 		
 		//Полями являются ключи
-		$field = array_keys($fieldAliases);
+		$docField = array_keys($docFieldAliases);
 	}else{
 		//Просто разбиваем по запятой
-		$field = explode(
+		$docField = explode(
 			',',
-			$field
+			$docField
 		);
 		
 		//For backward compatibility
@@ -165,34 +181,34 @@ if (isset($field)){
 			$modx->logEvent(
 				1,
 				2,
-				'<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “field” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
+				'<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “docField” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
 				$modx->currentSnippet
 			);
 			
-			$fieldAliases = [];
+			$docFieldAliases = [];
 			
 			foreach (
-				$field as
+				$docField as
 				$key => $val
 			){
-				$fieldAliases[$val] = 'field'.$key;
+				$docFieldAliases[$val] = 'field'.$key;
 			}
 		}
 	}
 	
 	//Если вдруг передали, что надо получить id
-	if (($field_idInd = array_search(
+	if (($docField_idInd = array_search(
 		'id',
-		$field
+		$docField
 	)) !== false){
 		//Удалим его, чтобы наличие результата от него не зависило (id ж ведь всегда есть)
-		unset($field[$field_idInd]);
+		unset($docField[$docField_idInd]);
 	}
 	
 	//Получаем все необходимые поля
 	$result = ddTools::getTemplateVarOutput(
-		$field,
-		$id
+		$docField,
+		$docId
 	);
 	
 	//Если по каким-то причинам ничего не получилось — прерываем
@@ -200,14 +216,14 @@ if (isset($field)){
 	
 	//Если заданы альтернативные поля
 	//TODO: Можно переделать на получение альтернативных полей сразу с основными, а потом обрабатывать, но как-то не судьба пока
-	if (isset($alternateField)){
-		$alternateField = explode(
+	if (isset($docFieldAlternative)){
+		$docFieldAlternative = explode(
 			',',
-			$alternateField
+			$docFieldAlternative
 		);
 		$alter = ddTools::getTemplateVarOutput(
-			$alternateField,
-			$id
+			$docFieldAlternative,
+			$docId
 		);
 	}
 	
@@ -223,10 +239,10 @@ if (isset($field)){
 		if (
 			$result[$key] != '' ||
 			(
-				isset($alternateField) &&
-				($result[$key] = $alter[$alternateField[array_search(
+				isset($docFieldAlternative) &&
+				($result[$key] = $alter[$docFieldAlternative[array_search(
 					$key,
-					$field
+					$docField
 				)]]) != ''
 			)
 		){
@@ -240,23 +256,23 @@ if (isset($field)){
 		if (
 			array_search(
 				'url',
-				$field
+				$docField
 			) !== false &&
 			(
 				!isset($result['url']) ||
 				trim($result['url']) == ''
 			)
 		){
-			$result['url'] = $modx->makeUrl($id);
+			$result['url'] = $modx->makeUrl($docId);
 		}
 		
 		//Если в поля передавали id, выведем
-		if ($field_idInd !== false){
-			$result['id'] = $id;
+		if ($docField_idInd !== false){
+			$result['id'] = $docId;
 		}
 		
 		//Если заданы псевдонимы полей
-		if ($fieldAliases){
+		if ($docFieldAliases){
 			//Запоминаем полученный результат
 			$oldResult = $result;
 			
@@ -265,7 +281,7 @@ if (isset($field)){
 			
 			//Перебираем псевдонимы
 			foreach (
-				$fieldAliases as
+				$docFieldAliases as
 				$fld => $alias
 			){
 				//Если псевдоним не задан, пусть будет поле
@@ -279,35 +295,35 @@ if (isset($field)){
 		}
 		
 		//Если вывод в формате JSON
-		if ($outputFormat == 'json'){
+		if ($result_outputFormat == 'json'){
 			$resultStr = json_encode($result);
 		//Если задан шаблон
-		}else if (isset($tpl)){
+		}else if (isset($result_tpl)){
 			//Если есть дополнительные данные
 			if (
-				isset($tpl_placeholders) &&
-				trim($tpl_placeholders) != ''
+				isset($result_tpl_placeholders) &&
+				trim($result_tpl_placeholders) != ''
 			){
 				$result = array_merge(
 					$result,
-					ddTools::encodedStringToArray($tpl_placeholders)
+					ddTools::encodedStringToArray($result_tpl_placeholders)
 				);
 			}
 			
 			$resultStr = ddTools::parseText([
-				'text' => $modx->getTpl($tpl),
+				'text' => $modx->getTpl($result_tpl),
 				'data' => $result
 			]);
 		}else{
 			//TODO: При необходимости надо будет обработать удаление пустых значений
 			$resultStr = implode(
-				$glue,
+				$result_docFieldsGlue,
 				$result
 			);
 		}
 		
 		//Если нужно типографировать
-		if ($typographyResult){
+		if ($result_typography){
 			$resultStr = $modx->runSnippet(
 				'ddTypograph',
 				['text' => $resultStr]
@@ -315,10 +331,10 @@ if (isset($field)){
 		}
 		
 		//Если надо экранировать спец. символы
-		if ($escapeResultForJS){$resultStr = ddTools::escapeForJS($resultStr);}
+		if ($result_escapeForJS){$resultStr = ddTools::escapeForJS($resultStr);}
 		
 		//Если нужно URL-кодировать строку
-		if ($urlencodeResult){$resultStr = rawurlencode($resultStr);}
+		if ($result_URLEncode){$resultStr = rawurlencode($resultStr);}
 	}
 	
 	return $resultStr;
