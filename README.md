@@ -1,4 +1,4 @@
-# ddGetDocumentField
+# (MODX)EvolutionCMS.snippets.ddGetDocumentField
 
 Snippet gets the necessary document fields (and TV) by its id.
 ___
