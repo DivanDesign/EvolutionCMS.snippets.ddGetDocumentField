@@ -30,7 +30,7 @@
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
-require_once($modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php');
+require_once($modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php');
 
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams(
@@ -68,7 +68,11 @@ extract(ddTools::verifyRenamedParams(
 
 $snippetResult = '';
 
-$result_tpl = isset($result_tpl) ? $modx->getTpl($result_tpl) : '';
+$result_tpl =
+	isset($result_tpl) ?
+	$modx->getTpl($result_tpl) :
+	''
+;
 
 //If document fields is not set try to get they from template
 if (
@@ -89,20 +93,40 @@ if (
 
 //Если поля передали
 if (isset($docField)){
-	$result_escapeForJS = (
-		isset($result_escapeForJS) &&
-		$result_escapeForJS == '1'
-	) ? true : false;
-	$result_URLEncode = (
-		isset($result_URLEncode) &&
-		$result_URLEncode == '1'
-	) ? true : false;
-	$result_typography = (
-		isset($result_typography) &&
-		$result_typography == '1'
-	) ? true : false;
-	$result_docFieldsGlue = isset($result_docFieldsGlue) ? $result_docFieldsGlue : '';
-	$result_outputFormat = isset($result_outputFormat) ? strtolower($result_outputFormat) : '';
+	$result_escapeForJS =
+		(
+			isset($result_escapeForJS) &&
+			$result_escapeForJS == '1'
+		) ?
+		true :
+		false
+	;
+	$result_URLEncode =
+		(
+			isset($result_URLEncode) &&
+			$result_URLEncode == '1'
+		) ?
+		true :
+		false
+	;
+	$result_typography =
+		(
+			isset($result_typography) &&
+			$result_typography == '1'
+		) ?
+		true :
+		false
+	;
+	$result_docFieldsGlue =
+		isset($result_docFieldsGlue) ?
+		$result_docFieldsGlue :
+		''
+	;
+	$result_outputFormat =
+		isset($result_outputFormat) ?
+		strtolower($result_outputFormat) :
+		''
+	;
 	
 	//Если данные нужно получать аяксом
 	if (
@@ -134,7 +158,7 @@ if (isset($docField)){
 				$modx->logEvent(
 					1,
 					2,
-					'<p>String separated by “:” && “|” in the “securityFields” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
+					'<p>String separated by “:” && “|” in the “securityFields” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
 					$modx->currentSnippet
 				);
 			}
@@ -157,16 +181,21 @@ if (isset($docField)){
 			//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
 			foreach (
 				$docSecurityFields as
-				$key => $val
+				$key =>
+				$val
 			){
 				if ($val != $securityFields[$key]){return;}
 			}
 		}
 	}else{
-		$docId = (
-			isset($docId) &&
-			is_numeric($docId)
-		) ? $docId : $modx->documentIdentifier;
+		$docId =
+			(
+				isset($docId) &&
+				is_numeric($docId)
+			) ?
+			$docId :
+			$modx->documentIdentifier
+		;
 	}
 	
 	//Никаких псевдонимов полей по умолчанию
@@ -202,7 +231,7 @@ if (isset($docField)){
 			$modx->logEvent(
 				1,
 				2,
-				'<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “docField” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
+				'<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “docField” parameter instead.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
 				$modx->currentSnippet
 			);
 			
@@ -210,9 +239,10 @@ if (isset($docField)){
 			
 			foreach (
 				$docField as
-				$key => $val
+				$key =>
+				$val
 			){
-				$docFieldAliases[$val] = 'field'.$key;
+				$docFieldAliases[$val] = 'field' . $key;
 			}
 		}
 	}
@@ -253,7 +283,8 @@ if (isset($docField)){
 	//Перебираем полученные результаты
 	foreach (
 		$result as
-		$key => $value
+		$key =>
+		$value
 	){
 		//Если значение поля пустое, пытаемся получить альтернативное поле (и сразу присваиваем) и если оно НЕ пустое, запомним 
 		if (
@@ -302,7 +333,8 @@ if (isset($docField)){
 			//Перебираем псевдонимы
 			foreach (
 				$docFieldAliases as
-				$fld => $alias
+				$fld =>
+				$alias
 			){
 				//Если псевдоним не задан, пусть будет поле
 				if (trim($alias) == ''){
