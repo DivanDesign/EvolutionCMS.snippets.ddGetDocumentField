@@ -3,28 +3,9 @@
  * ddGetDocumentField
  * @version 2.8 (2018-12-26)
  * 
- * @desc Snippet gets the necessary document fields (and TV) by its id.
+ * @see README.md
  * 
- * @uses PHP >= 5.4.
- * @uses (MODX)EvolutionCMS >= 1.1 {@link https://github.com/evolution-cms/evolution }.
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.20 {@link http://code.divandesign.biz/modx/ddtools }.
- * @uses (MODX)EvolutionCMS.snippets.ddTypograph >= 2.3 (if typography is required) {@link http://code.divandesign.biz/modx/ddtypograph }.
- * 
- * @param $docId {integer} — Document identifier. Default: current document.
- * @param $docField {string_commaSeparated} — Document field(s) to get separated by commas. If the parameter is empty, the snippet will try to search fields in “$result_tpl” (something like “[+docField+]”). Default: —.
- * @param $docField[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
- * @param $docFieldAlternative {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
- * @param $result_tpl {string_chunkName|string} — Chunk to parse result (chunk name or code via “@CODE:” prefix). Default: ''.
- * @param $result_tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “result_tpl”. E. g. “{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}” or “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Default: ''.
- * @param $result_docFieldsGlue {string} — String for join the fields (if “result_outputFormat” == “” and “result_tpl” is not used). Default: ''.
- * @param $result_typography {0|1} — Need to typography result? Default: 0.
- * @param $result_escapeForJS {0|1} — Need to escape special characters from result? Default: 0.
- * @param $result_URLEncode {0|1} — Need to URL-encode result string? Default: 0.
- * @param $result_outputFormat {''|'json'} — Output format. Default: ''.
- * @param $mode {''|'ajax'} — Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
- * @param $securityFields {string_queryFormated} — The fields for security verification as query string (https://en.wikipedia.org/wiki/Query_string). E. g.: “template=15&published=1”. Default: ''. 
- * 
- * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.8
+ * @link http://code.divandesign.biz/modx/ddgetdocumentfield
  * 
  * @copyright 2008–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
