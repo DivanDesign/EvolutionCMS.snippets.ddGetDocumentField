@@ -11,9 +11,12 @@
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
-require_once($modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php');
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
 
-//Для обратной совместимости
+//Backward compatibility
 extract(ddTools::verifyRenamedParams(
 	$params,
 	[
@@ -118,8 +121,7 @@ if (isset($docField)){
 		
 		//Если заданы поля для проверки безопасности
 		if (isset($securityFields)){
-			//Backward compatibility
-			//If “=” exists
+			//If `=` exists
 			if (strpos(
 				$securityFields,
 				'='
@@ -129,6 +131,7 @@ if (isset($docField)){
 					$securityFields,
 					$securityFields
 				);
+			//Backward compatibility
 			}else{
 				//The old format
 				$securityFields = ddTools::explodeAssoc(
@@ -202,7 +205,7 @@ if (isset($docField)){
 			$docField
 		);
 		
-		//For backward compatibility
+		//Backward compatibility
 		//Если задан устаревший параметр «$numericNames»
 		if (
 			isset($numericNames) &&
@@ -223,16 +226,21 @@ if (isset($docField)){
 				$key =>
 				$val
 			){
-				$docFieldAliases[$val] = 'field' . $key;
+				$docFieldAliases[$val] =
+					'field' .
+					$key
+				;
 			}
 		}
 	}
 	
 	//Если вдруг передали, что надо получить id
-	if (($docField_idInd = array_search(
-		'id',
-		$docField
-	)) !== false){
+	if (
+		($docField_idInd = array_search(
+			'id',
+			$docField
+		)) !== false
+	){
 		//Удалим его, чтобы наличие результата от него не зависило (id ж ведь всегда есть)
 		unset($docField[$docField_idInd]);
 	}
@@ -244,7 +252,9 @@ if (isset($docField)){
 	);
 	
 	//Если по каким-то причинам ничего не получилось — прерываем
-	if (!$result){return;}
+	if (!$result){
+		return;
+	}
 	
 	//Если заданы альтернативные поля
 	//TODO: Можно переделать на получение альтернативных полей сразу с основными, а потом обрабатывать, но как-то не судьба пока
@@ -261,17 +271,20 @@ if (isset($docField)){
 	
 	$isEmptySnippetResult = true;
 	
-	//Перебираем полученные результаты
+	//Перебираем полученные результаты, заполняем пустоту альтернативой, если есть
 	foreach (
 		$result as
 		$key =>
 		$value
 	){
-		//Если значение поля пустое, пытаемся получить альтернативное поле (и сразу присваиваем) и если оно НЕ пустое, запомним 
 		if (
+			//Если значение поля не пустое
 			$result[$key] != '' ||
+			//Либо пустое
 			(
+				//Но имеется альтернатива
 				isset($docFieldAlternative) &&
+				//И альтернатива не пуста
 				($result[$key] = $alter[$docFieldAlternative[array_search(
 					$key,
 					$docField
@@ -284,12 +297,13 @@ if (isset($docField)){
 	
 	//Если результаты непустые
 	if (!$isEmptySnippetResult){
-		//Если надо было вернуть ещё и url документа и Если такого поля нет или оно пусто (а то мало ли, как TV назвали)
 		if (
+			//Если надо было вернуть ещё и url документа
 			array_search(
 				'url',
 				$docField
 			) !== false &&
+			//И если такого поля нет или оно пусто (а то мало ли, как TV назвали)
 			(
 				!isset($result['url']) ||
 				trim($result['url']) == ''
@@ -359,15 +373,21 @@ if (isset($docField)){
 		if ($result_typography){
 			$snippetResult = $modx->runSnippet(
 				'ddTypograph',
-				['text' => $snippetResult]
+				[
+					'text' => $snippetResult
+				]
 			);
 		}
 		
 		//Если надо экранировать спец. символы
-		if ($result_escapeForJS){$snippetResult = ddTools::escapeForJS($snippetResult);}
+		if ($result_escapeForJS){
+			$snippetResult = ddTools::escapeForJS($snippetResult);
+		}
 		
 		//Если нужно URL-кодировать строку
-		if ($result_URLEncode){$snippetResult = rawurlencode($snippetResult);}
+		if ($result_URLEncode){
+			$snippetResult = rawurlencode($snippetResult);
+		}
 	}
 }
 
