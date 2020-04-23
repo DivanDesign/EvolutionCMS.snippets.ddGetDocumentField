@@ -143,7 +143,7 @@ if (isset($docField)){
 				$modx->logEvent(
 					1,
 					2,
-					'<p>String separated by “:” && “|” in the “securityFields” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
+					'<p>String separated by <code>:</code> && <code>|</code> in the <code>securityFields</code> parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
 					$modx->currentSnippet
 				);
 			}
@@ -226,7 +226,7 @@ if (isset($docField)){
 			$modx->logEvent(
 				1,
 				2,
-				'<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “docField” parameter instead.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
+				'<p>The <code>numericNames</code> parameter is deprecated. You can pass aliases inside of the <code>docField</code> parameter instead.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
 				$modx->currentSnippet
 			);
 			
