@@ -3,17 +3,19 @@
 Snippet gets the necessary document fields (and TVs) by its id.
 
 
-## # Requires
+## Requires
+
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.20
 * [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.3 (if typography is required)
 
 
-## # Documentation
+## Documentation
 
 
-### ## Installation
+### Installation
+
 Elements → Snippets: Create a new snippet with the following data:
 1. Snippet name: `ddGetDocumentField`.
 2. Description: `<b>2.8</b> Snippet gets the necessary document fields (and TVs) by its id.`.
@@ -22,7 +24,7 @@ Elements → Snippets: Create a new snippet with the following data:
 5. Snippet code (php): Insert content of the `ddGetDocumentField_snippet.php` file from the archive.
 
 
-### ## Parameters description
+### Parameters description
 
 * `docId`
 	* Desctription: Document identifier.
@@ -34,19 +36,19 @@ Elements → Snippets: Create a new snippet with the following data:
 		
 		If the parameter is empty, the snippet will try to search fields in `result_tpl` (something like `[+docField+]`).
 		
-	* Valid values: `string_commaSeparated`
+	* Valid values: `stringCommaSeparated`
 	* Default value: —
 	
 * `docField[i]`
-	* Desctription: Fields and their aliases must be separated by `::` if aliases are required while returning the results (for example: `pagetitle::title,content::text`).
+	* Desctription: Fields and their aliases must be separated by `'::'` if aliases are required while returning the results (for example: `'pagetitle::title,content::text'`).
 	* Valid values:
-		* `string`
-		* `string_separated`
+		* `string` — document field
+		* `stringSeparated` — document field and it's alias
 	* **Required**
 	
 * `docFieldAlternative`
 	* Desctription: Alternate field(s) to get if the main is empty.
-	* Valid values: `string_commaSeparated`
+	* Valid values: `stringCommaSeparated`
 	* Default value: —
 	
 * `result_tpl`
@@ -57,7 +59,7 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `[+url+]` — Document URL.
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* **Required**
 	
@@ -67,14 +69,14 @@ Elements → Snippets: Create a new snippet with the following data:
 		Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
 		
 	* Valid values:
-		* `stirng_json` — as [JSON](https://en.wikipedia.org/wiki/JSON) (e. g. `{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}`)
-		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `pladeholder1=value1&pagetitle=My awesome pagetitle!`)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) (e. g. `{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}`)
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `pladeholder1=value1&pagetitle=My awesome pagetitle!`)
 	* Default value: —
 	
 * `result_docFieldsGlue`
-	* Desctription: String for join the fields (if `result_outputFormat` == `` and `result_tpl` is not used).
+	* Desctription: String for join the fields (if `result_outputFormat` == `''` and `result_tpl` is not used).
 	* Valid values: `string`
-	* Default value: ``
+	* Default value: `''`
 	
 * `result_typography`
 	* Desctription: Need to typography result?
@@ -100,22 +102,25 @@ Elements → Snippets: Create a new snippet with the following data:
 * `result_outputFormat`
 	* Desctription: Output format.
 	* Valid values:
-		* ``
-		* `json`
-	* Default value: ``
+		* `''`
+		* `'json'`
+	* Default value: `''`
 	
 * `mode`
-	* Desctription: Режим работы.
+	* Desctription: Mode.
 	* Valid values:
-		* ``
-		* `ajax` — `docId` gets from the `$_REQUEST['id']`. Use the `securityFields` param in this case!
-	* Default value: ``
+		* `''` — default mode
+		* `'ajax'` — `docId` gets from the `$_REQUEST['id']`. Use the `securityFields` param in this case!
+	* Default value: `''`
 	
 * `securityFields`
 	* Desctription: The fields for security verification.
 	* Valid values:
-		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
-	* Default value: ``
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
+	* Default value: —
 
 
-## # [Home page →](https://code.divandesign.biz/modx/ddgetdocumentfield)
+## [Home page →](https://code.divandesign.biz/modx/ddgetdocumentfield)
+
+
+<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
