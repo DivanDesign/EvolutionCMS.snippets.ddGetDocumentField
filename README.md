@@ -40,7 +40,7 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Default value: —
 	
 * `docField[i]`
-	* Desctription: Fields and their aliases must be separated by `'::'` if aliases are required while returning the results (for example: `'pagetitle::title,content::text'`).
+	* Desctription: Fields and their aliases must be separated by `'='` if aliases are required while returning the results (for example: `'pagetitle=title,content=text'`).
 	* Valid values:
 		* `string` — document field
 		* `stringSeparated` — document field and it's alias

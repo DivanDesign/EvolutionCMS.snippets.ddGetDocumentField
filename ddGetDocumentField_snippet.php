@@ -188,15 +188,23 @@ if (isset($docField)){
 	//Никаких псевдонимов полей по умолчанию
 	$docFieldAliases = false;
 	
+	//Backward compatibility
+	$docField = str_replace(
+		'::',
+		'=',
+		$docField
+	);
+	
 	//Если заданы псевдонимы полей (хотя бы для одного)
 	if (strpos(
 		$docField,
-		'::'
+		'='
 	) !== false){
 		//Разобьём поля на поля и псевдонимы
 		$docFieldAliases = \ddTools::explodeAssoc(
 			$docField,
-			','
+			',',
+			'='
 		);
 		
 		//Полями являются ключи
