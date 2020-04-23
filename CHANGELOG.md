@@ -1,6 +1,15 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.9 (2020-04-23)
+* \+ Parameters → `result_emptyResult`. What will be returned if the snippet result is empty?
+* \* Parameters → `docField[i]`: Separator between field name and alias changed from `'::'` to `'='` (with backward compatibility).
+* \* Improved messages style for CMS event log.
+* \+ README.
+* \+ CHANGELOG.
+* \+ Composer.json.
+
+
 ## Version 2.8 (2018-12-26)
 * \* Attention! MODXEvo.library.ddTools >= 0.20 is required.
 * \* The following parameters were renamed (with backward compatibility):
