@@ -20,7 +20,7 @@ require_once(
 $snippetResult = '';
 
 //Backward compatibility
-extract(ddTools::verifyRenamedParams(
+extract(\ddTools::verifyRenamedParams(
 	$params,
 	[
 		'docId' => 'id',
@@ -64,7 +64,7 @@ if (
 	!isset($docField) &&
 	!empty($result_tpl)
 ){
-	$docFieldsFromTpl = ddTools::getPlaceholdersFromText([
+	$docFieldsFromTpl = \ddTools::getPlaceholdersFromText([
 		'text' => $result_tpl
 	]);
 	
@@ -135,7 +135,7 @@ if (isset($docField)){
 			//Backward compatibility
 			}else{
 				//The old format
-				$securityFields = ddTools::explodeAssoc(
+				$securityFields = \ddTools::explodeAssoc(
 					$securityFields,
 					'|',
 					':'
@@ -150,7 +150,7 @@ if (isset($docField)){
 			
 			//Получаем значения полей безопасности у конкретного документа
 			//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
-			$docSecurityFields = ddTools::getTemplateVarOutput(
+			$docSecurityFields = \ddTools::getTemplateVarOutput(
 				array_keys($securityFields),
 				$docId
 			);
@@ -194,7 +194,7 @@ if (isset($docField)){
 		'::'
 	) !== false){
 		//Разобьём поля на поля и псевдонимы
-		$docFieldAliases = ddTools::explodeAssoc(
+		$docFieldAliases = \ddTools::explodeAssoc(
 			$docField,
 			','
 		);
@@ -249,7 +249,7 @@ if (isset($docField)){
 	}
 	
 	//Получаем все необходимые поля
-	$result = ddTools::getTemplateVarOutput(
+	$result = \ddTools::getTemplateVarOutput(
 		$docField,
 		$docId
 	);
@@ -266,7 +266,7 @@ if (isset($docField)){
 			',',
 			$docFieldAlternative
 		);
-		$alter = ddTools::getTemplateVarOutput(
+		$alter = \ddTools::getTemplateVarOutput(
 			$docFieldAlternative,
 			$docId
 		);
@@ -356,11 +356,11 @@ if (isset($docField)){
 			){
 				$result = array_merge(
 					$result,
-					ddTools::encodedStringToArray($result_tpl_placeholders)
+					\ddTools::encodedStringToArray($result_tpl_placeholders)
 				);
 			}
 			
-			$snippetResult = ddTools::parseText([
+			$snippetResult = \ddTools::parseText([
 				'text' => $result_tpl,
 				'data' => $result
 			]);
@@ -384,7 +384,7 @@ if (isset($docField)){
 		
 		//Если надо экранировать спец. символы
 		if ($result_escapeForJS){
-			$snippetResult = ddTools::escapeForJS($snippetResult);
+			$snippetResult = \ddTools::escapeForJS($snippetResult);
 		}
 		
 		//Если нужно URL-кодировать строку
