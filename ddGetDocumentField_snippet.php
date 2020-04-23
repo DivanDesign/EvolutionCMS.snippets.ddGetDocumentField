@@ -1,39 +1,30 @@
 <?php
 /** 
  * ddGetDocumentField
- * @version 2.8 (2018-12-26)
+ * @version 2.9 (2020-04-23)
  * 
- * @desc Snippet gets the necessary document fields (and TV) by its id.
+ * @see README.md
  * 
- * @uses PHP >= 5.4.
- * @uses (MODX)EvolutionCMS >= 1.1 {@link https://github.com/evolution-cms/evolution }.
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.20 {@link http://code.divandesign.biz/modx/ddtools }.
- * @uses (MODX)EvolutionCMS.snippets.ddTypograph >= 2.3 (if typography is required) {@link http://code.divandesign.biz/modx/ddtypograph }.
+ * @link https://code.divandesign.biz/modx/ddgetdocumentfield
  * 
- * @param $docId {integer} — Document identifier. Default: current document.
- * @param $docField {string_commaSeparated} — Document field(s) to get separated by commas. If the parameter is empty, the snippet will try to search fields in “$result_tpl” (something like “[+docField+]”). Default: —.
- * @param $docField[] {string|string_separated} — Fields and their aliases must be separated by “::” if aliases are required while returning the results (for example: 'pagetitle::title,content::text'). @required
- * @param $docFieldAlternative {string_commaSeparated} — Alternate fields to get if the main is empty. Default: ''.
- * @param $result_tpl {string_chunkName|string} — Chunk to parse result (chunk name or code via “@CODE:” prefix). Default: ''.
- * @param $result_tpl_placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or Query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “result_tpl”. E. g. “{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}” or “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Default: ''.
- * @param $result_docFieldsGlue {string} — String for join the fields (if “result_outputFormat” == “” and “result_tpl” is not used). Default: ''.
- * @param $result_typography {0|1} — Need to typography result? Default: 0.
- * @param $result_escapeForJS {0|1} — Need to escape special characters from result? Default: 0.
- * @param $result_URLEncode {0|1} — Need to URL-encode result string? Default: 0.
- * @param $result_outputFormat {''|'json'} — Output format. Default: ''.
- * @param $mode {''|'ajax'} — Режим работы. If mode is AJAX, the id gets from the $_REQUEST array. Use the “securityFields” param! Default: ''.
- * @param $securityFields {string_queryFormated} — The fields for security verification as query string (https://en.wikipedia.org/wiki/Query_string). E. g.: “template=15&published=1”. Default: ''. 
- * 
- * @link http://code.divandesign.biz/modx/ddgetdocumentfield/2.8
- * 
- * @copyright 2008–2018 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2008–2020 DD Group {@link http://www.DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
-require_once($modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php');
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
 
-//Для обратной совместимости
-extract(ddTools::verifyRenamedParams(
+$snippetResult =
+	isset($result_emptyResult) ?
+	$result_emptyResult :
+	//The snippet must return an empty string even if result is absent
+	''
+;
+
+//Backward compatibility
+extract(\ddTools::verifyRenamedParams(
 	$params,
 	[
 		'docId' => 'id',
@@ -66,16 +57,18 @@ extract(ddTools::verifyRenamedParams(
 	]
 ));
 
-$snippetResult = '';
-
-$result_tpl = isset($result_tpl) ? $modx->getTpl($result_tpl) : '';
+$result_tpl =
+	isset($result_tpl) ?
+	$modx->getTpl($result_tpl) :
+	''
+;
 
 //If document fields is not set try to get they from template
 if (
 	!isset($docField) &&
 	!empty($result_tpl)
 ){
-	$docFieldsFromTpl = ddTools::getPlaceholdersFromText([
+	$docFieldsFromTpl = \ddTools::getPlaceholdersFromText([
 		'text' => $result_tpl
 	]);
 	
@@ -89,20 +82,40 @@ if (
 
 //Если поля передали
 if (isset($docField)){
-	$result_escapeForJS = (
-		isset($result_escapeForJS) &&
-		$result_escapeForJS == '1'
-	) ? true : false;
-	$result_URLEncode = (
-		isset($result_URLEncode) &&
-		$result_URLEncode == '1'
-	) ? true : false;
-	$result_typography = (
-		isset($result_typography) &&
-		$result_typography == '1'
-	) ? true : false;
-	$result_docFieldsGlue = isset($result_docFieldsGlue) ? $result_docFieldsGlue : '';
-	$result_outputFormat = isset($result_outputFormat) ? strtolower($result_outputFormat) : '';
+	$result_escapeForJS =
+		(
+			isset($result_escapeForJS) &&
+			$result_escapeForJS == '1'
+		) ?
+		true :
+		false
+	;
+	$result_URLEncode =
+		(
+			isset($result_URLEncode) &&
+			$result_URLEncode == '1'
+		) ?
+		true :
+		false
+	;
+	$result_typography =
+		(
+			isset($result_typography) &&
+			$result_typography == '1'
+		) ?
+		true :
+		false
+	;
+	$result_docFieldsGlue =
+		isset($result_docFieldsGlue) ?
+		$result_docFieldsGlue :
+		''
+	;
+	$result_outputFormat =
+		isset($result_outputFormat) ?
+		strtolower($result_outputFormat) :
+		''
+	;
 	
 	//Если данные нужно получать аяксом
 	if (
@@ -113,8 +126,7 @@ if (isset($docField)){
 		
 		//Если заданы поля для проверки безопасности
 		if (isset($securityFields)){
-			//Backward compatibility
-			//If “=” exists
+			//If `=` exists
 			if (strpos(
 				$securityFields,
 				'='
@@ -124,9 +136,10 @@ if (isset($docField)){
 					$securityFields,
 					$securityFields
 				);
+			//Backward compatibility
 			}else{
 				//The old format
-				$securityFields = ddTools::explodeAssoc(
+				$securityFields = \ddTools::explodeAssoc(
 					$securityFields,
 					'|',
 					':'
@@ -134,14 +147,14 @@ if (isset($docField)){
 				$modx->logEvent(
 					1,
 					2,
-					'<p>String separated by “:” && “|” in the “securityFields” parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
+					'<p>String separated by <code>:</code> && <code>|</code> in the <code>securityFields</code> parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
 					$modx->currentSnippet
 				);
 			}
 			
 			//Получаем значения полей безопасности у конкретного документа
 			//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
-			$docSecurityFields = ddTools::getTemplateVarOutput(
+			$docSecurityFields = \ddTools::getTemplateVarOutput(
 				array_keys($securityFields),
 				$docId
 			);
@@ -151,36 +164,51 @@ if (isset($docField)){
 				!$docSecurityFields ||
 				count($docSecurityFields) == 0
 			){
-				return;
+				return $snippetResult;
 			}
 			
 			//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
 			foreach (
 				$docSecurityFields as
-				$key => $val
+				$key =>
+				$val
 			){
-				if ($val != $securityFields[$key]){return;}
+				if ($val != $securityFields[$key]){
+					return $snippetResult;
+				}
 			}
 		}
 	}else{
-		$docId = (
-			isset($docId) &&
-			is_numeric($docId)
-		) ? $docId : $modx->documentIdentifier;
+		$docId =
+			(
+				isset($docId) &&
+				is_numeric($docId)
+			) ?
+			$docId :
+			$modx->documentIdentifier
+		;
 	}
 	
 	//Никаких псевдонимов полей по умолчанию
 	$docFieldAliases = false;
 	
+	//Backward compatibility
+	$docField = str_replace(
+		'::',
+		'=',
+		$docField
+	);
+	
 	//Если заданы псевдонимы полей (хотя бы для одного)
 	if (strpos(
 		$docField,
-		'::'
+		'='
 	) !== false){
 		//Разобьём поля на поля и псевдонимы
-		$docFieldAliases = ddTools::explodeAssoc(
+		$docFieldAliases = \ddTools::explodeAssoc(
 			$docField,
-			','
+			',',
+			'='
 		);
 		
 		//Полями являются ключи
@@ -192,7 +220,7 @@ if (isset($docField)){
 			$docField
 		);
 		
-		//For backward compatibility
+		//Backward compatibility
 		//Если задан устаревший параметр «$numericNames»
 		if (
 			isset($numericNames) &&
@@ -202,7 +230,7 @@ if (isset($docField)){
 			$modx->logEvent(
 				1,
 				2,
-				'<p>The “numericNames” parameter is deprecated. You can pass aliases inside of the “docField” parameter instead.</p><p>The snippet has been called in the document with id '.$modx->documentIdentifier.'.</p>',
+				'<p>The <code>numericNames</code> parameter is deprecated. You can pass aliases inside of the <code>docField</code> parameter instead.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
 				$modx->currentSnippet
 			);
 			
@@ -210,30 +238,38 @@ if (isset($docField)){
 			
 			foreach (
 				$docField as
-				$key => $val
+				$key =>
+				$val
 			){
-				$docFieldAliases[$val] = 'field'.$key;
+				$docFieldAliases[$val] =
+					'field' .
+					$key
+				;
 			}
 		}
 	}
 	
 	//Если вдруг передали, что надо получить id
-	if (($docField_idInd = array_search(
-		'id',
-		$docField
-	)) !== false){
+	if (
+		($docField_idInd = array_search(
+			'id',
+			$docField
+		)) !== false
+	){
 		//Удалим его, чтобы наличие результата от него не зависило (id ж ведь всегда есть)
 		unset($docField[$docField_idInd]);
 	}
 	
 	//Получаем все необходимые поля
-	$result = ddTools::getTemplateVarOutput(
+	$result = \ddTools::getTemplateVarOutput(
 		$docField,
 		$docId
 	);
 	
 	//Если по каким-то причинам ничего не получилось — прерываем
-	if (!$result){return;}
+	if (!$result){
+		return $snippetResult;
+	}
 	
 	//Если заданы альтернативные поля
 	//TODO: Можно переделать на получение альтернативных полей сразу с основными, а потом обрабатывать, но как-то не судьба пока
@@ -242,7 +278,7 @@ if (isset($docField)){
 			',',
 			$docFieldAlternative
 		);
-		$alter = ddTools::getTemplateVarOutput(
+		$alter = \ddTools::getTemplateVarOutput(
 			$docFieldAlternative,
 			$docId
 		);
@@ -250,16 +286,20 @@ if (isset($docField)){
 	
 	$isEmptySnippetResult = true;
 	
-	//Перебираем полученные результаты
+	//Перебираем полученные результаты, заполняем пустоту альтернативой, если есть
 	foreach (
 		$result as
-		$key => $value
+		$key =>
+		$value
 	){
-		//Если значение поля пустое, пытаемся получить альтернативное поле (и сразу присваиваем) и если оно НЕ пустое, запомним 
 		if (
+			//Если значение поля не пустое
 			$result[$key] != '' ||
+			//Либо пустое
 			(
+				//Но имеется альтернатива
 				isset($docFieldAlternative) &&
+				//И альтернатива не пуста
 				($result[$key] = $alter[$docFieldAlternative[array_search(
 					$key,
 					$docField
@@ -272,12 +312,13 @@ if (isset($docField)){
 	
 	//Если результаты непустые
 	if (!$isEmptySnippetResult){
-		//Если надо было вернуть ещё и url документа и Если такого поля нет или оно пусто (а то мало ли, как TV назвали)
 		if (
+			//Если надо было вернуть ещё и url документа
 			array_search(
 				'url',
 				$docField
 			) !== false &&
+			//И если такого поля нет или оно пусто (а то мало ли, как TV назвали)
 			(
 				!isset($result['url']) ||
 				trim($result['url']) == ''
@@ -302,7 +343,8 @@ if (isset($docField)){
 			//Перебираем псевдонимы
 			foreach (
 				$docFieldAliases as
-				$fld => $alias
+				$fld =>
+				$alias
 			){
 				//Если псевдоним не задан, пусть будет поле
 				if (trim($alias) == ''){
@@ -326,11 +368,11 @@ if (isset($docField)){
 			){
 				$result = array_merge(
 					$result,
-					ddTools::encodedStringToArray($result_tpl_placeholders)
+					\ddTools::encodedStringToArray($result_tpl_placeholders)
 				);
 			}
 			
-			$snippetResult = ddTools::parseText([
+			$snippetResult = \ddTools::parseText([
 				'text' => $result_tpl,
 				'data' => $result
 			]);
@@ -346,15 +388,21 @@ if (isset($docField)){
 		if ($result_typography){
 			$snippetResult = $modx->runSnippet(
 				'ddTypograph',
-				['text' => $snippetResult]
+				[
+					'text' => $snippetResult
+				]
 			);
 		}
 		
 		//Если надо экранировать спец. символы
-		if ($result_escapeForJS){$snippetResult = ddTools::escapeForJS($snippetResult);}
+		if ($result_escapeForJS){
+			$snippetResult = \ddTools::escapeForJS($snippetResult);
+		}
 		
 		//Если нужно URL-кодировать строку
-		if ($result_URLEncode){$snippetResult = rawurlencode($snippetResult);}
+		if ($result_URLEncode){
+			$snippetResult = rawurlencode($snippetResult);
+		}
 	}
 }
 
