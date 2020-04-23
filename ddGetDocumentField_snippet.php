@@ -16,6 +16,9 @@ require_once(
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
+//The snippet must return an empty string even if result is absent
+$snippetResult = '';
+
 //Backward compatibility
 extract(ddTools::verifyRenamedParams(
 	$params,
@@ -49,8 +52,6 @@ extract(ddTools::verifyRenamedParams(
 		]
 	]
 ));
-
-$snippetResult = '';
 
 $result_tpl =
 	isset($result_tpl) ?
@@ -159,7 +160,7 @@ if (isset($docField)){
 				!$docSecurityFields ||
 				count($docSecurityFields) == 0
 			){
-				return;
+				return $snippetResult;
 			}
 			
 			//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
@@ -168,7 +169,9 @@ if (isset($docField)){
 				$key =>
 				$val
 			){
-				if ($val != $securityFields[$key]){return;}
+				if ($val != $securityFields[$key]){
+					return $snippetResult;
+				}
 			}
 		}
 	}else{
@@ -253,7 +256,7 @@ if (isset($docField)){
 	
 	//Если по каким-то причинам ничего не получилось — прерываем
 	if (!$result){
-		return;
+		return $snippetResult;
 	}
 	
 	//Если заданы альтернативные поля
