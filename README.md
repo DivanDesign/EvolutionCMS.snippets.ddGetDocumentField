@@ -106,6 +106,11 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `'json'`
 	* Default value: `''`
 	
+* `result_emptyResult`
+	* Desctription: What will be returned if the snippet result is empty?
+	* Valid values: `string`
+	* Default value: `''`
+	
 * `mode`
 	* Desctription: Mode.
 	* Valid values:

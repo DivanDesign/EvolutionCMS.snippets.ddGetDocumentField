@@ -16,8 +16,12 @@ require_once(
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//The snippet must return an empty string even if result is absent
-$snippetResult = '';
+$snippetResult =
+	isset($result_emptyResult) ?
+	$result_emptyResult :
+	//The snippet must return an empty string even if result is absent
+	''
+;
 
 //Backward compatibility
 extract(\ddTools::verifyRenamedParams(
