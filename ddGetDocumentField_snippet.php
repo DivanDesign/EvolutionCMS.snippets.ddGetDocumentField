@@ -16,12 +16,20 @@ require_once(
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-$snippetResult =
-	isset($result_emptyResult) ?
-	$result_emptyResult :
-	//The snippet must return an empty string even if result is absent
+//Output format
+$outputter =
+	isset($outputter) ?
+	strtolower($outputter) :
+	'string'
+;
+$outputterParams =
+	isset($outputterParams) ?
+	$outputterParams :
 	''
 ;
+//Prepare outputter params
+$outputterParams = (object) \ddTools::encodedStringToArray($outputterParams);
+
 
 //Backward compatibility
 extract(\ddTools::verifyRenamedParams(
@@ -56,20 +64,52 @@ extract(\ddTools::verifyRenamedParams(
 		]
 	]
 ));
+if (isset($result_outputFormat)){
+	$outputter = strtolower($result_outputFormat);
+}
+if (isset($result_typography)){
+	$outputterParams->typography = $result_typography;
+}
+if (isset($result_escapeForJS)){
+	$outputterParams->escapeForJS = $result_escapeForJS;
+}
+if (isset($result_URLEncode)){
+	$outputterParams->URLEncode = $result_URLEncode;
+}
+if (isset($result_emptyResult)){
+	$outputterParams->emptyResult = $result_emptyResult;
+}
+if (isset($result_tpl)){
+	$outputterParams->tpl = $result_tpl;
+}
+if (isset($result_tpl_placeholders)){
+	$outputterParams->placeholders = $result_tpl_placeholders;
+}
+if (isset($result_docFieldsGlue)){
+	$outputterParams->docFieldsGlue = $result_docFieldsGlue;
+}
 
-$result_tpl =
-	isset($result_tpl) ?
-	$modx->getTpl($result_tpl) :
+
+$snippetResult =
+	isset($outputterParams->emptyResult) ?
+	$outputterParams->emptyResult :
+	//The snippet must return an empty string even if result is absent
+	''
+;
+
+$outputterParams->tpl =
+	isset($outputterParams->tpl) ?
+	$modx->getTpl($outputterParams->tpl) :
 	''
 ;
 
 //If document fields is not set try to get they from template
 if (
 	!isset($docField) &&
-	!empty($result_tpl)
+	!empty($outputterParams->tpl)
 ){
 	$docFieldsFromTpl = \ddTools::getPlaceholdersFromText([
-		'text' => $result_tpl
+		'text' => $outputterParams->tpl
 	]);
 	
 	if (!empty($docFieldsFromTpl)){
@@ -82,38 +122,33 @@ if (
 
 //Если поля передали
 if (isset($docField)){
-	$result_escapeForJS =
+	$outputterParams->escapeForJS =
 		(
-			isset($result_escapeForJS) &&
-			$result_escapeForJS == '1'
+			isset($outputterParams->escapeForJS) &&
+			$outputterParams->escapeForJS == '1'
 		) ?
 		true :
 		false
 	;
-	$result_URLEncode =
+	$outputterParams->URLEncode =
 		(
-			isset($result_URLEncode) &&
-			$result_URLEncode == '1'
+			isset($outputterParams->URLEncode) &&
+			$outputterParams->URLEncode == '1'
 		) ?
 		true :
 		false
 	;
-	$result_typography =
+	$outputterParams->typography =
 		(
-			isset($result_typography) &&
-			$result_typography == '1'
+			isset($outputterParams->typography) &&
+			$outputterParams->typography == '1'
 		) ?
 		true :
 		false
 	;
-	$result_docFieldsGlue =
-		isset($result_docFieldsGlue) ?
-		$result_docFieldsGlue :
-		''
-	;
-	$result_outputFormat =
-		isset($result_outputFormat) ?
-		strtolower($result_outputFormat) :
+	$outputterParams->docFieldsGlue =
+		isset($outputterParams->docFieldsGlue) ?
+		$outputterParams->docFieldsGlue :
 		''
 	;
 	
@@ -357,35 +392,35 @@ if (isset($docField)){
 		}
 		
 		//Если вывод в формате JSON
-		if ($result_outputFormat == 'json'){
+		if ($outputter == 'json'){
 			$snippetResult = json_encode($result);
 		//Если задан шаблон
-		}else if (!empty($result_tpl)){
+		}else if (!empty($outputterParams->tpl)){
 			//Если есть дополнительные данные
 			if (
-				isset($result_tpl_placeholders) &&
-				trim($result_tpl_placeholders) != ''
+				isset($outputterParams->placeholders) &&
+				trim($outputterParams->placeholders) != ''
 			){
 				$result = array_merge(
 					$result,
-					\ddTools::encodedStringToArray($result_tpl_placeholders)
+					\ddTools::encodedStringToArray($outputterParams->placeholders)
 				);
 			}
 			
 			$snippetResult = \ddTools::parseText([
-				'text' => $result_tpl,
+				'text' => $outputterParams->tpl,
 				'data' => $result
 			]);
 		}else{
 			//TODO: При необходимости надо будет обработать удаление пустых значений
 			$snippetResult = implode(
-				$result_docFieldsGlue,
+				$outputterParams->docFieldsGlue,
 				$result
 			);
 		}
 		
 		//Если нужно типографировать
-		if ($result_typography){
+		if ($outputterParams->typography){
 			$snippetResult = $modx->runSnippet(
 				'ddTypograph',
 				[
@@ -395,12 +430,12 @@ if (isset($docField)){
 		}
 		
 		//Если надо экранировать спец. символы
-		if ($result_escapeForJS){
+		if ($outputterParams->escapeForJS){
 			$snippetResult = \ddTools::escapeForJS($snippetResult);
 		}
 		
 		//Если нужно URL-кодировать строку
-		if ($result_URLEncode){
+		if ($outputterParams->URLEncode){
 			$snippetResult = rawurlencode($snippetResult);
 		}
 	}

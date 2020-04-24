@@ -26,6 +26,9 @@ Elements → Snippets: Create a new snippet with the following data:
 
 ### Parameters description
 
+
+#### Data provider parameters
+
 * `docId`
 	* Desctription: Document identifier.
 	* Valid values: `integer`
@@ -50,8 +53,54 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Desctription: Alternate field(s) to get if the main is empty.
 	* Valid values: `stringCommaSeparated`
 	* Default value: —
+
+
+#### Output format parameters
+
+* `outputter`
+	* Desctription: Format of the output.
+	* Valid values:
+		* `'string'`
+		* `'json'`
+	* Default value: `'string'`
 	
-* `result_tpl`
+* `outputterParams`
+	* Desctription: Parameters to be passed to the specified outputter.
+	* Valid values:
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+	* Default value: —
+	
+* `outputterParams->typography`
+	* Desctription: Need to typography result?
+	* Valid values:
+		* `0`
+		* `1`
+	* Default value: `0`
+	
+* `outputterParams->escapeForJS`
+	* Desctription: Need to escape special characters from result?
+	* Valid values:
+		* `0`
+		* `1`
+	* Default value: `0`
+	
+* `outputterParams->URLEncode`
+	* Desctription: Need to URL-encode result string?
+	* Valid values:
+		* `0`
+		* `1`
+	* Default value: `0`
+	
+* `outputterParams->emptyResult`
+	* Desctription: What will be returned if the snippet result is empty?
+	* Valid values: `string`
+	* Default value: `''`
+
+
+##### Outputter → String (``&outputter=`string` ``)
+
+* `outputterParams->tpl`
 	* Desctription: Chunk to parse result.
 		
 		Available placeholders:
@@ -63,7 +112,7 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `string` — use inline templates starting with `@CODE:`
 	* **Required**
 	
-* `result_tpl_placeholders`
+* `outputterParams->placeholders`
 	* Desctription: Additional data has to be passed into `result_tpl`.
 		
 		Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
@@ -73,44 +122,14 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `pladeholder1=value1&pagetitle=My awesome pagetitle!`)
 	* Default value: —
 	
-* `result_docFieldsGlue`
-	* Desctription: String for join the fields (if `result_outputFormat` == `''` and `result_tpl` is not used).
+* `outputterParams->docFieldsGlue`
+	* Desctription: String for join the fields (if `outputterParams->tpl` is not used).
 	* Valid values: `string`
 	* Default value: `''`
-	
-* `result_typography`
-	* Desctription: Need to typography result?
-	* Valid values:
-		* `0`
-		* `1`
-	* Default value: `0`
-	
-* `result_escapeForJS`
-	* Desctription: Need to escape special characters from result?
-	* Valid values:
-		* `0`
-		* `1`
-	* Default value: `0`
-	
-* `result_URLEncode`
-	* Desctription: Need to URL-encode result string?
-	* Valid values:
-		* `0`
-		* `1`
-	* Default value: `0`
-	
-* `result_outputFormat`
-	* Desctription: Output format.
-	* Valid values:
-		* `''`
-		* `'json'`
-	* Default value: `''`
-	
-* `result_emptyResult`
-	* Desctription: What will be returned if the snippet result is empty?
-	* Valid values: `string`
-	* Default value: `''`
-	
+
+
+#### Other parameters
+
 * `mode`
 	* Desctription: Mode.
 	* Valid values:
