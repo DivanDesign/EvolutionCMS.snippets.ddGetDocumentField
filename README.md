@@ -146,6 +146,14 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Default value: `''`
 
 
+##### Outputter → String (``&outputter=`json` ``)
+
+* `outputterParams->removeEmptyFields`
+	* Desctription: Remove resource fields with empty values from result.
+	* Valid values: `boolean`
+	* Default value: `false`
+
+
 #### Other parameters
 
 * `mode`
@@ -295,6 +303,52 @@ Returns:
 	"content": "The content"
 }
 ```
+
+
+#### Remove resource fields with empty values from result
+
+Let that document `pagetitle` is set and `longtitle` is empty.
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceFields": "pagetitle,longtitle"
+	}`
+	&outputter=`json`
+]]
+```
+
+Returns:
+
+```json
+{
+	"pagetitle": "The title of a document",
+	"longtitle": ""
+}
+```
+
+If fields with empty values is no needed, just set `outputterParams->removeEmptyFields` to `true`:
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceFields": "pagetitle,longtitle"
+	}`
+	&outputter=`json`,
+	&outputterParams=`{
+		"removeEmptyFields": true
+	}`
+]]
+```
+
+Returns:
+
+```json
+{
+	"pagetitle": "The title of a document"
+}
+```
+
 
 
 ## [Home page →](https://code.divandesign.biz/modx/ddgetdocumentfield)
