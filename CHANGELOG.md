@@ -1,6 +1,28 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.10 (2020-04-25)
+* \* Attention! EvolutionCMS.libraries.ddTools >= 0.32 is required.
+* \* The snippet structure completely revised (with backward compatibility), see README.md.
+* \* Snippet: The following parameters were renamed (with backward compatibility):
+	* \* `docId` → `dataProviderParams->resourceId`.
+	* \* `docField` → `dataProviderParams->resourceFields`.
+	* \* `docFieldAlternative` → `dataProviderParams->resourceFieldsAlternative`.
+	* \* `result_outputFormat` → `outputter`.
+	* \* `result_typography` → `outputterParams->typography`.
+	* \* `result_escapeForJS` → `outputterParams->escapeForJS`.
+	* \* `result_URLEncode` → `outputterParams->URLEncode`.
+	* \* `result_emptyResult` → `outputterParams->emptyResult`.
+	* \* `result_tpl` → `outputterParams->tpl`.
+	* \* `result_tpl_placeholders` → `outputterParams->placeholders`.
+	* \* `result_docFieldsGlue` → `outputterParams->docFieldsGlue`.
+* \+ Snippet → Parameters → `securityFields`: Can be set as `stringJsonObject` too.
+* \* `\ddGetDocumentField\Outputter\Json\Outputter`:
+	* \+ Added an ability to remove resource fields with empty values from result (see `outputterParams->removeEmptyFields`).
+	* \* `render_main`: Added the `JSON_UNESCAPED_UNICODE` and `JSON_UNESCAPED_SLASHES` flags.
+* \+ README → Examples.
+
+
 ## Version 2.9 (2020-04-23)
 * \+ Parameters → `result_emptyResult`. What will be returned if the snippet result is empty?
 * \* Parameters → `docField[i]`: Separator between field name and alias changed from `'::'` to `'='` (with backward compatibility).
