@@ -54,32 +54,6 @@ if (
 	
 	//Если заданы поля для проверки безопасности
 	if (isset($inputObject->snippetParams->securityFields)){
-		//If `=` exists
-		if (strpos(
-			$inputObject->snippetParams->securityFields,
-			'='
-		) !== false){
-			//Parse a query string
-			parse_str(
-				$inputObject->snippetParams->securityFields,
-				$inputObject->snippetParams->securityFields
-			);
-		//Backward compatibility
-		}else{
-			//The old format
-			$inputObject->snippetParams->securityFields = \ddTools::explodeAssoc(
-				$inputObject->snippetParams->securityFields,
-				'|',
-				':'
-			);
-			$modx->logEvent(
-				1,
-				2,
-				'<p>String separated by <code>:</code> && <code>|</code> in the <code>securityFields</code> parameter is deprecated. Use a <a href="https://en.wikipedia.org/wiki/Query_string)">query string</a>.</p><p>The snippet has been called in the document with id ' . $modx->documentIdentifier . '.</p>',
-				$modx->currentSnippet
-			);
-		}
-		
 		//Получаем значения полей безопасности у конкретного документа
 		//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
 		$docSecurityFields = \ddTools::getTemplateVarOutput(

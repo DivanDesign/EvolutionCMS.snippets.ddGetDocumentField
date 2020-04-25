@@ -158,6 +158,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 * `securityFields`
 	* Desctription: The fields for security verification.
 	* Valid values:
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) (e. g. `{"template": 15, "published": 1}`)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
 	* Default value: —
 

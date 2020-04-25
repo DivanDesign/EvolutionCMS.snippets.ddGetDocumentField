@@ -2,8 +2,6 @@
 namespace ddGetDocumentField;
 
 
-use DDTools\ObjectTools;
-
 class Input extends \DDTools\BaseClass {
 	/**
 	 * @property $snippetParams {stdClass} — Snippet parameters. Don't use this field if you can.
@@ -22,7 +20,7 @@ class Input extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.1 (2020-04-25)
 	 * 
 	 * @param $snippetParams {stdClass|arrayAssociative} — Snippet parameters. @see REAMDE.md
 	 */
@@ -64,6 +62,10 @@ class Input extends \DDTools\BaseClass {
 		//Set object properties from snippet parameters
 		$this->setExistingProps($this->snippetParams);
 		
+		if (isset($this->snippetParams->securityFields)){
+			$this->snippetParams->securityFields = \ddTools::encodedStringToArray($this->snippetParams->securityFields);
+		}
+		
 		$this->prepareResourceFieldsAndAliases();
 	}
 	
@@ -104,7 +106,7 @@ class Input extends \DDTools\BaseClass {
 	
 	/**
 	 * paramsBackwardCompatibility
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.1 (2020-04-25)
 	 * 
 	 * @desc Prepare params preserve backward compatibility.
 	 * 
@@ -236,6 +238,20 @@ class Input extends \DDTools\BaseClass {
 					$fieldNameIndex
 				;
 			}
+		}
+		
+		if (isset($this->snippetParams->securityFields)){
+			$this->snippetParams->securityFields = str_replace(
+				[
+					'|',
+					':'
+				],
+				[
+					'||',
+					'::'
+				],
+				$this->snippetParams->securityFields
+			);
 		}
 		
 		if ($isLogMessageNeeded){
