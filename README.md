@@ -7,7 +7,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.20
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.32
 * [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.3 (if typography is required)
 
 
@@ -16,7 +16,9 @@ Snippet gets the necessary document fields (and TVs) by its id.
 
 ### Installation
 
-Elements → Snippets: Create a new snippet with the following data:
+
+#### 1. Elements → Snippets: Create a new snippet with the following data
+
 1. Snippet name: `ddGetDocumentField`.
 2. Description: `<b>2.9</b> Snippet gets the necessary document fields (and TVs) by its id.`.
 3. Category: `Core`.
@@ -24,35 +26,51 @@ Elements → Snippets: Create a new snippet with the following data:
 5. Snippet code (php): Insert content of the `ddGetDocumentField_snippet.php` file from the archive.
 
 
+#### 2. Elements → Manage Files:
+
+1. Create a new folder `assets/snippets/ddGetDocumentField/`.
+2. Extract the archive to the folder (except `ddGetDocumentField_snippet.php`).
+
+
 ### Parameters description
 
 
 #### Data provider parameters
 
-* `docId`
+* `dataProviderParams`
+	* Desctription: Parameters to be passed to the provider.
+	* Valid values:
+		* `stirngJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+	* Default value: —
+	
+* `dataProviderParams->resourceId`
 	* Desctription: Document identifier.
 	* Valid values: `integer`
 	* Default value: `$modx->documentIdentifier` (current document)
 	
-* `docField`
-	* Desctription: Document field(s) to get separated by commas.
-		
-		If the parameter is empty, the snippet will try to search fields in `result_tpl` (something like `[+docField+]`).
-		
+* `dataProviderParams->resourceFields`
+	* Desctription: Document field(s) to get separated by commas.  
+		If the parameter is empty, the snippet will try to search fields in `outputterParams->tpl` (something like `[+docField+]`).
 	* Valid values: `stringCommaSeparated`
 	* Default value: —
 	
-* `docField[i]`
+* `dataProviderParams->resourceFields[i]`
 	* Desctription: Fields and their aliases must be separated by `'='` if aliases are required while returning the results (for example: `'pagetitle=title,content=text'`).
 	* Valid values:
 		* `string` — document field
 		* `stringSeparated` — document field and it's alias
 	* **Required**
 	
-* `docFieldAlternative`
-	* Desctription: Alternate field(s) to get if the main is empty.
+* `dataProviderParams->resourceFieldsAlternative`
+	* Desctription: Alternative document field(s) to get if the main is empty separated by commas.
 	* Valid values: `stringCommaSeparated`
 	* Default value: —
+	
+* `dataProviderParams->resourceFieldsAlternative[i]`
+	* Desctription: Document field.
+	* Valid values: `string`
+	* **Required**
 
 
 #### Output format parameters
@@ -142,6 +160,140 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Valid values:
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
 	* Default value: —
+
+
+### Examples
+
+
+#### Get the `pagetitle` of current document
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceFields": "pagetitle"
+	}`
+]]
+```
+
+
+#### Get the `introtext` of document which ID is `7` and return from chunk
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceId": 7,
+		"resourceFields": "introtext"
+	}`
+	&outputterParams=`{
+		"tpl": "testChunk"
+	}`
+]]
+```
+
+`testChunk` code:
+
+```html
+<div class="test">[+introtext+]</div>
+```
+
+
+#### Get the `longtitle` of a document or `pagetitle` if `longtitle` is empty
+
+```html
+<title>[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceFields": "longtitle",
+		"resourceFieldsAlternative": "pagetitle"
+	}`
+]]</title>
+```
+
+
+#### Get a few phones from TVs and join them with comma
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceId": 7,
+		"resourceFields": "phone1,phone2"
+	}`
+	&outputterParams=`{
+		"docFieldsGlue": ", "
+	}`
+]]
+```
+
+
+#### Additional data into result chunk
+
+For example, we are getting something with the Ditto snippet. Into Ditto chunk `result_tpl` we need to get phone number & fax, if phone is not empty or nothing. Chunk code:
+
+```html
+<div class="test_row">
+	[+content+]
+	[[ddGetDocumentField?
+		&dataProviderParams=`{
+			"resourceId": "[+id+]",
+			"resourceFields": "phone"
+		}`
+		&outputterParams=`{
+			"tpl": "test_row_phone",
+			"placeholders": {
+				"fax": "[+fax+]",
+				"someTitle": "Call me!"
+			}
+		}`
+	]]
+</div>
+```
+
+The `test_row_phone` chunk code:
+
+```html
+<p class="phone" title="[+someTitle+]">[+phone+], [+fax+]</p>
+```
+
+
+#### Using field aliases while returning the results in the `outputterParams->tpl` chunk
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceFields": "pagetitle=title,pub_date=date"
+	}`
+	&outputterParams=`{
+		"tpl": "testChunk"
+	}`
+]]
+```
+
+The `testChunk` chunk code:
+
+```html
+<p>[+title+], [+date+]</p>
+```
+
+
+#### Using field aliases with JSON format
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		"resourceFields": "pagetitle=title,introtext=text,content"
+	}`
+	&outputter=`json`
+]]
+```
+
+Returns:
+
+```json
+{
+	"title": "The title of a document",
+	"text": "The annotation",
+	"content": "The content"
+}
+```
 
 
 ## [Home page →](https://code.divandesign.biz/modx/ddgetdocumentfield)
