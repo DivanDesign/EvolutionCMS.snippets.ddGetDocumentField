@@ -91,7 +91,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_resourceDataApplyAliases
-	 * @version 1.0.1 (2020-04-26)
+	 * @version 1.0.2 (2020-04-26)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -105,17 +105,20 @@ abstract class Outputter extends \DDTools\BaseClass {
 			$result = (object) [];
 			
 			foreach (
-				$this->resourceFieldsAliases as
+				$resourceData as
 				$fieldName =>
-				$fieldAlias
+				$fieldValue
 			){
-				//Use field name if alias is not set
-				if (trim($fieldAlias) == ''){
-					$fieldAlias = $fieldName;
+				if (
+					//IF alias for field is set
+					isset($this->resourceFieldsAliases->{$fieldName}) &&
+					trim($this->resourceFieldsAliases->{$fieldName}) != ''
+				){
+					$fieldName = $this->resourceFieldsAliases->{$fieldName};
 				}
 				
 				//Save
-				$result->{$fieldAlias} = $resourceData->{$fieldName};
+				$result->{$fieldName} = $fieldValue;
 			}
 		}else{
 			$result = $resourceData;
