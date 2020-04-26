@@ -1,6 +1,10 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.10.1 (2020-04-26)
+* `\ddGetDocumentField\Outputter\Outputter::render_resourceDataApplyAliases`: Fixed working when field aliases are empty or not set for some fields.
+
+
 ## Version 2.10 (2020-04-25)
 * \* Attention! EvolutionCMS.libraries.ddTools >= 0.32 is required.
 * \* The snippet structure completely revised (with backward compatibility), see README.md.

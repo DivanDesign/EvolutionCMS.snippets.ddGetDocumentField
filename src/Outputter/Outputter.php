@@ -12,6 +12,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 		 */
 		$resourceFields = [],
 		$resourceFieldsAliases = [],
+		$hasResourceFieldAliases = false,
 		
 		$typography = false,
 		$escapeForJS = false,
@@ -21,7 +22,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.1 (2020-04-26)
 	 * 
 	 * @param $params {stdClass|arrayAssociative}
 	 * @param $params->dataProvider {\ddGetDocumentField\DataProvider\DataProvider}
@@ -29,6 +30,8 @@ abstract class Outputter extends \DDTools\BaseClass {
 	public function __construct($params = []){
 		//Все параметры задают свойства объекта
 		$this->setExistingProps($params);
+		
+		$this->hasResourceFieldAliases = count((array) $this->resourceFieldsAliases) > 0;
 		
 		$this->resourceFieldsAliases = (object) $this->resourceFieldsAliases;
 		
@@ -88,32 +91,37 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_resourceDataApplyAliases
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.0.2 (2020-04-26)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
 	 * 
-	 * @return {string}
+	 * @return {stdClass}
 	 */
 	private function render_resourceDataApplyAliases($resourceData){
 		//IF aliases exists
-		if (!empty($this->resourceFieldsAliases)){
+		if ($this->hasResourceFieldAliases){
 			//Clear
 			$result = (object) [];
 			
 			foreach (
-				$this->resourceFieldsAliases as
+				$resourceData as
 				$fieldName =>
-				$fieldAlias
+				$fieldValue
 			){
-				//Use field name if alias is not set
-				if (trim($fieldAlias) == ''){
-					$fieldAlias = $fieldName;
+				if (
+					//IF alias for field is set
+					isset($this->resourceFieldsAliases->{$fieldName}) &&
+					trim($this->resourceFieldsAliases->{$fieldName}) != ''
+				){
+					$fieldName = $this->resourceFieldsAliases->{$fieldName};
 				}
 				
 				//Save
-				$result->{$fieldAlias} = $resourceData->{$fieldName};
+				$result->{$fieldName} = $fieldValue;
 			}
+		}else{
+			$result = $resourceData;
 		}
 		
 		return $result;
