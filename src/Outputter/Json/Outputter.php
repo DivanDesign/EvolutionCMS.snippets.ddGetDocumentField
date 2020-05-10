@@ -9,7 +9,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.2 (2020-04-25)
+	 * @version 1.2.1 (2020-05-10)
 	 * 
 	 * @return {stringJsonObject}
 	 */
@@ -21,7 +21,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 				$fieldName =>
 				$fieldValue
 			){
-				if (empty($fieldValue)){
+				if ($fieldValue == ''){
 					unset($resourceData->{$fieldName});
 				}
 			}

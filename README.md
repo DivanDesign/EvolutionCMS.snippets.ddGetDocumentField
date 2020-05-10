@@ -149,7 +149,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 ##### Outputter → String (``&outputter=`json` ``)
 
 * `outputterParams->removeEmptyFields`
-	* Desctription: Remove resource fields with empty values from result.
+	* Desctription: Remove resource fields with empty values (`''`) from result.
 	* Valid values: `boolean`
 	* Default value: `false`
 
