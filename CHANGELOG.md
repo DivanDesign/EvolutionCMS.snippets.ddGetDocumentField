@@ -1,6 +1,16 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.10.2 (2020-05-11)
+* \* Snippet → Parameters → `removeEmptyFields`: Only empty strings (`''`) are considered as “empty”.
+* \* Composer.json:
+	* \+ `homepage`.
+	* \+ `authors`.
+	* \* `require`:
+		* \* `dd/evolutioncms-libraries-ddtools`: Renamed from `dd/modxevo-library-ddtools`.
+		* \* `dd/evolutioncms-snippets-ddtypograph`: Renamed from `dd/modxevo-snippet-ddtypograph`.
+
+
 ## Version 2.10.1 (2020-04-26)
 * `\ddGetDocumentField\Outputter\Outputter::render_resourceDataApplyAliases`: Fixed working when field aliases are empty or not set for some fields.
 

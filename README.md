@@ -20,7 +20,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetDocumentField`.
-2. Description: `<b>2.10.1</b> Snippet gets the necessary document fields (and TVs) by its id.`.
+2. Description: `<b>2.10.2</b> Snippet gets the necessary document fields (and TVs) by its id.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetDocumentField_snippet.php` file from the archive.
@@ -146,7 +146,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Default value: `''`
 
 
-##### Outputter → String (``&outputter=`json` ``)
+##### Outputter → JSON (``&outputter=`json` ``)
 
 * `outputterParams->removeEmptyFields`
 	* Desctription: Remove resource fields with empty values (`''`) from result.
