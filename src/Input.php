@@ -106,7 +106,7 @@ class Input extends \DDTools\BaseClass {
 	
 	/**
 	 * paramsBackwardCompatibility
-	 * @version 1.1 (2020-04-25)
+	 * @version 1.1.1 (2020-07-05)
 	 * 
 	 * @desc Prepare params preserve backward compatibility.
 	 * 
@@ -151,9 +151,14 @@ class Input extends \DDTools\BaseClass {
 			'writeToLog' => false
 		]);
 		
-		$isLogMessageNeeded = $this->snippetParams == $snippetParamsNew;
-		
-		$this->snippetParams = $snippetParamsNew;
+		//If something was corrected
+		if ($this->snippetParams != $snippetParamsNew){
+			$this->snippetParams = $snippetParamsNew;
+			
+			$isLogMessageNeeded = true;
+		}else{
+			$isLogMessageNeeded = false;
+		}
 		
 		//Fill data provider and outputter params from old snippet params
 		$compilance = [
@@ -187,7 +192,7 @@ class Input extends \DDTools\BaseClass {
 			]);
 			
 			//If something old was set
-			if (!empty($newParams)){
+			if (count((array) $newParams) > 0){
 				$isLogMessageNeeded = true;
 				
 				$this->{$propertyName} = \DDTools\ObjectTools::extend([
