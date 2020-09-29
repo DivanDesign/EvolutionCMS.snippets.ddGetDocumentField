@@ -20,7 +20,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetDocumentField`.
-2. Description: `<b>2.10.3</b> Snippet gets the necessary document fields (and TVs) by its id.`.
+2. Description: `<b>2.10.4</b> Snippet gets the necessary document fields (and TVs) by its id.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetDocumentField_snippet.php` file from the archive.
@@ -350,8 +350,10 @@ Returns:
 ```
 
 
+## Links
 
-## [Home page →](https://code.divandesign.biz/modx/ddgetdocumentfield)
+* [Home page](https://code.divandesign.biz/modx/ddgetdocumentfield)
+* [Telegram chat](https://t.me/dd_code)
 
 
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />

@@ -31,7 +31,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.0.2 (2020-09-29)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -42,10 +42,13 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		
 		//Если вдруг передали, что надо получить id
 		if (
-			($resourceFields_idIndex = array_search(
-				'id',
-				$resourceFields
-			)) !== false
+			(
+				$resourceFields_idIndex = array_search(
+					'id',
+					$resourceFields
+				)
+			) !==
+			false
 		){
 			//Удалим его, чтобы наличие результата от него не зависило (id ж ведь всегда есть)
 			unset($resourceFields[$resourceFields_idIndex]);
@@ -69,45 +72,43 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		
 		//Перебираем полученные результаты, заполняем пустоту альтернативой, если есть
 		foreach (
-			$resourceDataAll as
-			$fieldName =>
-			$fieldValue
+			$this->resourceFields as
+			$fieldIndex =>
+			$fieldName
 		){
 			if (
 				//Если значение поля пустое
-				$fieldValue == '' &&
+				$resourceDataAll[$fieldName] == '' &&
 				//Но, возможно, имеется альтернатива
-				!empty($this->resourceFieldsAlternative)
+				!empty($this->resourceFieldsAlternative) &&
+				isset($this->resourceFieldsAlternative[$fieldIndex])
 			){
 				//В качестве значения берём значение альтернативного поля
-				$fieldValue = $resourceDataAll[
+				$resourceDataAll[$fieldName] = $resourceDataAll[
 					//Имя альтернативного поля
-					$this->resourceFieldsAlternative[
-						//Индекс текущего поля в списке полей
-						array_search(
-							$fieldName,
-							$this->resourceFields
-						)
-					]
+					$this->resourceFieldsAlternative[$fieldIndex]
 				];
 			}
 			
-			if ($fieldValue != ''){
+			if ($resourceDataAll[$fieldName] != ''){
 				$isEmptyResult = false;
 			}
 			
 			//Save to output
-			$resourceDataResult->{$fieldName} = $fieldValue;
+			$resourceDataResult->{$fieldName} = $resourceDataAll[$fieldName];
 		}
 		
 		//Если результаты непустые
 		if (!$isEmptyResult){
 			if (
 				//Если надо было вернуть ещё и url документа
-				array_search(
-					'url',
-					$this->resourceFields
-				) !== false &&
+				(
+					array_search(
+						'url',
+						$this->resourceFields
+					) !==
+					false
+				) &&
 				(
 					//И если такого поля нет
 					!isset($resourceDataResult->url) ||
