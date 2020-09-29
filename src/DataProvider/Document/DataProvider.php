@@ -31,7 +31,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.0.1 (2020-09-29)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -42,10 +42,13 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		
 		//Если вдруг передали, что надо получить id
 		if (
-			($resourceFields_idIndex = array_search(
-				'id',
-				$resourceFields
-			)) !== false
+			(
+				$resourceFields_idIndex = array_search(
+					'id',
+					$resourceFields
+				)
+			) !==
+			false
 		){
 			//Удалим его, чтобы наличие результата от него не зависило (id ж ведь всегда есть)
 			unset($resourceFields[$resourceFields_idIndex]);
@@ -104,10 +107,13 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		if (!$isEmptyResult){
 			if (
 				//Если надо было вернуть ещё и url документа
-				array_search(
-					'url',
-					$this->resourceFields
-				) !== false &&
+				(
+					array_search(
+						'url',
+						$this->resourceFields
+					) !==
+					false
+				) &&
 				(
 					//И если такого поля нет
 					!isset($resourceDataResult->url) ||

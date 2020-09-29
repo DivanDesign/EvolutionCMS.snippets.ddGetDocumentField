@@ -7,7 +7,7 @@
  * 
  * @link https://code.divandesign.biz/modx/ddgetdocumentfield
  * 
- * @copyright 2008–2020 DD Group {@link http://www.DivanDesign.biz }
+ * @copyright 2008–2020 DD Group {@link https://DivanDesign.biz }
  */
 
 global $modx;

@@ -2,7 +2,7 @@
 
 
 ## Version 2.10.3 (2020-07-05)
-* `\ddGetDocumentField\Input::paramsBackwardCompatibility`: Fixed wrong CMS event logging.
+* \* `\ddGetDocumentField\Input::paramsBackwardCompatibility`: Fixed wrong CMS event logging.
 
 
 ## Version 2.10.2 (2020-05-11)
