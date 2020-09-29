@@ -350,8 +350,10 @@ Returns:
 ```
 
 
+## Links
 
-## [Home page →](https://code.divandesign.biz/modx/ddgetdocumentfield)
+* [Home page](https://code.divandesign.biz/modx/ddgetdocumentfield)
+* [Telegram chat](https://t.me/dd_code)
 
 
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
