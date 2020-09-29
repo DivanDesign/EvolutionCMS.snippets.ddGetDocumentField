@@ -1,6 +1,11 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.10.5 (2020-09-29)
+* \* `\ddGetDocumentField\DataProvider\Document\DataProvider::get`: Returns only existing resource fields.
+* \* Refactoring (MODX)Evolution.libraries.ddTools including.
+
+
 ## Version 2.10.4 (2020-09-29)
 * \* `\ddGetDocumentField\DataProvider\Document\DataProvider::get`: Fixed wrong outputting of alternative resource fields.
 * \+ README → Links.
