@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetdocumentfield",
 	"type": "modxevo-snippet",
-	"version": "2.10.4",
+	"version": "2.10.5",
 	"description": "Snippet gets the necessary document fields (and TVs) by its id.",
 	"keywords": [
 		"modx",

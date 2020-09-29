@@ -1,7 +1,7 @@
 <?php
 /** 
  * ddGetDocumentField
- * @version 2.10.4 (2020-09-29)
+ * @version 2.10.5 (2020-09-29)
  * 
  * @see README.md
  * 
@@ -21,12 +21,6 @@ $snippetPath_src =
 	'src' .
 	DIRECTORY_SEPARATOR
 ;
-
-//Include (MODX)EvolutionCMS.libraries.ddTools
-require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddTools/modx.ddtools.class.php'
-);
 
 if(!class_exists('\ddGetDocumentField\Input')){
 	require_once(
