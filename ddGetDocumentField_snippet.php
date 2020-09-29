@@ -22,12 +22,6 @@ $snippetPath_src =
 	DIRECTORY_SEPARATOR
 ;
 
-//Include (MODX)EvolutionCMS.libraries.ddTools
-require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddTools/modx.ddtools.class.php'
-);
-
 if(!class_exists('\ddGetDocumentField\Input')){
 	require_once(
 		$snippetPath .
