@@ -31,7 +31,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0.1 (2020-09-29)
+	 * @version 1.0.2 (2020-09-29)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -72,35 +72,30 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		
 		//Перебираем полученные результаты, заполняем пустоту альтернативой, если есть
 		foreach (
-			$resourceDataAll as
-			$fieldName =>
-			$fieldValue
+			$this->resourceFields as
+			$fieldIndex =>
+			$fieldName
 		){
 			if (
 				//Если значение поля пустое
-				$fieldValue == '' &&
+				$resourceDataAll[$fieldName] == '' &&
 				//Но, возможно, имеется альтернатива
-				!empty($this->resourceFieldsAlternative)
+				!empty($this->resourceFieldsAlternative) &&
+				isset($this->resourceFieldsAlternative[$fieldIndex])
 			){
 				//В качестве значения берём значение альтернативного поля
-				$fieldValue = $resourceDataAll[
+				$resourceDataAll[$fieldName] = $resourceDataAll[
 					//Имя альтернативного поля
-					$this->resourceFieldsAlternative[
-						//Индекс текущего поля в списке полей
-						array_search(
-							$fieldName,
-							$this->resourceFields
-						)
-					]
+					$this->resourceFieldsAlternative[$fieldIndex]
 				];
 			}
 			
-			if ($fieldValue != ''){
+			if ($resourceDataAll[$fieldName] != ''){
 				$isEmptyResult = false;
 			}
 			
 			//Save to output
-			$resourceDataResult->{$fieldName} = $fieldValue;
+			$resourceDataResult->{$fieldName} = $resourceDataAll[$fieldName];
 		}
 		
 		//Если результаты непустые
