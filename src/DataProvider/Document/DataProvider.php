@@ -31,7 +31,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0.2 (2020-09-29)
+	 * @version 1.0.3 (2020-09-29)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -76,26 +76,31 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 			$fieldIndex =>
 			$fieldName
 		){
-			if (
-				//Если значение поля пустое
-				$resourceDataAll[$fieldName] == '' &&
-				//Но, возможно, имеется альтернатива
-				!empty($this->resourceFieldsAlternative) &&
-				isset($this->resourceFieldsAlternative[$fieldIndex])
-			){
-				//В качестве значения берём значение альтернативного поля
-				$resourceDataAll[$fieldName] = $resourceDataAll[
-					//Имя альтернативного поля
-					$this->resourceFieldsAlternative[$fieldIndex]
-				];
+			if (\DDTools\ObjectTools::isPropExists([
+				'object' => $resourceDataAll,
+				'propName' => $fieldName
+			])){
+				if (
+					//Если значение поля пустое
+					$resourceDataAll[$fieldName] == '' &&
+					//Но, возможно, имеется альтернатива
+					!empty($this->resourceFieldsAlternative) &&
+					isset($this->resourceFieldsAlternative[$fieldIndex])
+				){
+					//В качестве значения берём значение альтернативного поля
+					$resourceDataAll[$fieldName] = $resourceDataAll[
+						//Имя альтернативного поля
+						$this->resourceFieldsAlternative[$fieldIndex]
+					];
+				}
+				
+				if ($resourceDataAll[$fieldName] != ''){
+					$isEmptyResult = false;
+				}
+				
+				//Save to output
+				$resourceDataResult->{$fieldName} = $resourceDataAll[$fieldName];
 			}
-			
-			if ($resourceDataAll[$fieldName] != ''){
-				$isEmptyResult = false;
-			}
-			
-			//Save to output
-			$resourceDataResult->{$fieldName} = $resourceDataAll[$fieldName];
 		}
 		
 		//Если результаты непустые
