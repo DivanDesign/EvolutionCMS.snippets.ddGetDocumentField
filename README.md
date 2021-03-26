@@ -5,9 +5,9 @@ Snippet gets the necessary document fields (and TVs) by its id.
 
 ## Requires
 
-* PHP >= 5.4
+* PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.32
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.48
 * [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.3 (if typography is required)
 
 
@@ -20,7 +20,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetDocumentField`.
-2. Description: `<b>2.10.5</b> Snippet gets the necessary document fields (and TVs) by its id.`.
+2. Description: `<b>2.11</b> Snippet gets the necessary document fields (and TVs) by its id.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetDocumentField_snippet.php` file from the archive.
@@ -40,8 +40,12 @@ Snippet gets the necessary document fields (and TVs) by its id.
 * `dataProviderParams`
 	* Desctription: Parameters to be passed to the provider.
 	* Valid values:
-		* `stirngJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
+			* `arrayAssociative`
+			* `object`
 	* Default value: —
 	
 * `dataProviderParams->resourceId`
@@ -86,7 +90,11 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Desctription: Parameters to be passed to the specified outputter.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
+			* `arrayAssociative`
+			* `object`
 	* Default value: —
 	
 * `outputterParams->typography`
@@ -135,9 +143,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 		
 		Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
 		
-	* Valid values:
-		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) (e. g. `{"pladeholder1": "value1", "pagetitle": "My awesome pagetitle!"}`)
-		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `pladeholder1=value1&pagetitle=My awesome pagetitle!`)
+	* Valid values: `object`
 	* Default value: —
 	
 * `outputterParams->docFieldsGlue`
@@ -167,7 +173,11 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Desctription: The fields for security verification.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) (e. g. `{"template": 15, "published": 1}`)
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
+		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
+			* `arrayAssociative`
+			* `object`
 	* Default value: —
 
 
@@ -350,10 +360,27 @@ Returns:
 ```
 
 
+#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddGetDocumentField',
+	'params' => [
+		//Can be set as native PHP array
+		'dataProviderParams' => [
+			'resourceId' => 42,
+			'resourceFields' => 'pagetitle,question'
+		]
+	]
+]);
+```
+
+
 ## Links
 
 * [Home page](https://code.divandesign.biz/modx/ddgetdocumentfield)
 * [Telegram chat](https://t.me/dd_code)
+* [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetdocumentfield)
 
 
 <link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />

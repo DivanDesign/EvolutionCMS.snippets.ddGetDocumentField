@@ -9,7 +9,8 @@ require_once(
 	'/libs/ddTools/modx.ddtools.class.php'
 );
 
-require_once('src/Input.php');
 require_once('src/DataProvider/DataProvider.php');
 require_once('src/Outputter/Outputter.php');
+
+require_once('src/Snippet.php');
 ?>

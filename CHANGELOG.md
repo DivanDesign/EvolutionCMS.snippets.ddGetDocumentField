@@ -1,6 +1,16 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.11 (2021-03-26)
+* \* Attention! PHP >= 5.6 is required.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.48 is required.
+* \+ You can just call `\DDTools\Snippet::runSnippet` to run the snippet without DB and eval (see README → Examples).
+* \+ Parameters → `dataProviderParams`, `outputterParams`, `securityFields`: [HJSON](https://hjson.github.io/) is supported.
++ `\ddGetDocumentField\Snippet`: The new class. All snippet code was moved here.
+* \+ README → Links → Packagist.
+* \+ CHANGELOG_ru.
+
+
 ## Version 2.10.5 (2020-09-29)
 * \* `\ddGetDocumentField\DataProvider\Document\DataProvider::get`: Returns only existing resource fields.
 * \* Refactoring (MODX)Evolution.libraries.ddTools including.
@@ -26,7 +36,7 @@
 
 
 ## Version 2.10.1 (2020-04-26)
-* `\ddGetDocumentField\Outputter\Outputter::render_resourceDataApplyAliases`: Fixed working when field aliases are empty or not set for some fields.
+* \* `\ddGetDocumentField\Outputter\Outputter::render_resourceDataApplyAliases`: Fixed working when field aliases are empty or not set for some fields.
 
 
 ## Version 2.10 (2020-04-25)
