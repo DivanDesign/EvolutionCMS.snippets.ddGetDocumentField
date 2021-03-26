@@ -1,6 +1,16 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Версия 2.11 (2021-03-26)
+* \* Внимание! Требуется PHP >= 5.6.
+* \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.48.
+* \+ Запустить сниппет без DB и eval можно через `\DDTools\Snippet::runSnippet` (см. примеры в README).
+* \+ Параметры → `dataProviderParams`, `outputterParams`, `securityFields`: Добавлена поддержка [HJSON](https://hjson.github.io/).
+* \+ `\ddGetDocumentField\Snippet`: Новый класс. Весь код сниппета перенесён туда.
+* \+ README → Ссылки → Packagist.
+* \+ CHANGELOG_ru.
+
+
 ## Версия 2.10.5 (2020-09-29)
 * \* `\ddGetDocumentField\DataProvider\Document\DataProvider::get`: Возвращает только существующие поля ресурса.
 * \* Рефакторинг подключения (MODX)Evolution.libraries.ddTools.

@@ -1,13 +1,13 @@
 <?php
 /** 
  * ddGetDocumentField
- * @version 2.10.5 (2020-09-29)
+ * @version 2.11 (2021-03-26)
  * 
  * @see README.md
  * 
  * @link https://code.divandesign.biz/modx/ddgetdocumentfield
  * 
- * @copyright 2008–2020 DD Group {@link https://DivanDesign.biz }
+ * @copyright 2008–2021 DD Group {@link https://DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
