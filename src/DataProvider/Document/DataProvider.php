@@ -31,12 +31,12 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0.4 (2021-12-27)
+	 * @version 1.0.5 (2021-12-27)
 	 * 
 	 * @return {stdClass}
 	 */
 	public function get(){
-		$resourceDataResult = (object) [];
+		$resourceDataResult = new \stdClass();
 		
 		$resourceFields = $this->resourceFields;
 		

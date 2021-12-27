@@ -91,7 +91,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_resourceDataApplyAliases
-	 * @version 1.0.2 (2020-04-26)
+	 * @version 1.0.3 (2021-12-27)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -102,7 +102,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 		//IF aliases exists
 		if ($this->hasResourceFieldAliases){
 			//Clear
-			$result = (object) [];
+			$result = new \stdClass();
 			
 			foreach (
 				$resourceData as
