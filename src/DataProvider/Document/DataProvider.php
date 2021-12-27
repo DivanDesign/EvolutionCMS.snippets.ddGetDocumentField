@@ -31,7 +31,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0.3 (2020-09-29)
+	 * @version 1.0.4 (2021-12-27)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -128,6 +128,8 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 			if ($resourceFields_idIndex !== false){
 				$resourceDataResult->id = $this->resourceId;
 			}
+		}else{
+			$resourceDataResult = new \stdClass();
 		}
 		
 		return $resourceDataResult;
