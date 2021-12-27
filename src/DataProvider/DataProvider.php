@@ -26,7 +26,7 @@ abstract class DataProvider extends \DDTools\BaseClass {
 	
 	/**
 	 * addResourceFields
-	 * @version 1.0 (2020-04-24)
+	 * @version 1.0.1 (2021-12-27)
 	 * 
 	 * @param $resourceFields {array}
 	 * @param $resourceFields[i] {string} — Name of document field or TV.
@@ -34,10 +34,12 @@ abstract class DataProvider extends \DDTools\BaseClass {
 	 * @return {void}
 	 */
 	public function addResourceFields($resourceFields){
-		$this->resourceFields = array_unique(array_merge(
-			$this->resourceFields,
-			$resourceFields
-		));
+		$this->resourceFields = array_unique(
+			array_merge(
+				$this->resourceFields,
+				$resourceFields
+			)
+		);
 	}
 	
 	/**

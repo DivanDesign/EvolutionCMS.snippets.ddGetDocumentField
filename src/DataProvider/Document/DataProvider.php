@@ -31,12 +31,12 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0.3 (2020-09-29)
+	 * @version 1.0.6 (2021-12-27)
 	 * 
 	 * @return {stdClass}
 	 */
 	public function get(){
-		$resourceDataResult = (object) [];
+		$resourceDataResult = new \stdClass();
 		
 		$resourceFields = $this->resourceFields;
 		
@@ -76,10 +76,12 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 			$fieldIndex =>
 			$fieldName
 		){
-			if (\DDTools\ObjectTools::isPropExists([
-				'object' => $resourceDataAll,
-				'propName' => $fieldName
-			])){
+			if (
+				\DDTools\ObjectTools::isPropExists([
+					'object' => $resourceDataAll,
+					'propName' => $fieldName
+				])
+			){
 				if (
 					//Если значение поля пустое
 					$resourceDataAll[$fieldName] == '' &&
@@ -128,6 +130,8 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 			if ($resourceFields_idIndex !== false){
 				$resourceDataResult->id = $this->resourceId;
 			}
+		}else{
+			$resourceDataResult = new \stdClass();
 		}
 		
 		return $resourceDataResult;

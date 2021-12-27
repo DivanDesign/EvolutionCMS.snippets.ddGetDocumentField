@@ -8,19 +8,19 @@ Snippet gets the necessary document fields (and TVs) by its id.
 * PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.48
-* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.3 (if typography is required)
+* [(MODX)EvolutionCMS.snippets.ddTypograph](https://code.divandesign.biz/modx/ddtypograph) >= 2.5 (if typography is required)
 
 
-## Documentation
+## Installation
 
 
-### Installation
+### Manually
 
 
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetDocumentField`.
-2. Description: `<b>2.11</b> Snippet gets the necessary document fields (and TVs) by its id.`.
+2. Description: `<b>2.11.1</b> Snippet gets the necessary document fields (and TVs) by its id.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetDocumentField_snippet.php` file from the archive.
@@ -32,10 +32,32 @@ Snippet gets the necessary document fields (and TVs) by its id.
 2. Extract the archive to the folder (except `ddGetDocumentField_snippet.php`).
 
 
-### Parameters description
+### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+//Install (MODX)EvolutionCMS.snippets.ddGetDocumentField
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetDocumentField',
+	'type' => 'snippet'
+]);
+```
+
+* If `ddGetDocumentField` is not exist on your site, `ddInstaller` will just install it.
+* If `ddGetDocumentField` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
-#### Data provider parameters
+## Parameters description
+
+
+### Data provider parameters
 
 * `dataProviderParams`
 	* Desctription: Parameters to be passed to the provider.
@@ -77,7 +99,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* **Required**
 
 
-#### Output format parameters
+### Output format parameters
 
 * `outputter`
 	* Desctription: Format of the output.
@@ -124,7 +146,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Default value: `''`
 
 
-##### Outputter → String (``&outputter=`string` ``)
+#### Outputter → String (``&outputter=`string` ``)
 
 * `outputterParams->tpl`
 	* Desctription: Chunk to parse result.
@@ -152,7 +174,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Default value: `''`
 
 
-##### Outputter → JSON (``&outputter=`json` ``)
+#### Outputter → JSON (``&outputter=`json` ``)
 
 * `outputterParams->removeEmptyFields`
 	* Desctription: Remove resource fields with empty values (`''`) from result.
@@ -160,7 +182,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Default value: `false`
 
 
-#### Other parameters
+### Other parameters
 
 * `mode`
 	* Desctription: Mode.
@@ -181,10 +203,10 @@ Snippet gets the necessary document fields (and TVs) by its id.
 	* Default value: —
 
 
-### Examples
+## Examples
 
 
-#### Get the `pagetitle` of current document
+### Get the `pagetitle` of current document
 
 ```
 [[ddGetDocumentField?
@@ -195,7 +217,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 ```
 
 
-#### Get the `introtext` of document which ID is `7` and return from chunk
+### Get the `introtext` of document which ID is `7` and return from chunk
 
 ```
 [[ddGetDocumentField?
@@ -216,7 +238,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 ```
 
 
-#### Get the `longtitle` of a document or `pagetitle` if `longtitle` is empty
+### Get the `longtitle` of a document or `pagetitle` if `longtitle` is empty
 
 ```html
 <title>[[ddGetDocumentField?
@@ -228,7 +250,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 ```
 
 
-#### Get a few phones from TVs and join them with comma
+### Get a few phones from TVs and join them with comma
 
 ```
 [[ddGetDocumentField?
@@ -243,7 +265,7 @@ Snippet gets the necessary document fields (and TVs) by its id.
 ```
 
 
-#### Additional data into result chunk
+### Additional data into result chunk
 
 For example, we are getting something with the Ditto snippet. Into Ditto chunk `result_tpl` we need to get phone number & fax, if phone is not empty or nothing. Chunk code:
 
@@ -273,7 +295,7 @@ The `test_row_phone` chunk code:
 ```
 
 
-#### Using field aliases while returning the results in the `outputterParams->tpl` chunk
+### Using field aliases while returning the results in the `outputterParams->tpl` chunk
 
 ```
 [[ddGetDocumentField?
@@ -293,7 +315,7 @@ The `testChunk` chunk code:
 ```
 
 
-#### Using field aliases with JSON format
+### Using field aliases with JSON format
 
 ```
 [[ddGetDocumentField?
@@ -315,7 +337,7 @@ Returns:
 ```
 
 
-#### Remove resource fields with empty values from result
+### Remove resource fields with empty values from result
 
 Let that document `pagetitle` is set and `longtitle` is empty.
 
@@ -360,7 +382,7 @@ Returns:
 ```
 
 
-#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
 \DDTools\Snippet::runSnippet([

@@ -45,7 +45,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.0.1 (2021-12-27)
 	 * 
 	 * @param $resourceData {stdClass|arrayAssociative} — Resources fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -67,12 +67,12 @@ abstract class Outputter extends \DDTools\BaseClass {
 			
 			//Typography
 			if ($this->typography){
-				$result = \ddTools::$modx->runSnippet(
-					'ddTypograph',
-					[
+				$result = \DDTools\Snippet::runSnippet([
+					'name' => 'ddTypograph',
+					'params' => [
 						'text' => $result
 					]
-				);
+				]);
 			}
 		}
 		
@@ -91,7 +91,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_resourceDataApplyAliases
-	 * @version 1.0.2 (2020-04-26)
+	 * @version 1.0.3 (2021-12-27)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -102,7 +102,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 		//IF aliases exists
 		if ($this->hasResourceFieldAliases){
 			//Clear
-			$result = (object) [];
+			$result = new \stdClass();
 			
 			foreach (
 				$resourceData as

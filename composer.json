@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetdocumentfield",
 	"type": "modxevo-snippet",
-	"version": "2.11.0",
+	"version": "2.11.1",
 	"description": "Snippet gets the necessary document fields (and TVs) by its id.",
 	"keywords": [
 		"modx",
@@ -35,6 +35,6 @@
 	"require": {
 		"php": ">=5.6.0",
 		"dd/evolutioncms-libraries-ddtools": ">=0.48.0",
-		"dd/evolutioncms-snippets-ddtypograph": ">=2.3.0"
+		"dd/evolutioncms-snippets-ddtypograph": ">=2.5.0"
 	}
 }
