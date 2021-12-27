@@ -1,6 +1,13 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Версия 2.11.1 (2021-12-27)
+* \* Внимание! Требуется (MODX)EvolutionCMS.snippets.ddTypograph >= 2.5.
+* \* Исправлена ошибка, когда результат сниппета пустой.
+* \* `\DDTools\Snippet::runSnippet` используется для запуска ddTypograph без DB и eval.
+* \+ README → Установка → Используя (MODX)EvolutionCMS.libraries.ddInstaller.
+
+
 ## Версия 2.11 (2021-03-26)
 * \* Внимание! Требуется PHP >= 5.6.
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.48.
