@@ -11,13 +11,13 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2020-04-24)
+	 * @version 1.0.1 (2023-05-14)
 	 */
 	public function __construct($params){
 		$params = (object) $params;
 		
 		if (!empty($params->tpl)){
-			$params->tpl = \ddTools::$modx->getTpl($params->tpl);
+			$params->tpl = \ddTools::getTpl($params->tpl);
 			
 			$params->resourceFields = \ddTools::getPlaceholdersFromText([
 				'text' => $params->tpl
