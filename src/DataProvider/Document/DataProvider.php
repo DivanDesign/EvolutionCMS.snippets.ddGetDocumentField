@@ -9,11 +9,13 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2020-04-24)
+	 * @version 1.1 (2024-02-07)
 	 *
 	 * @param $params {stdClass|arrayAssociative}
 	 */
 	public function __construct($params){
+		$params = (object) $params;
+		
 		if (!is_numeric($params->resourceId)){
 			$params->resourceId = \ddTools::$modx->documentIdentifier;
 		}
