@@ -33,7 +33,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0.7 (2024-07-12)
+	 * @version 1.0.8 (2024-07-12)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -88,7 +88,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 					//Если значение поля пустое
 					$resourceDataAll[$fieldName] == ''
 					//Но, возможно, имеется альтернатива
-					&& !empty($this->resourceFieldsAlternative)
+					&& !\ddTools::isEmpty($this->resourceFieldsAlternative)
 					&& isset($this->resourceFieldsAlternative[$fieldIndex])
 				){
 					//В качестве значения берём значение альтернативного поля

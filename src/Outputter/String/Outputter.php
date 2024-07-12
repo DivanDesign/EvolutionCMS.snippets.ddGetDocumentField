@@ -32,7 +32,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.0.1 (2024-07-12)
+	 * @version 1.0.2 (2024-07-12)
 	 * 
 	 * @return {string}
 	 */
@@ -42,7 +42,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 		//Если задан шаблон
 		if (!empty($this->tpl)){
 			//Если есть дополнительные данные
-			if (!empty($this->placeholders)){
+			if (!\ddTools::isEmpty($this->placeholders)){
 				$resourceData = \DDTools\ObjectTools::extend([
 					'objects' => [
 						$resourceData,

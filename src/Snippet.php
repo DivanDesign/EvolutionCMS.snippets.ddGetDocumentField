@@ -233,7 +233,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.2 (2024-07-12)
+	 * @version 1.0.3 (2024-07-12)
 	 * 
 	 * @return {string}
 	 */
@@ -245,7 +245,7 @@ class Snippet extends \DDTools\Snippet {
 			$this->params->dataProviderParams->resourceId = intval($_REQUEST['id']);
 			
 			//Если заданы поля для проверки безопасности
-			if (!empty($this->params->securityFields)){
+			if (!\ddTools::isEmpty($this->params->securityFields)){
 				//Получаем значения полей безопасности у конкретного документа
 				//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
 				$docSecurityFields = \ddTools::getTemplateVarOutput(
