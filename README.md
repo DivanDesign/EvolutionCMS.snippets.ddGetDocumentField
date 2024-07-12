@@ -105,7 +105,7 @@ require_once(
 	* Description: Format of the output.
 	* Valid values:
 		* `'string'`
-		* `'json'`
+		* `'object'`
 	* Default value: `'string'`
 	
 * `outputterParams`
@@ -174,7 +174,7 @@ require_once(
 	* Default value: `''`
 
 
-#### Outputter → JSON (``&outputter=`json` ``)
+#### Outputter → Object (``&outputter=`object` ``)
 
 * `outputterParams->removeEmptyFields`
 	* Description: Remove resource fields with empty values (`''`) from result.
@@ -324,7 +324,7 @@ The `testChunk` chunk code:
 	&dataProviderParams=`{
 		resourceFields: pagetitle=title,introtext=text,content
 	}`
-	&outputter=`json`
+	&outputter=`object`
 ]]
 ```
 
@@ -348,7 +348,7 @@ Let that document `pagetitle` is set and `longtitle` is empty.
 	&dataProviderParams=`{
 		resourceFields: pagetitle,longtitle
 	}`
-	&outputter=`json`
+	&outputter=`object`
 ]]
 ```
 
@@ -368,7 +368,7 @@ If fields with empty values is no needed, just set `outputterParams->removeEmpty
 	&dataProviderParams=`{
 		resourceFields: pagetitle,longtitle
 	}`
-	&outputter=`json`
+	&outputter=`object`
 	&outputterParams=`{
 		removeEmptyFields: true
 	}`

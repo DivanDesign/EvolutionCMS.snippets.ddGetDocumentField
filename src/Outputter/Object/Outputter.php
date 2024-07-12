@@ -1,5 +1,5 @@
 <?php
-namespace ddGetDocumentField\Outputter\Json;
+namespace ddGetDocumentField\Outputter\Object;
 
 
 class Outputter extends \ddGetDocumentField\Outputter\Outputter {

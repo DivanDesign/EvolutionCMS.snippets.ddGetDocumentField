@@ -78,7 +78,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams_backwardCompatibility
-	 * @version 1.1.3 (2024-06-12)
+	 * @version 1.2 (2024-07-12)
 	 * 
 	 * @return {void}
 	 */
@@ -177,6 +177,10 @@ class Snippet extends \DDTools\Snippet {
 				],
 				$this->params->securityFields
 			);
+		}
+		
+		if (strtolower($this->params->outputter) == 'json'){
+			$this->params->outputter = 'object';
 		}
 		
 		if ($isLogMessageNeeded){
