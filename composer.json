@@ -18,6 +18,9 @@
 		"get document field"
 	],
 	"homepage": "https://code.divandesign.ru/modx/ddgetdocumentfield",
+	"support": {
+		"chat": "https://t.me/dd_code"
+	},
 	"authors": [
 		{
 			"name": "Ilyas Ronef",
