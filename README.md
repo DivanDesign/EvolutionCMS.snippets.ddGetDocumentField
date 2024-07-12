@@ -205,13 +205,15 @@ require_once(
 
 ## Examples
 
+All examples are written using [HJSON](https://hjson.github.io/), but if you want you can use vanilla JSON instead.
+
 
 ### Get the `pagetitle` of current document
 
 ```
 [[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceFields": "pagetitle"
+		resourceFields: pagetitle
 	}`
 ]]
 ```
@@ -222,11 +224,11 @@ require_once(
 ```
 [[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceId": 7,
-		"resourceFields": "introtext"
+		resourceId: 7
+		resourceFields: introtext
 	}`
 	&outputterParams=`{
-		"tpl": "testChunk"
+		tpl: testChunk
 	}`
 ]]
 ```
@@ -243,8 +245,8 @@ require_once(
 ```html
 <title>[[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceFields": "longtitle",
-		"resourceFieldsAlternative": "pagetitle"
+		resourceFields: longtitle
+		resourceFieldsAlternative: pagetitle
 	}`
 ]]</title>
 ```
@@ -255,11 +257,11 @@ require_once(
 ```
 [[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceId": 7,
-		"resourceFields": "phone1,phone2"
+		resourceId: 7
+		resourceFields: phone1,phone2
 	}`
 	&outputterParams=`{
-		"docFieldsGlue": ", "
+		docFieldsGlue: ", "
 	}`
 ]]
 ```
@@ -274,14 +276,14 @@ For example, we are getting something with the Ditto snippet. Into Ditto chunk `
 	[+content+]
 	[[ddGetDocumentField?
 		&dataProviderParams=`{
-			"resourceId": "[+id+]",
-			"resourceFields": "phone"
+			resourceId: "[+id+]"
+			resourceFields: phone
 		}`
 		&outputterParams=`{
-			"tpl": "test_row_phone",
-			"placeholders": {
-				"fax": "[+fax+]",
-				"someTitle": "Call me!"
+			tpl: test_row_phone
+			placeholders: {
+				fax: "[+fax+]"
+				someTitle: Call me!
 			}
 		}`
 	]]
@@ -300,10 +302,10 @@ The `test_row_phone` chunk code:
 ```
 [[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceFields": "pagetitle=title,pub_date=date"
+		resourceFields: pagetitle=title,pub_date=date
 	}`
 	&outputterParams=`{
-		"tpl": "testChunk"
+		tpl: testChunk
 	}`
 ]]
 ```
@@ -320,7 +322,7 @@ The `testChunk` chunk code:
 ```
 [[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceFields": "pagetitle=title,introtext=text,content"
+		resourceFields: pagetitle=title,introtext=text,content
 	}`
 	&outputter=`json`
 ]]
@@ -344,7 +346,7 @@ Let that document `pagetitle` is set and `longtitle` is empty.
 ```
 [[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceFields": "pagetitle,longtitle"
+		resourceFields: pagetitle,longtitle
 	}`
 	&outputter=`json`
 ]]
@@ -364,11 +366,11 @@ If fields with empty values is no needed, just set `outputterParams->removeEmpty
 ```
 [[ddGetDocumentField?
 	&dataProviderParams=`{
-		"resourceFields": "pagetitle,longtitle"
+		resourceFields: pagetitle,longtitle
 	}`
-	&outputter=`json`,
+	&outputter=`json`
 	&outputterParams=`{
-		"removeEmptyFields": true
+		removeEmptyFields: true
 	}`
 ]]
 ```
