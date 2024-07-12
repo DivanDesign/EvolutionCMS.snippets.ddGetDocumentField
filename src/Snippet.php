@@ -233,7 +233,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.1 (2024-07-12)
+	 * @version 1.0.2 (2024-07-12)
 	 * 
 	 * @return {string}
 	 */
@@ -276,11 +276,6 @@ class Snippet extends \DDTools\Snippet {
 		
 		$dataProviderObject = \ddGetDocumentField\DataProvider\DataProvider::createChildInstance([
 			'name' => $this->params->dataProvider,
-			'parentDir' =>
-				$this->paths->src .
-				'DataProvider'
-			,
-			//Passing parameters into constructor
 			'params' => $this->params->dataProviderParams,
 		]);
 		
@@ -289,11 +284,6 @@ class Snippet extends \DDTools\Snippet {
 		
 		$outputterObject = \ddGetDocumentField\Outputter\Outputter::createChildInstance([
 			'name' => $this->params->outputter,
-			'parentDir' =>
-				$this->paths->src .
-				'Outputter'
-			,
-			//Passing parameters into constructor
 			'params' => $this->params->outputterParams,
 		]);
 		
