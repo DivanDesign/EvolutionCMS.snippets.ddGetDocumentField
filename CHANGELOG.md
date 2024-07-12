@@ -1,6 +1,30 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.12 (2024-07-12)
+* \* Parameters → `outputter` → Valid values → `'object'`: Has been renamed from `'json'` (with backward compatibility).
+* \+ OutputterObject → Parameters:
+	* \+ `outputterParams->format`: The new parameter. Allows:
+		* \+ Return result as a native PHP object or array (it is convenient to call through `\DDTools\Snippet::runSnippet`):
+			* \+ `'objectAuto'` — `stdClass` or `array` depends on result object
+			* \+ `'objectStdClass'` — `stdClass`
+			* \+ `'objectArray'` — `array`
+		* \+ Return result as a string:
+			* \+ `'stringJsonAuto'` — `stringJsonObject` or `stringJsonArray` depends on result object
+			* \+ `'stringJsonObject'`
+			* \+ `'stringJsonArray'`
+			* \+ `'stringQueryFormatted'` — [Query string](https://en.wikipedia.org/wiki/Query_string)
+			* \+ `'stringHtmlAttrs'` — HTML attributes string (e. g. `width='100' height='50'`)
+* \* `\ddTools::getTpl` is used instead of `$modx->getTpl` (means a bit less bugs).
+* README:
+	* \* Examples: HJSON is used for all examples.
+	* \+ Links → GitHub.
+* \+ Composer.json:
+	* \+ `support`.
+	* \+ `autoload`.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.60 is required.
+
+
 ## Version 2.11.1 (2021-12-27)
 * \* Attention! (MODX)EvolutionCMS.snippets.ddTypograph >= 2.5 is required.
 * \* Fixed an error when the snippet result is empty.

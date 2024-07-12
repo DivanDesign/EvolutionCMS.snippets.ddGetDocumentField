@@ -3,7 +3,7 @@ namespace ddGetDocumentField;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '2.11.1',
+		$version = '2.12.0',
 		
 		$params = [
 			//Defaults
