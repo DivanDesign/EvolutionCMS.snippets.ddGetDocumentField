@@ -1,6 +1,10 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.13 (2024-07-12)
+* \+ OutputterObject → Parameters → `outputterParams->templates`: The new parameters. Allows you to use templates for some fields. Templates will be used before final conversion of results. So you don't need to care about characters escaping for JSON e. g. See README → Examples.
+
+
 ## Version 2.12 (2024-07-12)
 * \* Parameters → `outputter` → Valid values → `'object'`: Has been renamed from `'json'` (with backward compatibility).
 * \+ OutputterObject → Parameters:

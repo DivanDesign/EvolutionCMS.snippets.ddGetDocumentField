@@ -1,7 +1,7 @@
 <?php
 /** 
  * ddGetDocumentField
- * @version 2.12 (2024-07-12)
+ * @version 2.13 (2024-07-12)
  * 
  * @see README.md
  * 
