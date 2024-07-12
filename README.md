@@ -405,4 +405,4 @@ Returns:
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetdocumentfield)
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
