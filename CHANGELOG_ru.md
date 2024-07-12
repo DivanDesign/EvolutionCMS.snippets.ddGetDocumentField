@@ -1,6 +1,30 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Версия 2.12 (2024-07-12)
+* \* Параметры → `outputter` → Допустимые значения → `'object'`: Переименован из `'json'` (с обратной совместимостью).
+* \+ OutputterObject → Параметры:
+	* \+ `outputterParams->format`: Новый параметр. Позволяет:
+		* \+ Вернуть результат в виде нативного PHP объекта или массива (удобно при вызове через `\DDTools\Snippet::runSnippet`):
+			* \+ `'objectAuto'` — `stdClass` или `array` в зависимости от результата
+			* \+ `'objectStdClass'` — `stdClass`
+			* \+ `'objectArray'` — `array`
+		* \+ Вернуть результат в виде строки:
+			* \+ `'stringJsonAuto'` — `stringJsonObject` или `stringJsonArray` в зависимости от результата
+			* \+ `'stringJsonObject'`
+			* \+ `'stringJsonArray'`
+			* \+ `'stringQueryFormatted'` — [Query string](https://en.wikipedia.org/wiki/Query_string)
+			* \+ `'stringHtmlAttrs'` — строка HTML-атрибутов (например, `width='100' height='50'`)
+* \* `\ddTools::getTpl` используется вместо `$modx->getTpl` (стало чуть меньше багов).
+* \* README:
+	* \* Примеры: HJSON используется для всех примеров.
+	* \+ Ссылки → GitHub.
+* \+ Composer.json:
+	* \+ `support`.
+	* \+ `autoload`.
+* \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.60.
+
+
 ## Версия 2.11.1 (2021-12-27)
 * \* Внимание! Требуется (MODX)EvolutionCMS.snippets.ddTypograph >= 2.5.
 * \* Исправлена ошибка, когда результат сниппета пустой.
@@ -94,5 +118,5 @@
 * \* Результат работы сниппета будет возвращён в любом случае (пустая строка, если пустой результат).
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
 <style>ul{list-style:none;}</style>

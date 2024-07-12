@@ -3,28 +3,28 @@ namespace ddGetDocumentField;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '2.11.1',
+		$version = '2.12.0',
 		
 		$params = [
 			//Defaults
 			'dataProvider' => 'document',
 			'dataProviderParams' => [
-				'resourceFields' => []
+				'resourceFields' => [],
 			],
 			'outputter' => 'string',
 			'outputterParams' => [
 				'resourceFieldsAliases' => [],
-				'emptyResult' => ''
+				'emptyResult' => '',
 			],
 			
 			'mode' => '',
-			'securityFields' => null
+			'securityFields' => null,
 		],
 		
 		$paramsTypes = [
 			'dataProviderParams' => 'objectStdClass',
 			'outputterParams' => 'objectStdClass',
-			'securityFields' => 'objectArray'
+			'securityFields' => 'objectArray',
 		],
 		
 		$renamedParamsCompliance = [
@@ -34,28 +34,28 @@ class Snippet extends \DDTools\Snippet {
 			'outputter' => [
 				'result_outputFormat',
 				'outputFormat',
-				'format'
+				'format',
 			],
 			'result_tpl' => 'tpl',
 			'result_tpl_placeholders' => [
 				'tpl_placeholders',
-				'placeholders'
+				'placeholders',
 			],
 			'result_docFieldsGlue' => 'glue',
 			'result_typography' => [
 				'typographyResult',
 				'typography',
-				'typographing'
+				'typographing',
 			],
 			'result_escapeForJS' => [
 				'escapeResultForJS',
 				'escaping',
-				'screening'
+				'screening',
 			],
 			'result_URLEncode' => [
 				'urlencodeResult',
-				'urlencode'
-			]
+				'urlencode',
+			],
 		]
 	;
 		
@@ -78,7 +78,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams_backwardCompatibility
-	 * @version 1.1.2 (2021-03-24)
+	 * @version 1.2 (2024-07-12)
 	 * 
 	 * @return {void}
 	 */
@@ -90,7 +90,7 @@ class Snippet extends \DDTools\Snippet {
 			'dataProviderParams' => [
 				'resourceId' => 'docId',
 				'resourceFields' => 'docField',
-				'resourceFieldsAlternative' => 'docFieldAlternative'
+				'resourceFieldsAlternative' => 'docFieldAlternative',
 			],
 			'outputterParams' => [
 				'typography' => 'result_typography',
@@ -99,21 +99,21 @@ class Snippet extends \DDTools\Snippet {
 				'emptyResult' => 'result_emptyResult',
 				'tpl' => 'result_tpl',
 				'placeholders' => 'result_tpl_placeholders',
-				'docFieldsGlue' => 'result_docFieldsGlue'
-			]
+				'docFieldsGlue' => 'result_docFieldsGlue',
+			],
 		];
 		
 		foreach (
-			$compilance as
-			$propertyName =>
-			$paramsCompilance
+			$compilance
+			as $propertyName
+			=> $paramsCompilance
 		){
 			//Correct params names
 			$newParams = (object) \ddTools::verifyRenamedParams([
 				'params' => $this->params,
 				'compliance' => $paramsCompilance,
 				//Without log
-				'writeToLog' => false
+				'writeToLog' => false,
 			]);
 			
 			//If something old was set
@@ -123,14 +123,14 @@ class Snippet extends \DDTools\Snippet {
 				$this->params->{$propertyName} = \DDTools\ObjectTools::extend([
 					'objects' => [
 						$this->params->{$propertyName},
-						$newParams
+						$newParams,
 					]
 				]);
 				
 				//Remove outdated snippet params
 				foreach(
-					$paramsCompilance as
-					$oldParamName
+					$paramsCompilance
+					as $oldParamName
 				){
 					if (
 						property_exists(
@@ -148,19 +148,19 @@ class Snippet extends \DDTools\Snippet {
 		
 		//Если задан устаревший параметр «$numericNames»
 		if (
-			isset($this->params->numericNames) &&
-			$this->params->numericNames == '1'
+			isset($this->params->numericNames)
+			&& $this->params->numericNames == '1'
 		){
 			$isLogMessageNeeded = true;
 			
 			foreach (
-				$this->params->dataProviderParams->resourceFields as
-				$fieldNameIndex =>
-				$fieldName
+				$this->params->dataProviderParams->resourceFields
+				as $fieldNameIndex
+				=> $fieldName
 			){
 				$this->params->outputterParams->resourceFieldsAliases[$fieldName] =
-					'field' .
-					$fieldNameIndex
+					'field'
+					. $fieldNameIndex
 				;
 			}
 		}
@@ -169,14 +169,18 @@ class Snippet extends \DDTools\Snippet {
 			$this->params->securityFields = str_replace(
 				[
 					'|',
-					':'
+					':',
 				],
 				[
 					'||',
-					'::'
+					'::',
 				],
 				$this->params->securityFields
 			);
+		}
+		
+		if (strtolower($this->params->outputter) == 'json'){
+			$this->params->outputter = 'object';
 		}
 		
 		if ($isLogMessageNeeded){
@@ -188,7 +192,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams_resourceFieldsAndAliases
-	 * @version 1.0.1 (2021-03-24)
+	 * @version 1.0.2 (2024-07-12)
 	 * 
 	 * @desc Split field names and aliases for data provider and outputter.
 	 * 
@@ -209,8 +213,8 @@ class Snippet extends \DDTools\Snippet {
 				strpos(
 					$this->params->dataProviderParams->resourceFields,
 					'='
-				) !==
-				false
+				)
+				!== false
 			){
 				//Разобьём поля на поля и псевдонимы
 				$this->params->outputterParams->resourceFieldsAliases = \ddTools::explodeAssoc(
@@ -233,12 +237,11 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0 (2021-03-23)
+	 * @version 1.0.4 (2024-07-12)
 	 * 
-	 * @return {string}
+	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	public function run(){
-		//The snippet must return an empty string even if result is absent
 		$result = $this->params->outputterParams->emptyResult;
 		
 		//Если данные нужно получать аяксом
@@ -246,7 +249,7 @@ class Snippet extends \DDTools\Snippet {
 			$this->params->dataProviderParams->resourceId = intval($_REQUEST['id']);
 			
 			//Если заданы поля для проверки безопасности
-			if (!empty($this->params->securityFields)){
+			if (!\ddTools::isEmpty($this->params->securityFields)){
 				//Получаем значения полей безопасности у конкретного документа
 				//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
 				$docSecurityFields = \ddTools::getTemplateVarOutput(
@@ -256,17 +259,17 @@ class Snippet extends \DDTools\Snippet {
 				
 				//Если по каким-то причинам ничего не получили — прерываем
 				if (
-					!$docSecurityFields ||
-					count($docSecurityFields) == 0
+					!$docSecurityFields
+					|| count($docSecurityFields) == 0
 				){
 					return $result;
 				}
 				
 				//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
 				foreach (
-					$docSecurityFields as
-					$key =>
-					$val
+					$docSecurityFields
+					as $key
+					=> $val
 				){
 					if ($val != $this->params->securityFields[$key]){
 						return $result;
@@ -277,12 +280,7 @@ class Snippet extends \DDTools\Snippet {
 		
 		$dataProviderObject = \ddGetDocumentField\DataProvider\DataProvider::createChildInstance([
 			'name' => $this->params->dataProvider,
-			'parentDir' =>
-				$this->paths->src .
-				'DataProvider'
-			,
-			//Passing parameters into constructor
-			'params' => $this->params->dataProviderParams
+			'params' => $this->params->dataProviderParams,
 		]);
 		
 		//Save the data provider object in outputter for possibility to add fields to get
@@ -290,12 +288,7 @@ class Snippet extends \DDTools\Snippet {
 		
 		$outputterObject = \ddGetDocumentField\Outputter\Outputter::createChildInstance([
 			'name' => $this->params->outputter,
-			'parentDir' =>
-				$this->paths->src .
-				'Outputter'
-			,
-			//Passing parameters into constructor
-			'params' => $this->params->outputterParams
+			'params' => $this->params->outputterParams,
 		]);
 		
 		$result = $outputterObject->render($dataProviderObject->get());

@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddgetdocumentfield",
 	"type": "modxevo-snippet",
-	"version": "2.11.1",
+	"version": "2.12.0",
 	"description": "Snippet gets the necessary document fields (and TVs) by its id.",
 	"keywords": [
 		"modx",
@@ -17,24 +17,26 @@
 		"ddgetdocumentfield",
 		"get document field"
 	],
-	"homepage": "https://code.divandesign.biz/modx/ddgetdocumentfield",
+	"homepage": "https://code.divandesign.ru/modx/ddgetdocumentfield",
+	"support": {
+		"chat": "https://t.me/dd_code"
+	},
 	"authors": [
-		{
-			"name": "DD Group",
-			"email": "code@DivanDesign.biz",
-			"homepage": "https://code.divandesign.biz",
-			"role": "Owner"
-		},
 		{
 			"name": "Ilyas Ronef",
 			"email": "ilyas@DivanDesign.ru",
 			"homepage": "https://ronef.ru",
-			"role": "Developer"
+			"role": "Owner"
 		}
 	],
 	"require": {
 		"php": ">=5.6.0",
-		"dd/evolutioncms-libraries-ddtools": ">=0.48.0",
+		"dd/evolutioncms-libraries-ddtools": ">=0.60.0",
 		"dd/evolutioncms-snippets-ddtypograph": ">=2.5.0"
+	}	,
+	"autoload": {
+		"psr-4": {
+			"ddGetDocumentField\\": "src/"
+		}
 	}
 }

@@ -11,16 +11,16 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2020-04-24)
+	 * @version 1.0.2 (2024-07-12)
 	 */
 	public function __construct($params){
 		$params = (object) $params;
 		
 		if (!empty($params->tpl)){
-			$params->tpl = \ddTools::$modx->getTpl($params->tpl);
+			$params->tpl = \ddTools::getTpl($params->tpl);
 			
 			$params->resourceFields = \ddTools::getPlaceholdersFromText([
-				'text' => $params->tpl
+				'text' => $params->tpl,
 			]);
 		}
 		
@@ -32,7 +32,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.0.2 (2024-07-12)
 	 * 
 	 * @return {string}
 	 */
@@ -42,18 +42,18 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 		//Если задан шаблон
 		if (!empty($this->tpl)){
 			//Если есть дополнительные данные
-			if (!empty($this->placeholders)){
+			if (!\ddTools::isEmpty($this->placeholders)){
 				$resourceData = \DDTools\ObjectTools::extend([
 					'objects' => [
 						$resourceData,
-						$this->placeholders
-					]
+						$this->placeholders,
+					],
 				]);
 			}
 			
 			$result = \ddTools::parseText([
 				'text' => $this->tpl,
-				'data' => $resourceData
+				'data' => $resourceData,
 			]);
 		}else{
 			//TODO: При необходимости надо будет обработать удаление пустых значений

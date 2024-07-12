@@ -45,12 +45,12 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render
-	 * @version 1.0.1 (2021-12-27)
+	 * @version 1.1 (22024-07-12)
 	 * 
 	 * @param $resourceData {stdClass|arrayAssociative} — Resources fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
 	 * 
-	 * @return {string}
+	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	public final function render($resourceData){
 		$result = $this->emptyResult;
@@ -66,23 +66,32 @@ abstract class Outputter extends \DDTools\BaseClass {
 			$result = $this->render_main($resourceData);
 			
 			//Typography
-			if ($this->typography){
+			if (
+				$this->typography
+				&& is_string($result)
+			){
 				$result = \DDTools\Snippet::runSnippet([
 					'name' => 'ddTypograph',
 					'params' => [
-						'text' => $result
-					]
+						'text' => $result,
+					],
 				]);
 			}
 		}
 		
 		//Если надо экранировать спец. символы
-		if ($this->escapeForJS){
+		if (
+			$this->escapeForJS
+			&& is_string($result)
+		){
 			$result = \ddTools::escapeForJS($result);
 		}
 		
 		//Если нужно URL-кодировать строку
-		if ($this->URLEncode){
+		if (
+			$this->URLEncode
+			&& is_string($result)
+		){
 			$result = rawurlencode($result);
 		}
 		
@@ -91,7 +100,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_resourceDataApplyAliases
-	 * @version 1.0.3 (2021-12-27)
+	 * @version 1.0.4 (2024-07-12)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -105,14 +114,14 @@ abstract class Outputter extends \DDTools\BaseClass {
 			$result = new \stdClass();
 			
 			foreach (
-				$resourceData as
-				$fieldName =>
-				$fieldValue
+				$resourceData
+				as $fieldName
+				=> $fieldValue
 			){
 				if (
 					//IF alias for field is set
-					isset($this->resourceFieldsAliases->{$fieldName}) &&
-					trim($this->resourceFieldsAliases->{$fieldName}) != ''
+					isset($this->resourceFieldsAliases->{$fieldName})
+					&& trim($this->resourceFieldsAliases->{$fieldName}) != ''
 				){
 					$fieldName = $this->resourceFieldsAliases->{$fieldName};
 				}
@@ -129,12 +138,12 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_main
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.1 (2024-07-12)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
 	 * 
-	 * @return {string}
+	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	protected abstract function render_main($resourceData);
 }
