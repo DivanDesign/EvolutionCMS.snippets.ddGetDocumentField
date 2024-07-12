@@ -161,7 +161,7 @@ require_once(
 	* **Required**
 	
 * `outputterParams->placeholders`
-	* Description: Additional data has to be passed into `result_tpl`.
+	* Description: Additional data has to be passed into `outputterParams->tpl`.
 		
 		Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
 		
@@ -267,7 +267,7 @@ require_once(
 
 ### Additional data into result chunk
 
-For example, we are getting something with the Ditto snippet. Into Ditto chunk `result_tpl` we need to get phone number & fax, if phone is not empty or nothing. Chunk code:
+For example, we are getting something with the Ditto snippet. Into Ditto chunk `outputterParams->tpl` we need to get phone number & fax, if phone is not empty or nothing. Chunk code:
 
 ```html
 <div class="test_row">
