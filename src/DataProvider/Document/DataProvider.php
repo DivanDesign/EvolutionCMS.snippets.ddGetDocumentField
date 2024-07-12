@@ -33,7 +33,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 1.0.6 (2021-12-27)
+	 * @version 1.0.7 (2024-07-12)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -49,8 +49,8 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 					'id',
 					$resourceFields
 				)
-			) !==
-			false
+			)
+			!== false
 		){
 			//Удалим его, чтобы наличие результата от него не зависило (id ж ведь всегда есть)
 			unset($resourceFields[$resourceFields_idIndex]);
@@ -74,22 +74,22 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		
 		//Перебираем полученные результаты, заполняем пустоту альтернативой, если есть
 		foreach (
-			$this->resourceFields as
-			$fieldIndex =>
-			$fieldName
+			$this->resourceFields
+			as $fieldIndex
+			=> $fieldName
 		){
 			if (
 				\DDTools\ObjectTools::isPropExists([
 					'object' => $resourceDataAll,
-					'propName' => $fieldName
+					'propName' => $fieldName,
 				])
 			){
 				if (
 					//Если значение поля пустое
-					$resourceDataAll[$fieldName] == '' &&
+					$resourceDataAll[$fieldName] == ''
 					//Но, возможно, имеется альтернатива
-					!empty($this->resourceFieldsAlternative) &&
-					isset($this->resourceFieldsAlternative[$fieldIndex])
+					&& !empty($this->resourceFieldsAlternative)
+					&& isset($this->resourceFieldsAlternative[$fieldIndex])
 				){
 					//В качестве значения берём значение альтернативного поля
 					$resourceDataAll[$fieldName] = $resourceDataAll[
@@ -115,14 +115,14 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 					array_search(
 						'url',
 						$this->resourceFields
-					) !==
-					false
-				) &&
-				(
+					)
+					!== false
+				)
+				&& (
 					//И если такого поля нет
-					!isset($resourceDataResult->url) ||
+					!isset($resourceDataResult->url)
 					//Или оно пусто (а то мало ли, как TV назвали)
-					trim($resourceDataResult->url) == ''
+					|| trim($resourceDataResult->url) == ''
 				)
 			){
 				$resourceDataResult->url = \ddTools::$modx->makeUrl($this->resourceId);

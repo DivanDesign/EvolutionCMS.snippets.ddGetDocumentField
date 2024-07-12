@@ -9,7 +9,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.2.1 (2020-05-10)
+	 * @version 1.2.2 (2024-07-12)
 	 * 
 	 * @return {stringJsonObject}
 	 */
@@ -17,9 +17,9 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 		//Remove resource fields with empty values
 		if ($this->removeEmptyFields){
 			foreach (
-				$resourceData as
-				$fieldName =>
-				$fieldValue
+				$resourceData
+				as $fieldName
+				=> $fieldValue
 			){
 				if ($fieldValue == ''){
 					unset($resourceData->{$fieldName});

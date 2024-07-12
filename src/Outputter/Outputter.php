@@ -45,7 +45,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render
-	 * @version 1.0.1 (2021-12-27)
+	 * @version 1.0.2 (22024-07-12)
 	 * 
 	 * @param $resourceData {stdClass|arrayAssociative} — Resources fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -70,8 +70,8 @@ abstract class Outputter extends \DDTools\BaseClass {
 				$result = \DDTools\Snippet::runSnippet([
 					'name' => 'ddTypograph',
 					'params' => [
-						'text' => $result
-					]
+						'text' => $result,
+					],
 				]);
 			}
 		}
@@ -91,7 +91,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_resourceDataApplyAliases
-	 * @version 1.0.3 (2021-12-27)
+	 * @version 1.0.4 (2024-07-12)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -105,14 +105,14 @@ abstract class Outputter extends \DDTools\BaseClass {
 			$result = new \stdClass();
 			
 			foreach (
-				$resourceData as
-				$fieldName =>
-				$fieldValue
+				$resourceData
+				as $fieldName
+				=> $fieldValue
 			){
 				if (
 					//IF alias for field is set
-					isset($this->resourceFieldsAliases->{$fieldName}) &&
-					trim($this->resourceFieldsAliases->{$fieldName}) != ''
+					isset($this->resourceFieldsAliases->{$fieldName})
+					&& trim($this->resourceFieldsAliases->{$fieldName}) != ''
 				){
 					$fieldName = $this->resourceFieldsAliases->{$fieldName};
 				}

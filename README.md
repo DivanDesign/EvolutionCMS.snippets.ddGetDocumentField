@@ -393,9 +393,9 @@ Returns:
 		//Can be set as native PHP array
 		'dataProviderParams' => [
 			'resourceId' => 42,
-			'resourceFields' => 'pagetitle,question'
-		]
-	]
+			'resourceFields' => 'pagetitle,question',
+		],
+	],
 ]);
 ```
 
