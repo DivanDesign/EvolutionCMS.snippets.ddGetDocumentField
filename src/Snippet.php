@@ -237,9 +237,9 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.3 (2024-07-12)
+	 * @version 1.0.4 (2024-07-12)
 	 * 
-	 * @return {string}
+	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	public function run(){
 		$result = $this->params->outputterParams->emptyResult;

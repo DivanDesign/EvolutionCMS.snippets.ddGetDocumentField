@@ -4,12 +4,13 @@ namespace ddGetDocumentField\Outputter\Object;
 
 class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	private
-		$removeEmptyFields = false
+		$removeEmptyFields = false,
+		$format = 'stringJsonAuto'
 	;
 	
 	/**
 	 * render_main
-	 * @version 1.2.2 (2024-07-12)
+	 * @version 1.3 (2024-07-12)
 	 * 
 	 * @return {stringJsonObject}
 	 */
@@ -27,10 +28,9 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 			}
 		}
 		
-		return json_encode(
-			$resourceData,
-			//JSON_UNESCAPED_UNICODE — Не кодировать многобайтные символы Unicode | JSON_UNESCAPED_SLASHES — Не экранировать /
-			JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-		);
+		return \DDTools\ObjectTools::convertType([
+			'object' => $resourceData,
+			'type' => $this->format,
+		]);
 	}
 }

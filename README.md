@@ -180,6 +180,22 @@ require_once(
 	* Description: Remove resource fields with empty values (`''`) from result.
 	* Valid values: `boolean`
 	* Default value: `false`
+	
+* `outputterParams->format`
+	* Description: Output format.  
+		Values are case insensitive (the following values are equal: `'stringjsonauto'`, `'stringJsonAuto'`, `'STRINGJSONAUTO'`, etc).
+	* Valid values:
+		* The snippet can return result as a string:
+			* `'stringJsonAuto'` — `stringJsonObject` or `stringJsonArray` depends on result object
+			* `'stringJsonObject'`
+			* `'stringJsonArray'`
+			* `'stringQueryFormatted'` — [Query string](https://en.wikipedia.org/wiki/Query_string)
+			* `'stringHtmlAttrs'` — HTML attributes string (e. g. `width='100' height='50'`)
+		* The snippet can also return result as a native PHP object or array (it is convenient to call through `\DDTools\Snippet::runSnippet`).
+			* `'objectAuto'` — `stdClass` or `array` depends on result object
+			* `'objectStdClass'` — `stdClass`
+			* `'objectArray'` — `array`
+	* Default value: `'stringJsonAuto'`
 
 
 ### Other parameters
@@ -384,6 +400,31 @@ Returns:
 ```
 
 
+### Return resource fields as a JSON array
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		resourceFields: pagetitle,longtitle
+	}`
+	&outputter=`object`
+	&outputterParams=`{
+		format: stringJsonArray
+	}`
+]]
+```
+
+Returns:
+
+```json
+[
+	"The title of a document",
+	"The long title of a document"
+]
+```
+
+
+
 ### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
@@ -397,6 +438,33 @@ Returns:
 		],
 	],
 ]);
+```
+
+
+### Return resource fields as a native PHP array
+
+```php
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddGetDocumentField',
+	'params' => [
+		'dataProviderParams' => [
+			'resourceId' => 42,
+			'resourceFields' => 'pagetitle,question',
+		],
+		'outputterParams' => [
+			'format' => 'objectArray',
+		],
+	],
+]);
+```
+
+Returns:
+
+```php
+array(
+	'pagetitle' => 'The title of a document',
+	'question' => 'What is the meaning of life?',
+)
 ```
 
 

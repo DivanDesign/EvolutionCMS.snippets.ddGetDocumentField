@@ -45,12 +45,12 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render
-	 * @version 1.0.2 (22024-07-12)
+	 * @version 1.1 (22024-07-12)
 	 * 
 	 * @param $resourceData {stdClass|arrayAssociative} — Resources fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
 	 * 
-	 * @return {string}
+	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	public final function render($resourceData){
 		$result = $this->emptyResult;
@@ -66,7 +66,10 @@ abstract class Outputter extends \DDTools\BaseClass {
 			$result = $this->render_main($resourceData);
 			
 			//Typography
-			if ($this->typography){
+			if (
+				$this->typography
+				&& is_string($result)
+			){
 				$result = \DDTools\Snippet::runSnippet([
 					'name' => 'ddTypograph',
 					'params' => [
@@ -77,12 +80,18 @@ abstract class Outputter extends \DDTools\BaseClass {
 		}
 		
 		//Если надо экранировать спец. символы
-		if ($this->escapeForJS){
+		if (
+			$this->escapeForJS
+			&& is_string($result)
+		){
 			$result = \ddTools::escapeForJS($result);
 		}
 		
 		//Если нужно URL-кодировать строку
-		if ($this->URLEncode){
+		if (
+			$this->URLEncode
+			&& is_string($result)
+		){
 			$result = rawurlencode($result);
 		}
 		
@@ -129,12 +138,12 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_main
-	 * @version 1.0 (2020-04-25)
+	 * @version 1.1 (2024-07-12)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
 	 * 
-	 * @return {string}
+	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	protected abstract function render_main($resourceData);
 }
