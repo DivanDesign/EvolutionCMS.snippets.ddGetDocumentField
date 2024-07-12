@@ -60,41 +60,41 @@ require_once(
 ### Data provider parameters
 
 * `dataProviderParams`
-	* Desctription: Parameters to be passed to the provider.
+	* Description: Parameters to be passed to the provider.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
-		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
 	
 * `dataProviderParams->resourceId`
-	* Desctription: Document identifier.
+	* Description: Document identifier.
 	* Valid values: `integer`
 	* Default value: `$modx->documentIdentifier` (current document)
 	
 * `dataProviderParams->resourceFields`
-	* Desctription: Document field(s) to get separated by commas.  
+	* Description: Document field(s) to get separated by commas.  
 		If the parameter is empty, the snippet will try to search fields in `outputterParams->tpl` (something like `[+docField+]`).
 	* Valid values: `stringCommaSeparated`
 	* Default value: —
 	
 * `dataProviderParams->resourceFields[i]`
-	* Desctription: Fields and their aliases must be separated by `'='` if aliases are required while returning the results (for example: `'pagetitle=title,content=text'`).
+	* Description: Fields and their aliases must be separated by `'='` if aliases are required while returning the results (for example: `'pagetitle=title,content=text'`).
 	* Valid values:
 		* `string` — document field
 		* `stringSeparated` — document field and it's alias
 	* **Required**
 	
 * `dataProviderParams->resourceFieldsAlternative`
-	* Desctription: Alternative document field(s) to get if the main is empty separated by commas.
+	* Description: Alternative document field(s) to get if the main is empty separated by commas.
 	* Valid values: `stringCommaSeparated`
 	* Default value: —
 	
 * `dataProviderParams->resourceFieldsAlternative[i]`
-	* Desctription: Document field.
+	* Description: Document field.
 	* Valid values: `string`
 	* **Required**
 
@@ -102,46 +102,46 @@ require_once(
 ### Output format parameters
 
 * `outputter`
-	* Desctription: Format of the output.
+	* Description: Format of the output.
 	* Valid values:
 		* `'string'`
 		* `'json'`
 	* Default value: `'string'`
 	
 * `outputterParams`
-	* Desctription: Parameters to be passed to the specified outputter.
+	* Description: Parameters to be passed to the specified outputter.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
-		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
 	
 * `outputterParams->typography`
-	* Desctription: Need to typography result?
+	* Description: Need to typography result?
 	* Valid values:
 		* `0`
 		* `1`
 	* Default value: `0`
 	
 * `outputterParams->escapeForJS`
-	* Desctription: Need to escape special characters from result?
+	* Description: Need to escape special characters from result?
 	* Valid values:
 		* `0`
 		* `1`
 	* Default value: `0`
 	
 * `outputterParams->URLEncode`
-	* Desctription: Need to URL-encode result string?
+	* Description: Need to URL-encode result string?
 	* Valid values:
 		* `0`
 		* `1`
 	* Default value: `0`
 	
 * `outputterParams->emptyResult`
-	* Desctription: What will be returned if the snippet result is empty?
+	* Description: What will be returned if the snippet result is empty?
 	* Valid values: `string`
 	* Default value: `''`
 
@@ -149,7 +149,7 @@ require_once(
 #### Outputter → String (``&outputter=`string` ``)
 
 * `outputterParams->tpl`
-	* Desctription: Chunk to parse result.
+	* Description: Chunk to parse result.
 		
 		Available placeholders:
 		* `[+anyNameFromDocFieldParameter+]` — Any document field (or TV).
@@ -161,7 +161,7 @@ require_once(
 	* **Required**
 	
 * `outputterParams->placeholders`
-	* Desctription: Additional data has to be passed into `result_tpl`.
+	* Description: Additional data has to be passed into `result_tpl`.
 		
 		Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
 		
@@ -169,7 +169,7 @@ require_once(
 	* Default value: —
 	
 * `outputterParams->docFieldsGlue`
-	* Desctription: String for join the fields (if `outputterParams->tpl` is not used).
+	* Description: String for join the fields (if `outputterParams->tpl` is not used).
 	* Valid values: `string`
 	* Default value: `''`
 
@@ -177,7 +177,7 @@ require_once(
 #### Outputter → JSON (``&outputter=`json` ``)
 
 * `outputterParams->removeEmptyFields`
-	* Desctription: Remove resource fields with empty values (`''`) from result.
+	* Description: Remove resource fields with empty values (`''`) from result.
 	* Valid values: `boolean`
 	* Default value: `false`
 
@@ -185,18 +185,18 @@ require_once(
 ### Other parameters
 
 * `mode`
-	* Desctription: Mode.
+	* Description: Mode.
 	* Valid values:
 		* `''` — default mode
 		* `'ajax'` — `docId` gets from the `$_REQUEST['id']`. Use the `securityFields` param in this case!
 	* Default value: `''`
 	
 * `securityFields`
-	* Desctription: The fields for security verification.
+	* Description: The fields for security verification.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) (e. g. `{"template": 15, "published": 1}`)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
-		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
 		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
