@@ -451,6 +451,7 @@ Returns:
 			'resourceId' => 42,
 			'resourceFields' => 'pagetitle,question',
 		],
+		'outputter' => 'object',
 		'outputterParams' => [
 			'format' => 'objectArray',
 		],
