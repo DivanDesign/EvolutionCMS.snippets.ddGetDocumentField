@@ -17,12 +17,18 @@ abstract class Outputter extends \DDTools\BaseClass {
 		$typography = false,
 		$escapeForJS = false,
 		$URLEncode = false,
-		$emptyResult = ''
+		$emptyResult = '',
+		
+		/**
+		 * @property $templates {\stdClass}
+		 * @property $templates->{$templateName} {string}
+		 */
+		$templates = []
 	;
 	
 	/**
 	 * __construct
-	 * @version 1.1 (2020-04-26)
+	 * @version 1.2 (2024-07-12)
 	 * 
 	 * @param $params {stdClass|arrayAssociative}
 	 * @param $params->dataProvider {\ddGetDocumentField\DataProvider\DataProvider}
@@ -41,6 +47,18 @@ abstract class Outputter extends \DDTools\BaseClass {
 		
 		//Ask dataProvider to get them
 		$params->dataProvider->addResourceFields($this->resourceFields);
+		
+		$this->templates = (object) $this->templates;
+		
+		if (!\ddTools::isEmpty($this->templates)){
+			foreach (
+				$this->templates
+				as $templateName
+				=> $templateValue
+			){
+				$this->templates->{$templateName} = \ddTools::getTpl($templateValue);
+			}
+		}
 	}
 	
 	/**

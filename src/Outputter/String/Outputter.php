@@ -4,6 +4,7 @@ namespace ddGetDocumentField\Outputter\String;
 
 class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	private
+	//TODO: Use $templates instead
 		$tpl = '',
 		$placeholders = [],
 		$docFieldsGlue = ''

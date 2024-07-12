@@ -10,20 +10,45 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.3 (2024-07-12)
+	 * @version 1.4 (2024-07-12)
 	 * 
 	 * @return {stringJsonObject}
 	 */
 	public function render_main($resourceData){
-		//Remove resource fields with empty values
-		if ($this->removeEmptyFields){
+		//If we need to prepare some fields
+		if (
+			$this->removeEmptyFields
+			|| !\ddTools::isEmpty($this->templates)
+		){
 			foreach (
 				$resourceData
 				as $fieldName
 				=> $fieldValue
 			){
-				if ($fieldValue == ''){
+				//Remove resource fields with empty values
+				if (
+					$this->removeEmptyFields
+					&& $fieldValue == ''
+				){
 					unset($resourceData->{$fieldName});
+				//If template for this field is set
+				}elseif (
+					\DDTools\ObjectTools::isPropExists([
+						'object' => $this->templates,
+						'propName' => $fieldName
+					])
+				){
+					$resourceData->{$fieldName} = \ddTools::parseText([
+						'text' => $this->templates->{$fieldName},
+						'data' => \DDTools\ObjectTools::extend([
+							'objects' => [
+								$resourceData,
+								[
+									'value' => $fieldValue
+								]
+							]
+						])
+					]);
 				}
 			}
 		}

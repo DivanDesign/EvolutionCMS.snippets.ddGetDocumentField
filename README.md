@@ -42,7 +42,7 @@ require_once(
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddGetDocumentField`.
-2. Description: `<b>2.12</b> Snippet gets the necessary document fields (and TVs) by its id.`.
+2. Description: `<b>2.13</b> Snippet gets the necessary document fields (and TVs) by its id.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddGetDocumentField_snippet.php` file from the archive.
@@ -196,6 +196,26 @@ require_once(
 			* `'objectStdClass'` — `stdClass`
 			* `'objectArray'` — `array`
 	* Default value: `'stringJsonAuto'`
+	
+* `outputterParams->templates`
+	* Desctription: Output templates.
+	* Valid values: `object`
+	* Default value: —
+	
+* `outputterParams->templates->{$docFieldName}`
+	* Desctription:
+		You can use templates for some fields.  
+		Templates will be used before final conversion of results. So you don't need to care about characters escaping for JSON e. g.  
+		
+		It is useful for manipulations with doc field values through running snippets.  
+		
+		Available placeholders:
+		* `[+value+]` — the field value
+		* `[+`any document field or tv name`+]` — any name/alias of document field or TV specified in `dataProviderParams->resourceFields`
+	* Valid values:
+		* `stringChunkName`
+		* `string` — use inline templates starting with `@CODE:`
+	* **Required**
 
 
 ### Other parameters
@@ -424,6 +444,35 @@ Returns:
 ```
 
 
+### Use templates for fields in JSON
+
+```
+[[ddGetDocumentField?
+	&dataProviderParams=`{
+		resourceFields: pagetitle,id=link
+	}`
+	&outputter=`object`
+	&outputterParams=`{
+		templates: {
+			pagetitle: <h1>[+value+]</h1>
+			link:
+				'''
+				<a href="[~[+value+]~]">[+pagetitle+]</a>
+				'''
+		}
+	}`
+]]
+```
+
+Returns:
+
+```json
+{
+	"pagetitle": "<h1>KINO</h1>",
+	"link": "<a href=\"bands/timeless/kino\">KINO</a>"
+}
+```
+
 
 ### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
@@ -451,6 +500,7 @@ Returns:
 			'resourceId' => 42,
 			'resourceFields' => 'pagetitle,question',
 		],
+		'outputter' => 'object',
 		'outputterParams' => [
 			'format' => 'objectArray',
 		],
