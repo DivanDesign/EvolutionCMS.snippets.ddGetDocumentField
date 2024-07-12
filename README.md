@@ -403,6 +403,7 @@ Returns:
 * [Home page](https://code.divandesign.biz/modx/ddgetdocumentfield)
 * [Telegram chat](https://t.me/dd_code)
 * [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddgetdocumentfield)
+* [GitHub](https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetDocumentField)
 
 
 <link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
