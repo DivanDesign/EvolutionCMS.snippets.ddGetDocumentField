@@ -65,7 +65,7 @@ require_once(
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
-		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
+		* It can also be set as a native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
@@ -76,10 +76,11 @@ require_once(
 	* Default value: `$modx->documentIdentifier` (current document)
 	
 * `dataProviderParams->resourceFields`
-	* Description: Document field(s) to get separated by commas.  
-		If the parameter is empty, the snippet will try to search fields in `outputterParams->tpl` (something like `[+docField+]`).
-	* Valid values: `stringCommaSeparated`
-	* Default value: —
+	* Description: Document field(s) to get separated by commas.
+	* Valid values:
+		* `stringCommaSeparated`
+		* `''` — if the parameter is empty, the snippet will try to search fields in `outputterParams->tpl` (something like `[+docField+]`).
+	* Default value: `''`
 	
 * `dataProviderParams->resourceFields[i]`
 	* Description: Fields and their aliases must be separated by `'='` if aliases are required while returning the results (for example: `'pagetitle=title,content=text'`).
@@ -114,7 +115,7 @@ require_once(
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
-		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
+		* It can also be set as a native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
@@ -145,11 +146,9 @@ require_once(
 
 * `outputterParams->tpl`
 	* Description: Chunk to parse result.
-		
-		Available placeholders:
-		* `[+anyNameFromDocFieldParameter+]` — Any document field (or TV).
-		* `[+url+]` — Document URL.
-		
+		* Available placeholders:
+			* `[+anyNameFromDocFieldParameter+]` — Any document field (or TV).
+			* `[+url+]` — Document URL.
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
@@ -157,9 +156,7 @@ require_once(
 	
 * `outputterParams->placeholders`
 	* Description: Additional data has to be passed into `outputterParams->tpl`.
-		
-		Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
-		
+		* Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
 	* Valid values: `object`
 	* Default value: —
 	
@@ -182,8 +179,8 @@ require_once(
 	* Default value: `false`
 	
 * `outputterParams->format`
-	* Description: Output format.  
-		Values are case insensitive (the following values are equal: `'stringjsonauto'`, `'stringJsonAuto'`, `'STRINGJSONAUTO'`, etc).
+	* Description: Output format.
+		* Values are case insensitive (the following values are equal: `'stringjsonauto'`, `'stringJsonAuto'`, `'STRINGJSONAUTO'`, etc).
 	* Valid values:
 		* The snippet can return result as a string:
 			* `'stringJsonAuto'` — `stringJsonObject` or `stringJsonArray` depends on result object
@@ -203,15 +200,12 @@ require_once(
 	* Default value: —
 	
 * `outputterParams->templates->{$docFieldName}`
-	* Desctription:
-		You can use templates for some fields.  
-		Templates will be used before final conversion of results. So you don't need to care about characters escaping for JSON e. g.  
-		
-		It is useful for manipulations with doc field values through running snippets.  
-		
-		Available placeholders:
-		* `[+value+]` — the field value
-		* `[+`any document field or tv name`+]` — any name/alias of document field or TV specified in `dataProviderParams->resourceFields`
+	* Desctription: You can use templates for some fields.
+		* Templates will be used before final conversion of results. So you don't need to care about characters escaping for JSON e. g.
+		* It is useful for manipulations with doc field values through running snippets.
+		* Available placeholders:
+			* `[+value+]` — the field value
+			* `[+`any document field or tv name`+]` — any name/alias of document field or TV specified in `dataProviderParams->resourceFields`
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
@@ -247,7 +241,7 @@ require_once(
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) (e. g. `{"template": 15, "published": 1}`)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string) (e. g. `template=15&published=1`)
-		* It can also be set as native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
+		* It can also be set as a native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
@@ -494,7 +488,7 @@ Returns:
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddGetDocumentField',
 	'params' => [
-		//Can be set as native PHP array
+		//Can be set as a native PHP array
 		'dataProviderParams' => [
 			'resourceId' => 42,
 			'resourceFields' => 'pagetitle,question',
