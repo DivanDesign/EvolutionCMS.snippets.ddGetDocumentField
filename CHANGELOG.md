@@ -1,6 +1,11 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.14 (2024-07-13)
+
+* \+ OutputterObject → Parameters → `outputterParams->emptyResult`: Regardless of the type in which the parameter is set, the result will always be converted to `outputterParams->format`. So you no longer need to define this parameter if you just want an empty object.
+
+
 ## Version 2.13 (2024-07-12)
 
 * \+ OutputterObject → Parameters → `outputterParams->templates`: The new parameters. Allows you to use templates for some fields. Templates will be used before final conversion of results. So you don't need to care about characters escaping for JSON e. g. See README → Examples.
