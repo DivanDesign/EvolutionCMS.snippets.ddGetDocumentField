@@ -1,11 +1,18 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Version 2.14 (2024-07-13)
+
+* \+ OutputterObject → Parameters → `outputterParams->emptyResult`: Regardless of the type in which the parameter is set, the result will always be converted to `outputterParams->format`. So you no longer need to define this parameter if you just want an empty object.
+
+
 ## Version 2.13 (2024-07-12)
+
 * \+ OutputterObject → Parameters → `outputterParams->templates`: The new parameters. Allows you to use templates for some fields. Templates will be used before final conversion of results. So you don't need to care about characters escaping for JSON e. g. See README → Examples.
 
 
 ## Version 2.12 (2024-07-12)
+
 * \* Parameters → `outputter` → Valid values → `'object'`: Has been renamed from `'json'` (with backward compatibility).
 * \+ OutputterObject → Parameters:
 	* \+ `outputterParams->format`: The new parameter. Allows:
@@ -30,6 +37,7 @@
 
 
 ## Version 2.11.1 (2021-12-27)
+
 * \* Attention! (MODX)EvolutionCMS.snippets.ddTypograph >= 2.5 is required.
 * \* Fixed an error when the snippet result is empty.
 * \* `\DDTools\Snippet::runSnippet` is used to run ddTypograph without DB and eval.
@@ -37,6 +45,7 @@
 
 
 ## Version 2.11 (2021-03-26)
+
 * \* Attention! PHP >= 5.6 is required.
 * \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.48 is required.
 * \+ You can just call `\DDTools\Snippet::runSnippet` to run the snippet without DB and eval (see README → Examples).
@@ -47,20 +56,24 @@
 
 
 ## Version 2.10.5 (2020-09-29)
+
 * \* `\ddGetDocumentField\DataProvider\Document\DataProvider::get`: Returns only existing resource fields.
 * \* Refactoring (MODX)Evolution.libraries.ddTools including.
 
 
 ## Version 2.10.4 (2020-09-29)
+
 * \* `\ddGetDocumentField\DataProvider\Document\DataProvider::get`: Fixed wrong outputting of alternative resource fields.
 * \+ README → Links.
 
 
 ## Version 2.10.3 (2020-07-05)
+
 * \* `\ddGetDocumentField\Input::paramsBackwardCompatibility`: Fixed wrong CMS event logging.
 
 
 ## Version 2.10.2 (2020-05-11)
+
 * \* Snippet → Parameters → `removeEmptyFields`: Only empty strings (`''`) are considered as “empty”.
 * \* Composer.json:
 	* \+ `homepage`.
@@ -71,10 +84,12 @@
 
 
 ## Version 2.10.1 (2020-04-26)
+
 * \* `\ddGetDocumentField\Outputter\Outputter::render_resourceDataApplyAliases`: Fixed working when field aliases are empty or not set for some fields.
 
 
 ## Version 2.10 (2020-04-25)
+
 * \* Attention! EvolutionCMS.libraries.ddTools >= 0.32 is required.
 * \* The snippet structure completely revised (with backward compatibility), see README.md.
 * \* Snippet: The following parameters were renamed (with backward compatibility):
@@ -97,6 +112,7 @@
 
 
 ## Version 2.9 (2020-04-23)
+
 * \+ Parameters → `result_emptyResult`. What will be returned if the snippet result is empty?
 * \* Parameters → `docField[i]`: Separator between field name and alias changed from `'::'` to `'='` (with backward compatibility).
 * \* Improved messages style for CMS event log.
@@ -106,6 +122,7 @@
 
 
 ## Version 2.8 (2018-12-26)
+
 * \* Attention! MODXEvo.library.ddTools >= 0.20 is required.
 * \* The following parameters were renamed (with backward compatibility):
 	* \* `id` → `docId`.

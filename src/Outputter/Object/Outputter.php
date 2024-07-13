@@ -53,9 +53,23 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 			}
 		}
 		
-		return \DDTools\ObjectTools::convertType([
-			'object' => $resourceData,
+		return $resourceData;
+	}
+	
+	/**
+	 * render_finish
+	 * @version 1.0 (2024-07-13)
+	 * 
+	 * @param $result {string|\stdClass|arrayAssociative}
+	 * 
+	 * @return {string|\stdClass|arrayAssociative}
+	 */
+	protected function render_finish($result){
+		$result = \DDTools\ObjectTools::convertType([
+			'object' => $result,
 			'type' => $this->format,
 		]);
+		
+		return parent::render_finish($result);
 	}
 }
