@@ -63,7 +63,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render
-	 * @version 1.1 (22024-07-12)
+	 * @version 1.1.1 (22024-07-13)
 	 * 
 	 * @param $resourceData {stdClass|arrayAssociative} — Resources fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -97,23 +97,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 			}
 		}
 		
-		//Если надо экранировать спец. символы
-		if (
-			$this->escapeForJS
-			&& is_string($result)
-		){
-			$result = \ddTools::escapeForJS($result);
-		}
-		
-		//Если нужно URL-кодировать строку
-		if (
-			$this->URLEncode
-			&& is_string($result)
-		){
-			$result = rawurlencode($result);
-		}
-		
-		return $result;
+		return $this->render_finish($result);
 	}
 	
 	/**
@@ -149,6 +133,34 @@ abstract class Outputter extends \DDTools\BaseClass {
 			}
 		}else{
 			$result = $resourceData;
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * render_finish
+	 * @version 1.0 (2024-07-13)
+	 * 
+	 * @param $result {string|\stdClass|arrayAssociative}
+	 * 
+	 * @return {string|\stdClass|arrayAssociative}
+	 */
+	protected function render_finish($result){
+		//Если надо экранировать спец. символы
+		if (
+			$this->escapeForJS
+			&& is_string($result)
+		){
+			$result = \ddTools::escapeForJS($result);
+		}
+		
+		//Если нужно URL-кодировать строку
+		if (
+			$this->URLEncode
+			&& is_string($result)
+		){
+			$result = rawurlencode($result);
 		}
 		
 		return $result;

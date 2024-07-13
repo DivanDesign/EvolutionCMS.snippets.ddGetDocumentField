@@ -139,11 +139,6 @@ require_once(
 		* `0`
 		* `1`
 	* Default value: `0`
-	
-* `outputterParams->emptyResult`
-	* Description: What will be returned if the snippet result is empty?
-	* Valid values: `string`
-	* Default value: `''`
 
 
 #### Outputter → String (``&outputter=`string` ``)
@@ -170,6 +165,11 @@ require_once(
 	
 * `outputterParams->docFieldsGlue`
 	* Description: String for join the fields (if `outputterParams->tpl` is not used).
+	* Valid values: `string`
+	* Default value: `''`
+	
+* `outputterParams->emptyResult`
+	* Description: What will be returned if the snippet result is empty?
 	* Valid values: `string`
 	* Default value: `''`
 
@@ -216,6 +216,20 @@ require_once(
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* **Required**
+	
+* `outputterParams->emptyResult`
+	* Description: What will be returned if the snippet result is empty?
+		* Regardless of the type in which the parameter is set, the result will always be converted to `outputterParams->format`.
+	* Valid values:
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON) object
+		* `stringJsonArray'` — as [JSON](https://en.wikipedia.org/wiki/JSON) array
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/) object
+		* `stringHjsonArray` — as [HJSON](https://hjson.github.io/) array
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* It can also be set as a native PHP object or array (e. g. for calls through `\DDTools\Snippet::runSnippet` or `$modx->runSnippet`):
+			* `arrayAssociative`
+			* `object`
+	* Default value: — (an empty object in `outputterParams->format` format)
 
 
 ### Other parameters
