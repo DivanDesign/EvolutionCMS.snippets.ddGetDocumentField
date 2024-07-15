@@ -170,6 +170,11 @@ require_once(
 	* Valid values: `string`
 	* Default value: `''`
 
+* `outputterParams->removeEmptyFields`
+	* Description: Remove resource fields with empty values (`''`) from result.
+	* Valid values: `boolean`
+	* Default value: `true`
+
 
 #### Outputter → Object (``&outputter=`object` ``)
 

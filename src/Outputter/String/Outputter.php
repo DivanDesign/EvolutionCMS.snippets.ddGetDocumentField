@@ -10,6 +10,10 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 		$docFieldsGlue = ''
 	;
 	
+	protected
+		$removeEmptyFields = true
+	;
+	
 	/**
 	 * __construct
 	 * @version 1.0.2 (2024-07-12)
@@ -33,7 +37,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.0.2 (2024-07-12)
+	 * @version 1.0.3 (2024-07-15)
 	 * 
 	 * @return {string}
 	 */
@@ -57,7 +61,6 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 				'data' => $resourceData,
 			]);
 		}else{
-			//TODO: При необходимости надо будет обработать удаление пустых значений
 			$result = implode(
 				$this->docFieldsGlue,
 				(array) $resourceData
