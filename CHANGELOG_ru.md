@@ -1,9 +1,14 @@
 # (MODX)EvolutionCMS.snippets.ddGetDocumentField changelog
 
 
+## Версия 2.15 (2024-07-15)
+
+* \+ OutputterString → Параметры → `outputterParams->removeEmptyFields`: Новый необязательный параметр. Позволяет не удалять пустые поля из результата сниппета.
+
+
 ## Версия 2.14 (2024-07-13)
 
-* \+ OutputterObject → Parameters → `outputterParams->emptyResult`: Независимо от типа, в котором задан параметр, результат всегда будет преобразован в `outputterParams->format`. Так что больше не нужно определять этот параметр, если вам нужен просто пустой объект.
+* \+ OutputterObject → Параметры → `outputterParams->emptyResult`: Независимо от типа, в котором задан параметр, результат всегда будет преобразован в `outputterParams->format`. Так что больше не нужно определять этот параметр, если вам нужен просто пустой объект.
 
 
 ## Версия 2.13 (2024-07-12)

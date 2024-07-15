@@ -14,6 +14,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 		$resourceFieldsAliases = [],
 		$hasResourceFieldAliases = false,
 		
+		$removeEmptyFields = false,
 		$typography = false,
 		$escapeForJS = false,
 		$URLEncode = false,
@@ -63,7 +64,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render
-	 * @version 1.1.1 (22024-07-13)
+	 * @version 1.2 (22024-07-15)
 	 * 
 	 * @param $resourceData {stdClass|arrayAssociative} — Resources fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -79,6 +80,22 @@ abstract class Outputter extends \DDTools\BaseClass {
 			
 			//Apply aliases
 			$resourceData = $this->render_resourceDataApplyAliases($resourceData);
+			
+			if ($this->removeEmptyFields){
+				foreach (
+					$resourceData
+					as $fieldName
+					=> $fieldValue
+				){
+					//Remove resource fields with empty values
+					if (
+						$this->removeEmptyFields
+						&& $fieldValue == ''
+					){
+						unset($resourceData->{$fieldName});
+					}
+				}
+			}
 			
 			//Run outputter main render
 			$result = $this->render_main($resourceData);
