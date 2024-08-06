@@ -19,13 +19,13 @@ Snippet gets the necessary document fields (and TVs) by its id.
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddInstaller
+// Include (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddInstaller/require.php'
 );
 
-//Install (MODX)EvolutionCMS.snippets.ddGetDocumentField
+// Install (MODX)EvolutionCMS.snippets.ddGetDocumentField
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddGetDocumentField',
 	'type' => 'snippet'
@@ -493,7 +493,7 @@ Returns:
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddGetDocumentField',
 	'params' => [
-		//Can be set as a native PHP array
+		// Can be set as a native PHP array
 		'dataProviderParams' => [
 			'resourceId' => 42,
 			'resourceFields' => 'pagetitle,question',

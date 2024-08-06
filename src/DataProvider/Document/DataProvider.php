@@ -9,7 +9,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * __construct
-	 * @version 1.1 (2024-02-07)
+	 * @version 1.1.1 (2024-08-06)
 	 *
 	 * @param $params {stdClass|arrayAssociative}
 	 */
@@ -20,7 +20,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 			$params->resourceId = \ddTools::$modx->documentIdentifier;
 		}
 		
-		//Call base constructor
+		// Call base constructor
 		parent::__construct($params);
 		
 		if (!is_array($this->resourceFieldsAlternative)){
@@ -33,7 +33,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 2.0 (2024-07-15)
+	 * @version 2.0.1 (2024-08-06)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -42,7 +42,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		
 		$resourceFields = $this->resourceFields;
 		
-		//Получаем все необходимые поля
+		// Получаем все необходимые поля
 		$resourceDataAll = \ddTools::getTemplateVarOutput(
 			array_merge(
 				$resourceFields,
@@ -51,7 +51,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 			$this->resourceId
 		);
 		
-		//Перебираем полученные результаты, заполняем пустоту альтернативой, если есть
+		// Перебираем полученные результаты, заполняем пустоту альтернативой, если есть
 		foreach (
 			$this->resourceFields
 			as $fieldIndex
@@ -64,20 +64,20 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 				])
 			){
 				if (
-					//Если значение поля пустое
+					// Если значение поля пустое
 					$resourceDataAll[$fieldName] == ''
-					//Но, возможно, имеется альтернатива
+					// Но, возможно, имеется альтернатива
 					&& !\ddTools::isEmpty($this->resourceFieldsAlternative)
 					&& isset($this->resourceFieldsAlternative[$fieldIndex])
 				){
-					//В качестве значения берём значение альтернативного поля
+					// В качестве значения берём значение альтернативного поля
 					$resourceDataAll[$fieldName] = $resourceDataAll[
-						//Имя альтернативного поля
+						// Имя альтернативного поля
 						$this->resourceFieldsAlternative[$fieldIndex]
 					];
 				}
 				
-				//Save to output
+				// Save to output
 				$resourceDataResult->{$fieldName} = $resourceDataAll[$fieldName];
 			}else{
 				$resourceDataResult->{$fieldName} = '';
@@ -85,7 +85,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 		}
 		
 		if (
-			//Если надо было вернуть ещё и url документа
+			// Если надо было вернуть ещё и url документа
 			(
 				array_search(
 					'url',
@@ -94,9 +94,9 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 				!== false
 			)
 			&& (
-				//И если такого поля нет
+				// И если такого поля нет
 				!isset($resourceDataResult->url)
-				//Или оно пусто (а то мало ли, как TV назвали)
+				// Или оно пусто (а то мало ли, как TV назвали)
 				|| trim($resourceDataResult->url) == ''
 			)
 		){

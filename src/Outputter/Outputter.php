@@ -29,13 +29,13 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.2 (2024-07-12)
+	 * @version 1.2.1 (2024-08-06)
 	 * 
 	 * @param $params {stdClass|arrayAssociative}
 	 * @param $params->dataProvider {\ddGetDocumentField\DataProvider\DataProvider}
 	 */
 	public function __construct($params = []){
-		//Все параметры задают свойства объекта
+		// Все параметры задают свойства объекта
 		$this->setExistingProps($params);
 		
 		$this->hasResourceFieldAliases = count((array) $this->resourceFieldsAliases) > 0;
@@ -46,7 +46,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 		$this->escapeForJS = boolval($this->escapeForJS);
 		$this->URLEncode = boolval($this->URLEncode);
 		
-		//Ask dataProvider to get them
+		// Ask dataProvider to get them
 		$params->dataProvider->addResourceFields($this->resourceFields);
 		
 		$this->templates = (object) $this->templates;
@@ -64,7 +64,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render
-	 * @version 1.2 (22024-07-15)
+	 * @version 1.2.1 (2024-08-06)
 	 * 
 	 * @param $resourceData {stdClass|arrayAssociative} — Resources fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -74,11 +74,11 @@ abstract class Outputter extends \DDTools\BaseClass {
 	public final function render($resourceData){
 		$result = $this->emptyResult;
 		
-		//if resource data is not impty
+		// if resource data is not impty
 		if (count((array) $resourceData) > 0){
 			$resourceData = (object) $resourceData;
 			
-			//Apply aliases
+			// Apply aliases
 			$resourceData = $this->render_resourceDataApplyAliases($resourceData);
 			
 			if ($this->removeEmptyFields){
@@ -87,7 +87,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 					as $fieldName
 					=> $fieldValue
 				){
-					//Remove resource fields with empty values
+					// Remove resource fields with empty values
 					if (
 						$this->removeEmptyFields
 						&& $fieldValue == ''
@@ -97,10 +97,10 @@ abstract class Outputter extends \DDTools\BaseClass {
 				}
 			}
 			
-			//Run outputter main render
+			// Run outputter main render
 			$result = $this->render_main($resourceData);
 			
-			//Typography
+			// Typography
 			if (
 				$this->typography
 				&& is_string($result)
@@ -119,7 +119,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_resourceDataApplyAliases
-	 * @version 1.0.4 (2024-07-12)
+	 * @version 1.0.5 (2024-08-06)
 	 * 
 	 * @param $resourceData {stdClass} — Document fields. @required
 	 * @param $resourceData->{$key} {string} — A field. @required
@@ -127,9 +127,9 @@ abstract class Outputter extends \DDTools\BaseClass {
 	 * @return {stdClass}
 	 */
 	private function render_resourceDataApplyAliases($resourceData){
-		//IF aliases exists
+		// IF aliases exists
 		if ($this->hasResourceFieldAliases){
-			//Clear
+			// Clear
 			$result = new \stdClass();
 			
 			foreach (
@@ -138,14 +138,14 @@ abstract class Outputter extends \DDTools\BaseClass {
 				=> $fieldValue
 			){
 				if (
-					//IF alias for field is set
+					// IF alias for field is set
 					isset($this->resourceFieldsAliases->{$fieldName})
 					&& trim($this->resourceFieldsAliases->{$fieldName}) != ''
 				){
 					$fieldName = $this->resourceFieldsAliases->{$fieldName};
 				}
 				
-				//Save
+				// Save
 				$result->{$fieldName} = $fieldValue;
 			}
 		}else{
@@ -157,14 +157,14 @@ abstract class Outputter extends \DDTools\BaseClass {
 	
 	/**
 	 * render_finish
-	 * @version 1.0 (2024-07-13)
+	 * @version 1.0.1 (2024-08-06)
 	 * 
 	 * @param $result {string|\stdClass|arrayAssociative}
 	 * 
 	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	protected function render_finish($result){
-		//Если надо экранировать спец. символы
+		// Если надо экранировать спец. символы
 		if (
 			$this->escapeForJS
 			&& is_string($result)
@@ -172,7 +172,7 @@ abstract class Outputter extends \DDTools\BaseClass {
 			$result = \ddTools::escapeForJS($result);
 		}
 		
-		//Если нужно URL-кодировать строку
+		// Если нужно URL-кодировать строку
 		if (
 			$this->URLEncode
 			&& is_string($result)

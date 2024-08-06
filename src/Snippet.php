@@ -6,7 +6,7 @@ class Snippet extends \DDTools\Snippet {
 		$version = '2.15.0',
 		
 		$params = [
-			//Defaults
+			// Defaults
 			'dataProvider' => 'document',
 			'dataProviderParams' => [
 				'resourceFields' => [],
@@ -61,14 +61,14 @@ class Snippet extends \DDTools\Snippet {
 		
 	/**
 	 * prepareParams
-	 * @version 1.0 (2021-03-25)
+	 * @version 1.0.1 (2024-08-06)
 	 *
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 *
 	 * @return {void}
 	 */
 	protected function prepareParams($params = []){
-		//Call base method
+		// Call base method
 		parent::prepareParams($params);
 		
 		$this->prepareParams_backwardCompatibility();
@@ -78,14 +78,14 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams_backwardCompatibility
-	 * @version 1.2 (2024-07-12)
+	 * @version 1.2.1 (2024-08-06)
 	 * 
 	 * @return {void}
 	 */
 	private function prepareParams_backwardCompatibility(){
 		$isLogMessageNeeded = false;
 		
-		//Fill data provider and outputter params from old snippet params
+		// Fill data provider and outputter params from old snippet params
 		$compilance = [
 			'dataProviderParams' => [
 				'resourceId' => 'docId',
@@ -108,15 +108,15 @@ class Snippet extends \DDTools\Snippet {
 			as $propertyName
 			=> $paramsCompilance
 		){
-			//Correct params names
+			// Correct params names
 			$newParams = (object) \ddTools::verifyRenamedParams([
 				'params' => $this->params,
 				'compliance' => $paramsCompilance,
-				//Without log
+				// Without log
 				'writeToLog' => false,
 			]);
 			
-			//If something old was set
+			// If something old was set
 			if (count((array) $newParams) > 0){
 				$isLogMessageNeeded = true;
 				
@@ -127,7 +127,7 @@ class Snippet extends \DDTools\Snippet {
 					]
 				]);
 				
-				//Remove outdated snippet params
+				// Remove outdated snippet params
 				foreach(
 					$paramsCompilance
 					as $oldParamName
@@ -146,7 +146,7 @@ class Snippet extends \DDTools\Snippet {
 		
 		$this->prepareParams_resourceFieldsAndAliases();
 		
-		//Если задан устаревший параметр «$numericNames»
+		// Если задан устаревший параметр «$numericNames»
 		if (
 			isset($this->params->numericNames)
 			&& $this->params->numericNames == '1'
@@ -192,23 +192,23 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams_resourceFieldsAndAliases
-	 * @version 1.0.2 (2024-07-12)
+	 * @version 1.0.3 (2024-08-06)
 	 * 
 	 * @desc Split field names and aliases for data provider and outputter.
 	 * 
 	 * @return {void}
 	 */
 	private function prepareParams_resourceFieldsAndAliases(){
-		//If can be prepared (not prepared before)
+		// If can be prepared (not prepared before)
 		if (is_string($this->params->dataProviderParams->resourceFields)){
-			//The old alias separator
+			// The old alias separator
 			$this->params->dataProviderParams->resourceFields = str_replace(
 				'::',
 				'=',
 				$this->params->dataProviderParams->resourceFields
 			);
 			
-			//Если заданы псевдонимы полей (хотя бы для одного)
+			// Если заданы псевдонимы полей (хотя бы для одного)
 			if (
 				strpos(
 					$this->params->dataProviderParams->resourceFields,
@@ -216,17 +216,17 @@ class Snippet extends \DDTools\Snippet {
 				)
 				!== false
 			){
-				//Разобьём поля на поля и псевдонимы
+				// Разобьём поля на поля и псевдонимы
 				$this->params->outputterParams->resourceFieldsAliases = \ddTools::explodeAssoc(
 					$this->params->dataProviderParams->resourceFields,
 					',',
 					'='
 				);
 				
-				//Полями являются ключи
+				// Полями являются ключи
 				$this->params->dataProviderParams->resourceFields = array_keys($this->params->outputterParams->resourceFieldsAliases);
 			}else{
-				//Просто разбиваем по запятой
+				// Просто разбиваем по запятой
 				$this->params->dataProviderParams->resourceFields = explode(
 					',',
 					$this->params->dataProviderParams->resourceFields
@@ -237,27 +237,27 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.4 (2024-07-12)
+	 * @version 1.0.5 (2024-08-06)
 	 * 
 	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	public function run(){
 		$result = $this->params->outputterParams->emptyResult;
 		
-		//Если данные нужно получать аяксом
+		// Если данные нужно получать аяксом
 		if ($this->params->mode == 'ajax'){
 			$this->params->dataProviderParams->resourceId = intval($_REQUEST['id']);
 			
-			//Если заданы поля для проверки безопасности
+			// Если заданы поля для проверки безопасности
 			if (!\ddTools::isEmpty($this->params->securityFields)){
-				//Получаем значения полей безопасности у конкретного документа
-				//TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
+				// Получаем значения полей безопасности у конкретного документа
+				// TODO: Надо бы сделать получение полей безопасности вместе с обычными полями и последующую обработку, но пока так
 				$docSecurityFields = \ddTools::getTemplateVarOutput(
 					array_keys($this->params->securityFields),
 					$this->params->dataProviderParams->resourceId
 				);
 				
-				//Если по каким-то причинам ничего не получили — прерываем
+				// Если по каким-то причинам ничего не получили — прерываем
 				if (
 					!$docSecurityFields
 					|| count($docSecurityFields) == 0
@@ -265,7 +265,7 @@ class Snippet extends \DDTools\Snippet {
 					return $result;
 				}
 				
-				//Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
+				// Перебираем полученные значения, если хоть одно не совпадает с условием — прерываем
 				foreach (
 					$docSecurityFields
 					as $key
@@ -283,7 +283,7 @@ class Snippet extends \DDTools\Snippet {
 			'params' => $this->params->dataProviderParams,
 		]);
 		
-		//Save the data provider object in outputter for possibility to add fields to get
+		// Save the data provider object in outputter for possibility to add fields to get
 		$this->params->outputterParams->dataProvider = $dataProviderObject;
 		
 		$outputterObject = \ddGetDocumentField\Outputter\Outputter::createChildInstance([

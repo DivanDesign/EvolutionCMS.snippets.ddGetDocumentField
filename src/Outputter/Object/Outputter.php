@@ -9,19 +9,19 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.4.1 (2024-07-15)
+	 * @version 1.4.2 (2024-08-06)
 	 * 
 	 * @return {stringJsonObject}
 	 */
 	public function render_main($resourceData){
-		//If we need to prepare some fields
+		// If we need to prepare some fields
 		if (!\ddTools::isEmpty($this->templates)){
 			foreach (
 				$resourceData
 				as $fieldName
 				=> $fieldValue
 			){
-				//If template for this field is set
+				// If template for this field is set
 				if (
 					\DDTools\ObjectTools::isPropExists([
 						'object' => $this->templates,

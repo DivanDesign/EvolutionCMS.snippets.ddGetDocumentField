@@ -13,12 +13,12 @@ abstract class DataProvider extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2020-04-24)
+	 * @version 1.0.1 (2024-08-06)
 	 *
 	 * @param $params {stdClass|arrayAssociative}
 	 */
 	public function __construct($params){
-		//Все параметры задают свойства объекта
+		// Все параметры задают свойства объекта
 		$this->setExistingProps($params);
 		
 		$this->resourceId = intval($this->resourceId);
