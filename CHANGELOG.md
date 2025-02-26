@@ -144,5 +144,27 @@
 * \* The snippet result will be returned in anyway (empty string for empty result).
 
 
+## Version 2.7 (2017-03-01)
+
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.18 is required.
+* \+ Added JSON format support for the `tpl_placeholders` parameter.
+
+
+## Version 2.6 (2016-12-28)
+
+* \* Attention! PHP >= 5.4 is required.
+* \* Attention! (MODX)EvolutionCMS >= 1.1 is required.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.16.2 is required.
+* \+ Added support of the `@CODE:` keyword prefix in the `tpl` parameter.
+* \* The following parameters were renamed (with backward compatibility):
+	* \* `placeholders` → `tpl_placeholders`.
+	* \* `typography` → `typographyResult`.
+	* \* `screening` → `escapeResultForJS`.
+	* \* `urlencode` → `urlencodeResult`.
+* \* Additional data has to be passed through the `tpl_placeholders` parameter must be set as a [query formated string](https://en.wikipedia.org/wiki/Query_string) (the old format is still supported but deprecated).
+* \* The fields for security verification has to be passed through the `securityFields` parameter must be set as a [query formated string](https://en.wikipedia.org/wiki/Query_string) (the old format is still supported but deprecated).
+* \* Other small changes.
+
+
 <link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
 <style>ul{list-style:none;}</style>

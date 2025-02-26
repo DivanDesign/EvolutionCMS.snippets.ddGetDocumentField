@@ -144,5 +144,27 @@
 * \* Результат работы сниппета будет возвращён в любом случае (пустая строка, если пустой результат).
 
 
+## Версия 2.7 (2017-03-01)
+
+* \* Внимание! Требуется Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.18.
+* \+ Добавлена поддержка формата JSON в параметре `tpl_placeholders`.
+
+
+## Версия 2.6 (2016-12-28)
+
+* \* Внимание! Требуется PHP >= 5.4.
+* \* Внимание! Требуется (MODX)EvolutionCMS >= 1.1.
+* \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.16.2.
+* \+ Добавлена указания шаблона `tpl` без чанка, через префикс `@CODE:`.
+* \* Следующие параметры были переименованы (с обратной совместимостью):
+	* \* `placeholders` → `tpl_placeholders`.
+	* \* `typography` → `typographyResult`.
+	* \* `screening` → `escapeResultForJS`.
+	* \* `urlencode` → `urlencodeResult`.
+* \* Дополнительные данные, передаваемые в параметр `tpl_placeholders` должны быть в виде [query string](https://en.wikipedia.org/wiki/Query_string) (старый формат поддерживается, но не рекомендуется к использвоанию).
+* \* Поля для проверки безопасности, передаваемые в параметр `securityFields` должны быть в виде [query string](https://en.wikipedia.org/wiki/Query_string) (старый формат поддерживается, но не рекомендуется к использвоанию).
+* \* Прочие небольшие изменения.
+
+
 <link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
 <style>ul{list-style:none;}</style>
