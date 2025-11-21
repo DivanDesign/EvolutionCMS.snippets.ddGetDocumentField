@@ -33,7 +33,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 	
 	/**
 	 * get
-	 * @version 2.0.1 (2024-08-06)
+	 * @version 2.0.2 (2025-11-21)
 	 * 
 	 * @return {stdClass}
 	 */
@@ -58,7 +58,7 @@ class DataProvider extends \ddGetDocumentField\DataProvider\DataProvider {
 			=> $fieldName
 		){
 			if (
-				\DDTools\ObjectTools::isPropExists([
+				\DDTools\Tools\Objects::isPropExists([
 					'object' => $resourceDataAll,
 					'propName' => $fieldName,
 				])

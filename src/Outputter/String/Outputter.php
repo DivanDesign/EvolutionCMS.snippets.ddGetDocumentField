@@ -16,7 +16,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * __construct
-	 * @version 1.0.3 (2024-08-06)
+	 * @version 1.0.4 (2025-11-21)
 	 */
 	public function __construct($params){
 		$params = (object) $params;
@@ -48,7 +48,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 		if (!empty($this->tpl)){
 			// Если есть дополнительные данные
 			if (!\ddTools::isEmpty($this->placeholders)){
-				$resourceData = \DDTools\ObjectTools::extend([
+				$resourceData = \DDTools\Tools\Objects::extend([
 					'objects' => [
 						$resourceData,
 						$this->placeholders,

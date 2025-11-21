@@ -9,7 +9,7 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_main
-	 * @version 1.4.2 (2024-08-06)
+	 * @version 1.4.3 (2025-11-21)
 	 * 
 	 * @return {stringJsonObject}
 	 */
@@ -23,14 +23,14 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 			){
 				// If template for this field is set
 				if (
-					\DDTools\ObjectTools::isPropExists([
+					\DDTools\Tools\Objects::isPropExists([
 						'object' => $this->templates,
 						'propName' => $fieldName
 					])
 				){
 					$resourceData->{$fieldName} = \ddTools::parseText([
 						'text' => $this->templates->{$fieldName},
-						'data' => \DDTools\ObjectTools::extend([
+						'data' => \DDTools\Tools\Objects::extend([
 							'objects' => [
 								$resourceData,
 								[
@@ -48,14 +48,14 @@ class Outputter extends \ddGetDocumentField\Outputter\Outputter {
 	
 	/**
 	 * render_finish
-	 * @version 1.0 (2024-07-13)
+	 * @version 1.0.1 (2025-11-21)
 	 * 
 	 * @param $result {string|\stdClass|arrayAssociative}
 	 * 
 	 * @return {string|\stdClass|arrayAssociative}
 	 */
 	protected function render_finish($result){
-		$result = \DDTools\ObjectTools::convertType([
+		$result = \DDTools\Tools\Objects::convertType([
 			'object' => $result,
 			'type' => $this->format,
 		]);

@@ -78,7 +78,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams_backwardCompatibility
-	 * @version 1.2.2 (2025-11-21)
+	 * @version 1.2.3 (2025-11-21)
 	 * 
 	 * @return {void}
 	 */
@@ -120,7 +120,7 @@ class Snippet extends \DDTools\Snippet {
 			if (count((array) $newParams) > 0){
 				$isLogMessageNeeded = true;
 				
-				$this->params->{$propertyName} = \DDTools\ObjectTools::extend([
+				$this->params->{$propertyName} = \DDTools\Tools\Objects::extend([
 					'objects' => [
 						$this->params->{$propertyName},
 						$newParams,
