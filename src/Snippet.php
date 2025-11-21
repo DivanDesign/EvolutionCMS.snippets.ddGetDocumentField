@@ -78,7 +78,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams_backwardCompatibility
-	 * @version 1.2.1 (2024-08-06)
+	 * @version 1.2.2 (2025-11-21)
 	 * 
 	 * @return {void}
 	 */
@@ -86,7 +86,7 @@ class Snippet extends \DDTools\Snippet {
 		$isLogMessageNeeded = false;
 		
 		// Fill data provider and outputter params from old snippet params
-		$compilance = [
+		$compliance = [
 			'dataProviderParams' => [
 				'resourceId' => 'docId',
 				'resourceFields' => 'docField',
@@ -104,14 +104,14 @@ class Snippet extends \DDTools\Snippet {
 		];
 		
 		foreach (
-			$compilance
+			$compliance
 			as $propertyName
-			=> $paramsCompilance
+			=> $paramsCompliance
 		){
 			// Correct params names
 			$newParams = (object) \ddTools::verifyRenamedParams([
 				'params' => $this->params,
-				'compliance' => $paramsCompilance,
+				'compliance' => $paramsCompliance,
 				// Without log
 				'writeToLog' => false,
 			]);
@@ -129,7 +129,7 @@ class Snippet extends \DDTools\Snippet {
 				
 				// Remove outdated snippet params
 				foreach(
-					$paramsCompilance
+					$paramsCompliance
 					as $oldParamName
 				){
 					if (
